@@ -1,12 +1,10 @@
-import { RoutePlaceholder } from '@/components/layout/route-placeholder';
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
+import { ProfilePage } from '@/features/profile';
 
 export default function ProfileRoutePage() {
   return (
-    <RoutePlaceholder
-      title="پروفایل"
-      description="این صفحه‌ی ساختاری برای مسیر پروفایل آماده شده و بدون منطق محصول است."
-      badge="Route foundation"
-      links={[{ href: '/', label: 'خانه' }, { href: '/library', label: 'کتابخانه' }]}
-    />
+    <ProtectedRoute>
+      <ProfilePage />
+    </ProtectedRoute>
   );
 }
