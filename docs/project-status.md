@@ -10,7 +10,7 @@
 
 ## فاز جاری
 
-- Phase 4.5 — MVP Release Packaging & Documentation
+- Phase 4.6 — Global UI & UX Polish
 
 ## پیشرفت کلی
 

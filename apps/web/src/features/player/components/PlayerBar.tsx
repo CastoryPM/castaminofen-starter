@@ -10,7 +10,7 @@ export function PlayerBar() {
   const { currentItem, playbackStatus, error, queue } = usePlayerState();
 
   return (
-    <div className="rounded-2xl border border-border bg-surface-secondary/95 p-3 shadow-soft backdrop-blur sm:p-4">
+    <div className="rounded-2xl border border-border/80 bg-surface-secondary/95 p-3 shadow-soft backdrop-blur sm:p-4">
       <div className="flex flex-col gap-3 md:flex-row md:items-center">
         <div className="min-w-0 flex-1">
           <PlayerInfo />

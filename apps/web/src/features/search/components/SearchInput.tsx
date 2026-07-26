@@ -22,6 +22,7 @@ export default function SearchInput({ defaultQuery, onNavigate }: { defaultQuery
       <label htmlFor="search" className="form-label">
         جستجو در پادکست‌ها
       </label>
+      <p className="text-caption m-0">عنوان، توضیح یا نام پادکست را وارد کنید تا سریع‌تر به نتیجه برسید.</p>
       <div className="flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
           <SearchIcon className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" aria-hidden="true" />
@@ -30,10 +31,10 @@ export default function SearchInput({ defaultQuery, onNavigate }: { defaultQuery
             className="input flex-1 pr-11"
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            placeholder="عنوان، توضیح یا نام پادکست"
+            placeholder="مثلاً فناوری، ریاضی، داستان"
           />
         </div>
-        <Button className="justify-center sm:w-auto" type="submit">
+        <Button className="justify-center sm:w-auto" type="submit" disabled={!value.trim()}>
           جستجو
         </Button>
       </div>

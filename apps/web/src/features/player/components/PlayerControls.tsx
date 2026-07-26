@@ -48,7 +48,7 @@ export function PlayerControls() {
         className="h-10 w-10 rounded-full p-0"
         onClick={() => void playerRuntime.previous()}
         disabled={!canGoPrevious || !hasPlayableItem}
-        aria-label="Previous item"
+        aria-label="پخش مورد قبلی"
       >
         <ChevronLeft size={16} />
       </Button>
@@ -59,7 +59,7 @@ export function PlayerControls() {
         className="h-10 w-10 rounded-full p-0"
         onClick={() => void handleTogglePlayback()}
         disabled={!hasPlayableItem}
-        aria-label={isPlaying ? 'Pause playback' : 'Start playback'}
+        aria-label={isPlaying ? 'توقف پخش' : 'شروع پخش'}
         aria-busy={playbackStatus === 'loading'}
       >
         {playbackStatus === 'loading' ? <span className="text-xs font-semibold">...</span> : isPlaying ? <Pause size={16} /> : <Play size={16} />}
@@ -71,7 +71,7 @@ export function PlayerControls() {
         className="h-10 w-10 rounded-full p-0"
         onClick={handleStop}
         disabled={!hasPlayableItem || playbackStatus === 'idle'}
-        aria-label="Stop playback"
+        aria-label="توقف پخش"
       >
         <Square size={14} />
       </Button>
@@ -81,7 +81,7 @@ export function PlayerControls() {
         size="sm"
         className={`h-10 w-10 rounded-full p-0 ${shuffleEnabled ? 'text-primary' : ''}`}
         onClick={() => toggleShuffle()}
-        aria-label={`Shuffle ${shuffleEnabled ? 'on' : 'off'}`}
+        aria-label={`تصادفی ${shuffleEnabled ? 'روشن' : 'خاموش'}`}
         aria-pressed={shuffleEnabled}
       >
         <Shuffle size={16} />
@@ -92,7 +92,7 @@ export function PlayerControls() {
         size="sm"
         className={`h-10 w-10 rounded-full p-0 ${repeatMode !== 'off' ? 'text-primary' : ''}`}
         onClick={() => toggleRepeat()}
-        aria-label={`Repeat ${repeatMode}`}
+        aria-label={`تکرار ${repeatMode === 'one' ? 'یک آیتم' : repeatMode === 'queue' ? 'صف' : 'خاموش'}`}
         aria-pressed={repeatMode !== 'off'}
       >
         {repeatMode === 'one' ? <Repeat1 size={16} /> : <Repeat2 size={16} />}
@@ -104,7 +104,7 @@ export function PlayerControls() {
         className="h-10 w-10 rounded-full p-0"
         onClick={() => void playerRuntime.next()}
         disabled={!canGoNext || !hasPlayableItem}
-        aria-label="Next item"
+        aria-label="پخش مورد بعدی"
       >
         <ChevronRight size={16} />
       </Button>

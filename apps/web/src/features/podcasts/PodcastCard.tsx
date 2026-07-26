@@ -4,20 +4,18 @@ import type { Podcast } from '@/lib/types';
 
 export function PodcastCard({ podcast }: { podcast: Podcast }) {
   return (
-    <Card className="card">
-      <div className="header" style={{ alignItems: 'flex-start', flexDirection: 'column' }}>
-        <div>
-          <h2>{podcast.title}</h2>
-          <p>{podcast.description || 'No description available.'}</p>
-        </div>
-        <div className="toolbar" style={{ marginTop: '0.75rem' }}>
-          <Link href={`/podcasts/${podcast.id}`} className="button button-secondary">
-            View
-          </Link>
-          <Link href={`/podcasts/${podcast.id}/edit`} className="button button-secondary">
-            Edit
-          </Link>
-        </div>
+    <Card className="flex flex-col gap-4">
+      <div className="space-y-2">
+        <h2 className="text-subheading">{podcast.title}</h2>
+        <p className="text-body m-0 line-clamp-3">{podcast.description || 'توضیحی برای این پادکست ثبت نشده است.'}</p>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <Link href={`/podcasts/${podcast.id}`} className="button button-secondary flex-1 justify-center">
+          مشاهده
+        </Link>
+        <Link href={`/podcasts/${podcast.id}/edit`} className="button button-secondary justify-center">
+          ویرایش
+        </Link>
       </div>
     </Card>
   );

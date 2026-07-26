@@ -12,9 +12,9 @@ import { useState } from 'react';
 import { useAuthStore } from '@/stores/authStore';
 
 const registerSchema = z.object({
-  email: z.string().trim().min(1, 'Email is required').email('Invalid email address'),
-  password: z.string().trim().min(6, 'Password must be at least 6 characters'),
-  name: z.string().trim().min(2, 'Name must be at least 2 characters').optional().or(z.literal('')),
+  email: z.string().trim().min(1, 'ایمیل الزامی است.').email('لطفاً یک ایمیل معتبر وارد کنید.'),
+  password: z.string().trim().min(6, 'رمز عبور باید حداقل 6 کاراکتر باشد.'),
+  name: z.string().trim().min(2, 'نام باید حداقل 2 کاراکتر باشد.').optional().or(z.literal('')),
 });
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
@@ -42,7 +42,7 @@ export function RegisterPageView() {
       useAuthStore.getState().setHydrated(true);
       router.push('/profile');
     } catch (err) {
-      setError((err as Error).message || 'Unable to create an account. Please try again.');
+      setError((err as Error).message || 'ایجاد حساب با مشکل مواجه شد. لطفاً دوباره تلاش کنید.');
     }
   }
 
@@ -54,20 +54,20 @@ export function RegisterPageView() {
           <h1 className="text-heading">حساب کاربری جدید ایجاد کنید</h1>
           <p className="text-body m-0">با ثبت‌نام، دسترسی به کتابخانه، لیست پخش و تجربه پخش ادامه‌دار را داشته باشید.</p>
         </div>
-        <Form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <Form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
           <FormField>
             <FormLabel htmlFor="email">ایمیل</FormLabel>
-            <Input id="email" type="email" autoComplete="email" {...form.register('email')} />
+            <Input id="email" type="email" autoComplete="email" placeholder="your@email.com" {...form.register('email')} aria-invalid={form.formState.errors.email ? 'true' : undefined} />
             {form.formState.errors.email ? <p className="error-text">{form.formState.errors.email.message}</p> : null}
           </FormField>
           <FormField>
             <FormLabel htmlFor="password">رمز عبور</FormLabel>
-            <Input id="password" type="password" autoComplete="new-password" {...form.register('password')} />
+            <Input id="password" type="password" autoComplete="new-password" placeholder="حداقل 6 کاراکتر" {...form.register('password')} aria-invalid={form.formState.errors.password ? 'true' : undefined} />
             {form.formState.errors.password ? <p className="error-text">{form.formState.errors.password.message}</p> : null}
           </FormField>
           <FormField>
             <FormLabel htmlFor="name">نام</FormLabel>
-            <Input id="name" type="text" autoComplete="name" {...form.register('name')} />
+            <Input id="name" type="text" autoComplete="name" placeholder="نام شما" {...form.register('name')} aria-invalid={form.formState.errors.name ? 'true' : undefined} />
             {form.formState.errors.name ? <p className="error-text">{form.formState.errors.name.message}</p> : null}
           </FormField>
           {error ? (
@@ -75,7 +75,7 @@ export function RegisterPageView() {
               <p className="error-text m-0">{error}</p>
             </div>
           ) : null}
-          <Button type="submit" className="w-full justify-center" disabled={form.formState.isSubmitting}>
+          <Button type="submit" className="w-full justify-center" loading={form.formState.isSubmitting}>
             {form.formState.isSubmitting ? 'در حال ساخت حساب...' : 'ثبت‌نام'}
           </Button>
         </Form>
