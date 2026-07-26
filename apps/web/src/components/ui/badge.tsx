@@ -13,7 +13,7 @@ export function Badge({
   return (
     <span
       className={clsx(
-        'inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold tracking-wide',
+        'inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold tracking-wide shadow-sm',
         {
           'border-border bg-surface-secondary text-text-secondary': variant === 'default',
           'border-accent bg-surface-secondary text-accent': variant === 'accent',

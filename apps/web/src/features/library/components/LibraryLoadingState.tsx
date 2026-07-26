@@ -1,16 +1,18 @@
 'use client';
 
+import { LoadingState } from '@/components/ui/loading-state';
+
 export function LibraryLoadingState() {
   return (
     <div className="space-y-4" role="status" aria-live="polite">
-      <div className="rounded-2xl border border-border bg-surface-secondary/70 p-4 sm:p-6">
+      <div className="rounded-2xl border border-border/80 bg-surface-secondary/70 p-4 sm:p-6">
         <div className="space-y-3">
           <div className="h-4 w-32 animate-pulse rounded-full bg-surface-tertiary" />
           <div className="h-3 w-56 animate-pulse rounded-full bg-surface-tertiary" />
         </div>
       </div>
 
-      <div className="rounded-2xl border border-border bg-surface-secondary/70 p-4 sm:p-5">
+      <div className="rounded-2xl border border-border/80 bg-surface-secondary/70 p-4 sm:p-5">
         <div className="mb-4 h-4 w-28 animate-pulse rounded-full bg-surface-tertiary" />
         <div className="space-y-3">
           {[0, 1].map((item) => (
@@ -25,6 +27,8 @@ export function LibraryLoadingState() {
           ))}
         </div>
       </div>
+
+      <LoadingState title="در حال آماده‌سازی کتابخانه" message="در حال بارگذاری پادکست‌ها و اپیزودهای ادامه‌دار هستیم…" />
     </div>
   );
 }

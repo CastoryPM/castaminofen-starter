@@ -1,8 +1,10 @@
 "use client";
 
+import Link from 'next/link';
 import { LoadingState } from '@/components/ui/loading-state';
 import { EmptyState } from '@/components/ui/empty-state';
 import { ErrorState } from '@/components/ui/error-state';
+import { Button } from '@/components/ui/button';
 import { PodcastCard } from '@/features/podcasts/PodcastCard';
 import { useSearch } from '../hooks/useSearch';
 
@@ -18,11 +20,28 @@ export default function SearchResults({ q, page }: { q: string; page: number }) 
   const items = query.data?.data ?? [];
 
   if (!items.length) {
-    return <EmptyState title="نتیجه‌ای یافت نشد" description={`برای «${q || 'جستجوی شما'}» هیچ پادکستی پیدا نشد. از عبارت دیگری استفاده کنید.`} />;
+    return (
+      <EmptyState
+        title="نتیجه‌ای یافت نشد"
+        description={`برای «${q || 'جستجوی شما'}» هیچ پادکستی پیدا نشد. از عبارت دیگری استفاده کنید.`}
+        action={
+          <Link href="/search" className="inline-flex">
+            <Button variant="secondary" size="sm">
+              پاک کردن فیلتر
+            </Button>
+          </Link>
+        }
+      />
+    );
   }
 
   return (
     <div className="space-y-5">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/80 bg-surface-primary/70 px-4 py-3">
+        <p className="m-0 text-sm text-text-secondary">{items.length} نتیجه برای «{q}»</p>
+        {totalPages > 1 ? <p className="m-0 text-sm text-text-secondary">صفحه {page} از {totalPages}</p> : null}
+      </div>
+
       <div className="grid gap-4 md:grid-cols-2">
         {items.map((podcast) => (
           <PodcastCard key={podcast.id} podcast={podcast} />
@@ -38,6 +57,7 @@ export default function SearchResults({ q, page }: { q: string; page: number }) 
               window.location.href = `/search?q=${encodeURIComponent(q)}&page=${prev}`;
             }}
             disabled={page === 1}
+            aria-label="رفتن به صفحه‌ی قبلی نتایج"
           >
             قبلی
           </button>
@@ -53,6 +73,7 @@ export default function SearchResults({ q, page }: { q: string; page: number }) 
               window.location.href = `/search?q=${encodeURIComponent(q)}&page=${next}`;
             }}
             disabled={page === totalPages}
+            aria-label="رفتن به صفحه‌ی بعدی نتایج"
           >
             بعدی
           </button>

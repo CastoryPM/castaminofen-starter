@@ -25,14 +25,14 @@ export function Avatar({
 
   if (!src) {
     return (
-      <div className={clsx('inline-flex items-center justify-center rounded-full border border-border bg-surface-secondary font-semibold text-text-primary', sizeClassName, className)}>
+      <div className={clsx('inline-flex items-center justify-center rounded-full border border-border bg-surface-secondary font-semibold text-text-primary shadow-sm', sizeClassName, className)}>
         {fallback ?? alt.charAt(0).toUpperCase()}
       </div>
     );
   }
 
   return (
-    <div className={clsx('inline-flex overflow-hidden rounded-full border border-border bg-surface-secondary', sizeClassName, className)}>
+    <div className={clsx('inline-flex overflow-hidden rounded-full border border-border bg-surface-secondary shadow-sm', sizeClassName, className)}>
       <Image src={src} alt={alt} className="h-full w-full object-cover" fill={false} {...props} />
     </div>
   );

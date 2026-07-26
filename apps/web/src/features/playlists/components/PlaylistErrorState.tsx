@@ -6,6 +6,7 @@ export function PlaylistErrorState({ message, onRetry }: { message?: string; onR
     <ErrorState
       title="بارگذاری لیست‌های پخش با خطا مواجه شد"
       message={message ?? 'امکان بارگذاری لیست‌های پخش در این لحظه وجود ندارد.'}
+      description="برای ادامه کار، صفحه را دوباره بارگذاری کنید یا بعداً دوباره تلاش کنید."
       action={onRetry ? <Button type="button" variant="secondary" onClick={onRetry}>تلاش دوباره</Button> : undefined}
     />
   );

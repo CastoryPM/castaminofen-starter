@@ -6,8 +6,8 @@ import { Search, Settings } from 'lucide-react';
 export function Header() {
   return (
     <header className="app-header sticky top-0 z-30 border-b border-border bg-surface-secondary/95 backdrop-blur-xl">
-      <div className="mobile-container flex items-center justify-between gap-3 px-3 py-4 sm:px-6 lg:px-8">
-        <div>
+      <div className="mobile-container mx-auto flex w-full max-w-app items-center justify-between gap-3 px-3 py-4 sm:px-6 lg:px-8">
+        <div className="min-w-0">
           <p className="text-caption uppercase tracking-[0.24em] text-text-secondary">Castaminofen</p>
           <h1 className="text-heading">پخش و کشف صوتی</h1>
         </div>

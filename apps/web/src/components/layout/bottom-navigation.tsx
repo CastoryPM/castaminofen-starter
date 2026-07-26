@@ -26,7 +26,7 @@ export function BottomNavigation() {
               key={item.href}
               href={item.href}
               aria-current={isActive ? 'page' : undefined}
-              className={`bottom-navigation__item group flex min-h-[3.25rem] flex-1 flex-col items-center justify-center gap-2 rounded-2xl border px-2 py-2 text-center text-xs font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface-secondary ${isActive ? 'border-accent/30 bg-accent/10 text-accent' : 'border-transparent bg-transparent text-text-secondary hover:border-border hover:bg-surface-primary hover:text-text-primary'}`}
+              className={`bottom-navigation__item group flex min-h-[3.25rem] flex-1 flex-col items-center justify-center gap-2 rounded-2xl border px-2 py-2 text-center text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface-secondary ${isActive ? 'border-accent/30 bg-accent/10 text-accent shadow-sm' : 'border-transparent bg-transparent text-text-secondary hover:border-border hover:bg-surface-primary hover:text-text-primary'}`}
             >
               <Icon className="h-5 w-5" aria-hidden="true" />
               <span>{item.label}</span>

@@ -35,7 +35,7 @@ export function ProfilePage() {
   return (
     <main className="page-container">
       <section className="space-y-6">
-        <div className="rounded-2xl border border-border bg-surface-secondary/70 p-4 sm:p-6">
+        <div className="rounded-2xl border border-border/80 bg-surface-secondary/70 p-4 shadow-soft sm:p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-4">
               <Avatar alt={displayName} fallback={initials} size="lg" />

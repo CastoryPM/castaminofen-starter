@@ -14,7 +14,7 @@ export function EmptyState({
   className?: string;
 }) {
   return (
-    <div className={clsx('flex flex-col items-start gap-4 rounded-2xl border border-dashed border-border bg-surface-secondary/70 p-6 text-start shadow-soft sm:p-8', className)} role="status">
+    <div className={clsx('flex flex-col items-start gap-4 rounded-2xl border border-dashed border-border/80 bg-surface-secondary/80 p-6 text-start shadow-soft sm:p-8', className)} role="status" aria-live="polite">
       <div className="flex items-start gap-3">
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-accent/10 text-accent">
           <Sparkles className="h-5 w-5" aria-hidden="true" />
