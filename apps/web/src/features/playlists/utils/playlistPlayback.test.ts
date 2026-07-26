@@ -16,10 +16,6 @@ function createPlaylistItem(id: string, episodeId: string): PlaylistItem {
       podcastId: 'podcast-1',
       createdAt: '2024-01-01T00:00:00.000Z',
       updatedAt: '2024-01-01T00:00:00.000Z',
-      duration: 300,
-      seasonNumber: 1,
-      episodeNumber: 1,
-      publishedAt: '2024-01-01T00:00:00.000Z',
       podcast: null,
     },
   };
