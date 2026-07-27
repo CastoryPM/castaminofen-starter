@@ -70,10 +70,11 @@ Last Verified:
 ## pnpm --filter @castaminofen/api test
 
 Purpose:
-Execute the API regression tests, including the new RSS persistence boundary spec.
+Execute the API regression tests, including the new RSS persistence boundary and matching engine specs.
 
 Used in:
 Phase RSS.5.2
+Phase RSS.6.1
 
 Last Verified:
 2026-07-27

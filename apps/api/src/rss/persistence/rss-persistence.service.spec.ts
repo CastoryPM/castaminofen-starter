@@ -1,8 +1,8 @@
-import assert from 'node:assert/strict';
-import test from 'node:test';
-import { BadRequestException } from '@nestjs/common';
-import { ImporterService } from '../importer/importer.service.ts';
-import { RssPersistenceService } from './rss-persistence.service.ts';
+const assert = require('node:assert/strict');
+const test = require('node:test');
+const { BadRequestException } = require('@nestjs/common');
+const { ImporterService } = require('../importer/importer.service');
+const { RssPersistenceService } = require('./rss-persistence.service');
 
 test('ImporterService forwards normalized feed data to the persistence service', async () => {
   const persisted: Array<{ podcast: unknown; episodes: unknown[] }> = [];
@@ -28,7 +28,7 @@ test('ImporterService forwards normalized feed data to the persistence service',
 
   const result = await importer.importFeedAndPersist('https://example.com/feed.xml');
 
-  assert.equal(result.podcast.title, 'Example');
+  assert.equal(result.podcast.id, 'podcast-1');
   assert.equal(persisted.length, 1);
   assert.deepEqual(persisted[0].podcast, { title: 'Example', rssUrl: 'https://example.com/feed.xml' });
 });

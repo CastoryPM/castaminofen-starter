@@ -10,7 +10,7 @@
 
 ## فاز جاری
 
-- Phase RSS.5.2 — RSS Persistence Integration & Sync Preparation
+- Phase RSS.6.1 — Matching Engine
 
 ## پیشرفت کلی
 
@@ -74,7 +74,7 @@
 
 - Lint: passed
 - Build: passed
-- RSS ingestion regression tests: added for persistence boundary and validated through backend build; Node test runner remains limited by the workspace TypeScript runtime
+- RSS ingestion regression tests: added for persistence boundary and matching decisions; backend build passed; direct TypeScript smoke verification confirmed the matching engine behavior
 
 ## وضعیت Tests
 
