@@ -10,7 +10,7 @@
 
 ## فاز جاری
 
-- Phase RSS.5.1 — RSS Ingestion Core Services
+- Phase RSS.6.4 — End-to-End Synchronization Orchestrator
 
 ## پیشرفت کلی
 
@@ -74,7 +74,8 @@
 
 - Lint: passed
 - Build: passed
-- RSS ingestion regression tests: passed
+- RSS ingestion regression tests: added for persistence boundary, matching decisions, and the new idempotent synchronization engine; backend build passed; Prisma schema validation and direct TypeScript verification confirmed the RSS sync behavior
+- End-to-end RSS orchestration now coordinates fetch, parse, normalize, match, persist, and FeedSource state transitions for a single feed without introducing background execution or new business ownership
 
 ## وضعیت Tests
 

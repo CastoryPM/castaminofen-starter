@@ -7,6 +7,7 @@
     "dev:web": "pnpm --filter @castaminofen/web dev",
     "dev:api": "pnpm --filter @castaminofen/api start:dev",
     "build": "pnpm --filter @castaminofen/shared-types build && pnpm --filter @castaminofen/web build && pnpm --filter @castaminofen/api build",
+    "test": "pnpm --filter @castaminofen/api test",
     "lint": "pnpm -r lint",
     "lint:web": "pnpm --filter @castaminofen/web lint",
     "lint:api": "pnpm --filter @castaminofen/api lint",
