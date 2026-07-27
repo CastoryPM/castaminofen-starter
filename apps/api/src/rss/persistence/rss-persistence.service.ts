@@ -23,6 +23,23 @@ export class RssPersistenceService {
               type: 'RSS',
             },
           }),
+        updateFeedSourceState: async (tx: any, feedSourceId: string, data: { syncStatus?: string; lastSyncedAt?: Date | null; lastError?: string | null }) => {
+          const updateData: Record<string, unknown> = {};
+          if (data.syncStatus !== undefined) {
+            updateData.syncStatus = data.syncStatus;
+          }
+          if (data.lastSyncedAt !== undefined) {
+            updateData.lastSyncedAt = data.lastSyncedAt;
+          }
+          if (data.lastError !== undefined) {
+            updateData.lastError = data.lastError;
+          }
+
+          return tx.feedSource.update({
+            where: { id: feedSourceId },
+            data: updateData,
+          });
+        },
         findPodcastByRssUrl: async (tx: any, rssUrl: string) =>
           tx.podcast.findFirst({
             where: { rssUrl },

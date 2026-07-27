@@ -10,7 +10,7 @@
 
 ## فاز جاری
 
-- Phase RSS.6.2 — Idempotent Synchronization Engine
+- Phase RSS.6.3 — FeedSource Sync State & Operational Status
 
 ## پیشرفت کلی
 

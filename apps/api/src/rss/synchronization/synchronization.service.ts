@@ -17,6 +17,7 @@ export interface SynchronizationResult {
 
 interface SynchronizationPersistence {
   ensureFeedSource(tx: unknown, url: string): Promise<{ id: string; url: string }>;
+  updateFeedSourceState(tx: unknown, feedSourceId: string, data: { syncStatus?: string; lastSyncedAt?: Date | null; lastError?: string | null }): Promise<{ id: string; url: string; syncStatus?: string; lastSyncedAt?: Date | null; lastError?: string | null }>;
   findPodcastByRssUrl(tx: unknown, rssUrl: string): Promise<null | { id: string; title: string; description: string | null; website: string | null; artworkUrl: string | null; rssUrl: string }>;
   findEpisodesByPodcastId(tx: unknown, podcastId: string): Promise<Array<{ id: string; title: string; description: string | null; guid: string | null; audioUrl: string | null; duration: number | null; publishedAt: Date | null }>>;
   createPodcast(tx: unknown, feed: NormalizedPodcastInput, feedSourceId: string): Promise<{ id: string; title: string; description: string | null; website: string | null; artworkUrl: string | null; rssUrl: string }>;
@@ -28,6 +29,7 @@ interface SynchronizationPersistence {
 @Injectable()
 export class SynchronizationService {
   private readonly logger = new Logger(SynchronizationService.name);
+  private readonly runningFeedSources = new Set<string>();
 
   constructor(
     private readonly matchingService: MatchingService,
@@ -36,6 +38,7 @@ export class SynchronizationService {
   ) {}
 
   async synchronize(feed: NormalizedFeed): Promise<SynchronizationResult> {
+    const rssUrl = feed.podcast.rssUrl ?? '';
     const result: SynchronizationResult = {
       podcastInserted: 0,
       podcastUpdated: 0,
@@ -48,12 +51,22 @@ export class SynchronizationService {
       episodes: [],
     };
 
-    this.logger.log(`Synchronization started for ${feed.podcast.rssUrl ?? 'unknown feed'}`);
+    this.logger.log(`Synchronization started for ${rssUrl || 'unknown feed'}`);
+
+    if (this.runningFeedSources.has(rssUrl)) {
+      this.logger.warn(`Concurrent synchronization prevented for ${rssUrl || 'unknown feed'}`);
+      return result;
+    }
+
+    const feedSourceKey = rssUrl || 'unknown feed';
+    this.runningFeedSources.add(feedSourceKey);
 
     try {
       await this.prisma.$transaction(async (tx) => {
-        const feedSource = await this.persistence.ensureFeedSource(tx, feed.podcast.rssUrl ?? '');
-        const existingPodcast = await this.persistence.findPodcastByRssUrl(tx, feed.podcast.rssUrl ?? '');
+        const feedSource = await this.persistence.ensureFeedSource(tx, rssUrl);
+        await this.updateFeedSourceOperationalState(tx, feedSource.id, { syncStatus: 'RUNNING', lastError: null });
+
+        const existingPodcast = await this.persistence.findPodcastByRssUrl(tx, rssUrl);
 
         let podcast = existingPodcast;
         if (!existingPodcast) {
@@ -126,16 +139,41 @@ export class SynchronizationService {
             this.logger.log(`Episode ignored: unchanged ${existingEpisode.id}`);
           }
         }
+
+        await this.updateFeedSourceOperationalState(tx, feedSource.id, {
+          syncStatus: 'SUCCESS',
+          lastSyncedAt: new Date(),
+          lastError: null,
+        });
       });
 
-      this.logger.log(`Synchronization completed for ${feed.podcast.rssUrl ?? 'unknown feed'}`);
+      this.logger.log(`Synchronization completed for ${rssUrl || 'unknown feed'}`);
       return result;
     } catch (error) {
       result.failed = true;
       result.noOp = false;
-      this.logger.error(`Synchronization failed: ${error instanceof Error ? error.message : String(error)}`);
+      const message = error instanceof Error ? error.message : String(error);
+      try {
+        await this.prisma.$transaction(async (tx) => {
+          const feedSource = await this.persistence.ensureFeedSource(tx, rssUrl);
+          await this.updateFeedSourceOperationalState(tx, feedSource.id, {
+            syncStatus: 'FAILED',
+            lastError: message,
+          });
+        });
+      } catch (stateError) {
+        this.logger.error(`FeedSource status update failed: ${stateError instanceof Error ? stateError.message : String(stateError)}`);
+      }
+      this.logger.error(`Synchronization failed: ${message}`);
       return result;
+    } finally {
+      this.runningFeedSources.delete(feedSourceKey);
     }
+  }
+
+  private async updateFeedSourceOperationalState(tx: unknown, feedSourceId: string, data: { syncStatus?: string; lastSyncedAt?: Date | null; lastError?: string | null }) {
+    await this.persistence.updateFeedSourceState(tx, feedSourceId, data);
+    this.logger.log(`FeedSource status updated: ${data.syncStatus ?? 'unchanged'}`);
   }
 
   private findMatchingEpisode(existingEpisodes: Array<{ id: string; title: string; description: string | null; guid: string | null; audioUrl: string | null; duration: number | null; publishedAt: Date | null }>, episode: NormalizedEpisodeInput) {

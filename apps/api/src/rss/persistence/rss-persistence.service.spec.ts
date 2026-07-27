@@ -42,6 +42,10 @@ test('RssPersistenceService creates podcast and episode records from normalized 
           created.push({ model: 'feedSource', data: where });
           return { id: 'feed-1' };
         },
+        update: async ({ data }: { data: unknown }) => {
+          created.push({ model: 'feedSourceState', data });
+          return { id: 'feed-1', ...data };
+        },
       },
       podcast: {
         findFirst: async () => null,
