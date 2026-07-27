@@ -10,7 +10,7 @@
 
 ## فاز جاری
 
-- Phase 4.6 — Global UI & UX Polish
+- Phase RSS.2 — Data Model & Persistence Audit
 
 ## پیشرفت کلی
 
