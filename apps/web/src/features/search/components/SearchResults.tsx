@@ -10,7 +10,9 @@ import { useSearch } from '../hooks/useSearch';
 
 export default function SearchResults({ q, page }: { q: string; page: number }) {
   const limit = 12;
-  const query = useSearch({ q: q || undefined, page, limit });
+  const searchParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+  const offline = searchParams.get('offline') === '1' || searchParams.get('offline') === 'true';
+  const query = useSearch({ q: q || undefined, page, limit, offline });
 
   const totalPages = query.data?.pagination.totalPages ?? 1;
 
@@ -23,11 +25,11 @@ export default function SearchResults({ q, page }: { q: string; page: number }) 
     return (
       <EmptyState
         title="نتیجه‌ای یافت نشد"
-        description={`برای «${q || 'جستجوی شما'}» هیچ پادکستی پیدا نشد. از عبارت دیگری استفاده کنید.`}
+        description={offline ? `برای «${q || 'جستجوی شما'}» چیزی در کتابخانهٔ آفلاین یافت نشد.` : `برای «${q || 'جستجوی شما'}» هیچ پادکستی پیدا نشد. از عبارت دیگری استفاده کنید.`}
         action={
-          <Link href="/search" className="inline-flex">
+          <Link href={offline ? '/offline-library' : '/search'} className="inline-flex">
             <Button variant="secondary" size="sm">
-              پاک کردن فیلتر
+              {offline ? 'بازگشت به کتابخانهٔ آفلاین' : 'پاک کردن فیلتر'}
             </Button>
           </Link>
         }
