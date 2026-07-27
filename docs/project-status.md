@@ -10,7 +10,7 @@
 
 ## فاز جاری
 
-- Phase RSS.4 — Prisma Schema & Database Migration
+- Phase RSS.5.1 — RSS Ingestion Core Services
 
 ## پیشرفت کلی
 
@@ -74,6 +74,7 @@
 
 - Lint: passed
 - Build: passed
+- RSS ingestion regression tests: passed
 
 ## وضعیت Tests
 

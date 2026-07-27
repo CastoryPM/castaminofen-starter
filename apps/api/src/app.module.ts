@@ -9,6 +9,7 @@ import { EpisodesModule } from './episodes/episodes.module';
 import { StorageModule } from './storage/storage.module';
 import { LibraryModule } from './library/library.module';
 import { PlaylistsModule } from './playlists/playlists.module';
+import { RssModule } from './rss/rss.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { PlaylistsModule } from './playlists/playlists.module';
     LibraryModule,
     PlaylistsModule,
     StorageModule,
+    RssModule,
   ],
   controllers: [],
   providers: [],

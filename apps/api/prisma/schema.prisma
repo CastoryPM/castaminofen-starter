@@ -84,6 +84,7 @@ model Episode {
 
   @@index([podcastId])
   @@index([guid])
+  @@index([audioUrl])
   @@index([podcastId, publishedAt])
 }
 
