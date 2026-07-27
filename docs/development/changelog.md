@@ -2,6 +2,7 @@
 
 | تاریخ | فاز | تغییرات | وضعیت |
 | --- | --- | --- | --- |
+| 2026-07-27 | Phase Podcast.1 — Podcast Discovery Experience | Added a more complete podcast discovery experience by improving podcast list/detail presentation, surfacing owner and episode metadata, and routing episode play actions through the existing Player runtime while preserving the frozen Podcast/Episode/Player boundaries | انجام شده |
 | 2026-07-27 | Phase RSS.13 — RSS Import Ownership & Playback Integration | Extended the RSS bootstrap path to include feed URLs from rss-feeds.txt, ensured imported podcasts receive a minimal internal owner account, exposed the owner in public podcast responses, and wired episode play actions into the existing Player runtime from podcast and episode views | انجام شده |
 | 2026-07-27 | Phase Player.1 — MVP Playback Runtime | Added Player-owned persistence for the current episode and playback position, restored the last playback snapshot on runtime startup, kept Episode ownership limited to metadata/playable data, and verified web tests/lint/build | انجام شده |
 | 2026-07-27 | Phase RSS.12 — RSS Module Freeze & Documentation Finalization | Finalized the RSS architecture freeze documentation, formalized canonical ownership between Podcast/Episode and FeedSource, documented persistence and sync boundaries, preserved the public API/frontend separation from RSS internals, and verified build/test/Prisma schema integrity | انجام شده |
