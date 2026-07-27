@@ -44,7 +44,6 @@ export function PodcastDetails({ podcast, canManage = false, isDeleting = false,
             />
           ) : null}
           <div className="space-y-2 text-sm text-text-secondary">
-            <p><span className="font-semibold text-text-primary">RSS URL:</span> {podcast.rssUrl}</p>
             <p><span className="font-semibold text-text-primary">وب‌سایت:</span> {podcast.website || '—'}</p>
             <p><span className="font-semibold text-text-primary">مالک:</span> {podcast.ownerId || '—'}</p>
           </div>
@@ -65,7 +64,7 @@ export function PodcastDetails({ podcast, canManage = false, isDeleting = false,
               ))}
             </div>
           ) : (
-            <p className="text-body m-0">هنوز اپیزودی در این پادکست وجود ندارد. پس از همگام‌سازی، اپیزودها در اینجا ظاهر می‌شوند.</p>
+            <p className="text-body m-0">هنوز اپیزودی در این پادکست وجود ندارد.</p>
           )}
         </Card>
       </div>

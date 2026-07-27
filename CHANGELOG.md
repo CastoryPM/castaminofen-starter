@@ -7,6 +7,14 @@ The format is based on Keep a Changelog, and this project adheres to a documenta
 ## [v1.0.0-mvp] - 2026-07-26
 
 ### Added
+- Added regression coverage for the Podcast details read contract, ensuring public responses include podcast and episode domain fields while hiding RSS operational metadata
+
+### RSS Phase
+- Added: Podcast details API regression coverage for Phase RSS.8.3
+- Preserved: RSS operational fields remain hidden from public podcast details responses
+
+
+### Added
 - Initial MVP release documentation package
 - Release notes for the first public MVP milestone
 - GitHub release summary for release publishing

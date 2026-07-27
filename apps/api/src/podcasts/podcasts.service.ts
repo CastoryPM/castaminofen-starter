@@ -5,6 +5,27 @@ import { CreatePodcastDto } from './dto/create-podcast.dto';
 import { UpdatePodcastDto } from './dto/update-podcast.dto';
 import { GetPodcastsQueryDto } from './dto/get-podcasts-query.dto';
 
+const publicPodcastSelect = {
+  id: true,
+  title: true,
+  description: true,
+  website: true,
+  artworkUrl: true,
+  createdAt: true,
+  updatedAt: true,
+} as const;
+
+const publicEpisodeSelect = {
+  id: true,
+  title: true,
+  description: true,
+  audioUrl: true,
+  duration: true,
+  publishedAt: true,
+  createdAt: true,
+  updatedAt: true,
+} as const;
+
 @Injectable()
 export class PodcastsService {
   constructor(private prisma: PrismaService) {}
@@ -36,15 +57,7 @@ export class PodcastsService {
         orderBy,
         skip,
         take: limit,
-        select: {
-          id: true,
-          title: true,
-          description: true,
-          website: true,
-          artworkUrl: true,
-          createdAt: true,
-          updatedAt: true,
-        },
+        select: publicPodcastSelect,
       }),
     ]);
 
@@ -65,25 +78,10 @@ export class PodcastsService {
     const podcast = await this.prisma.podcast.findUnique({
       where: { id },
       select: {
-        id: true,
-        title: true,
-        description: true,
-        website: true,
-        artworkUrl: true,
-        createdAt: true,
-        updatedAt: true,
+        ...publicPodcastSelect,
         episodes: {
           orderBy: { createdAt: 'desc' },
-          select: {
-              id: true,
-              title: true,
-              description: true,
-              audioUrl: true,
-              duration: true,
-              publishedAt: true,
-              createdAt: true,
-              updatedAt: true,
-          },
+          select: publicEpisodeSelect,
         },
       },
     });
@@ -104,16 +102,7 @@ export class PodcastsService {
     return this.prisma.episode.findMany({
       where: { podcastId },
       orderBy: { createdAt: 'desc' },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        audioUrl: true,
-        duration: true,
-        publishedAt: true,
-        createdAt: true,
-        updatedAt: true,
-      },
+      select: publicEpisodeSelect,
     });
   }
 
