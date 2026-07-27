@@ -64,3 +64,16 @@ Phase 3.8
 
 Last Verified:
 2026-07-26
+
+---
+
+## Documentation-only audit phase
+
+Purpose:
+Record architecture decisions and scope for documentation-only phases such as RSS ingestion audit.
+
+Used in:
+Phase RSS.1
+
+Last Verified:
+2026-07-27

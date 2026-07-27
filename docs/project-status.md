@@ -105,4 +105,5 @@
 
 ## فاز پیشنهادی بعدی
 
+- Phase RSS.1 — Content Ingestion Architecture Audit
 - Post-release hardening و آماده‌سازی برای نسخه‌های بعدی
