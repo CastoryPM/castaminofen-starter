@@ -2,6 +2,7 @@
 
 | تاریخ | فاز | تغییرات | وضعیت |
 | --- | --- | --- | --- |
+| 2026-07-27 | Phase RSS.7.1 — Internal Synchronization API | Exposed existing RSS synchronization workflow through a minimal internal API with 4 endpoints: sync single FeedSource, sync all sequentially, get status for all, get status for single; added RssSyncOrchestrator service to coordinate fetch/parse/normalize/sync, added RssSyncController to handle HTTP requests, added comprehensive regression tests, and verified build/test success | انجام شده |
 | 2026-07-27 | Auth Flow Fix | Isolated auth routes from global app shell, ensured Login/Register use icon.png while Header uses logo.png, improved auth error propagation, and verified build/lint | انجام شده |
 | 2026-07-27 | Phase RSS.1 — Content Ingestion Architecture Audit | Documented MVP RSS ingestion architecture, ownership boundaries, feed lifecycle, normalized data model, sync strategy, API/frontend impact, and scoped-in/out decisions without implementing code | انجام شده |
 | 2026-07-27 | Phase RSS.2 — Data Model & Persistence Audit | Audited the persistence layer for RSS, documented business ownership, entity relationships, canonical models, persistence rules, uniqueness and synchronization constraints, future compatibility, risks, and ADRs without implementing code or changing contracts | انجام شده |
