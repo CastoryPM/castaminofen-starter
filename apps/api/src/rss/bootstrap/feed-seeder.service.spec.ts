@@ -1,10 +1,13 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
+const { mkdtempSync, rmSync, writeFileSync } = require('node:fs');
+const { tmpdir } = require('node:os');
+const { join } = require('node:path');
 const {
   bootstrapFeedSources,
   FeedSourceSeederService,
 } = require('./feed-seeder.service');
-const { predefinedFeedSources } = require('./feed-config');
+const { predefinedFeedSources, readRssFeedUrlsFromFile } = require('./feed-config');
 
 const createMockPrisma = () => {
   const createCalls = [];
@@ -101,6 +104,19 @@ test('FeedSource bootstrap and seed behavior', async (t) => {
     await bootstrapFeedSources(prisma, duplicateConfig);
 
     assert.equal(createCalls.length, 1);
+  });
+
+  await t.test('should parse RSS feed URLs from a text file while ignoring comments and blank lines', async () => {
+    const tempDir = mkdtempSync(join(tmpdir(), 'castaminofen-rss-'));
+    const feedFilePath = join(tempDir, 'rss-feeds.txt');
+
+    writeFileSync(feedFilePath, '# comment\n\nhttps://example.com/feed.xml\n  https://example.org/another.xml  \n');
+
+    try {
+      assert.deepEqual(readRssFeedUrlsFromFile(feedFilePath), ['https://example.com/feed.xml', 'https://example.org/another.xml']);
+    } finally {
+      rmSync(tempDir, { recursive: true, force: true });
+    }
   });
 
   await t.test('FeedSourceSeederService calls bootstrap helper during application startup', async () => {

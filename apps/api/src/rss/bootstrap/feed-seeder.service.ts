@@ -1,11 +1,11 @@
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
-import { predefinedFeedSources, PredefinedFeedSourceConfig } from './feed-config';
+import { buildBootstrapFeedSources, PredefinedFeedSourceConfig } from './feed-config';
 
 export async function bootstrapFeedSources(
   prisma: PrismaClient,
-  feedSources: PredefinedFeedSourceConfig[] = predefinedFeedSources,
+  feedSources: PredefinedFeedSourceConfig[] = buildBootstrapFeedSources(),
 ): Promise<void> {
   for (const feedSource of feedSources) {
     const existing = await prisma.feedSource.findUnique({

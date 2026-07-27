@@ -11,6 +11,13 @@ const publicPodcastSelect = {
   description: true,
   website: true,
   artworkUrl: true,
+  ownerId: true,
+  owner: {
+    select: {
+      id: true,
+      name: true,
+    },
+  },
   createdAt: true,
   updatedAt: true,
 } as const;

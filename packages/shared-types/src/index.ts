@@ -23,6 +23,10 @@ export interface Podcast {
   website?: string;
   artworkUrl?: string;
   ownerId?: string;
+  owner?: {
+    id: string;
+    name?: string | null;
+  };
   createdAt: string;
   updatedAt: string;
   episodes?: Episode[];

@@ -4,6 +4,10 @@
 
 Perform a final verification audit after RSS.12 to confirm the RSS module remains compliant with the frozen architecture boundaries and does not introduce drift into the public podcast/episode contracts or the frontend consumption layer.
 
+## Scope Extension
+
+The implementation also completed the MVP follow-up work for RSS import ownership and playback integration without changing the frozen ownership boundaries: imported podcasts now receive a minimal internal owner account, and podcast/episode UI surfaces use the existing Player runtime for playback.
+
 ## Audit Scope
 
 - Domain ownership verification for Podcast, Episode, and FeedSource
