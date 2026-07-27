@@ -31,7 +31,10 @@ export class PodcastsService {
   constructor(private prisma: PrismaService) {}
 
   async create(data: CreatePodcastDto & { ownerId: string }) {
-    return this.prisma.podcast.create({ data });
+    return this.prisma.podcast.create({
+      data,
+      select: publicPodcastSelect,
+    });
   }
 
   async findAll(query: GetPodcastsQueryDto) {
@@ -114,7 +117,11 @@ export class PodcastsService {
     if (podcast.ownerId !== userId) {
       throw new ForbiddenException('Access denied');
     }
-    return this.prisma.podcast.update({ where: { id }, data });
+    return this.prisma.podcast.update({
+      where: { id },
+      data,
+      select: publicPodcastSelect,
+    });
   }
 
   async remove(id: string, userId: string) {
@@ -125,6 +132,9 @@ export class PodcastsService {
     if (podcast.ownerId !== userId) {
       throw new ForbiddenException('Access denied');
     }
-    return this.prisma.podcast.delete({ where: { id } });
+    return this.prisma.podcast.delete({
+      where: { id },
+      select: publicPodcastSelect,
+    });
   }
 }

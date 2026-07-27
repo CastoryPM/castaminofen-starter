@@ -3,20 +3,57 @@ import assert from 'node:assert/strict';
 import { NotFoundException } from '@nestjs/common';
 import { PodcastsService } from './podcasts.service';
 
+function applySelection(value: any, select: any) {
+  if (!select || !value || typeof value !== 'object') {
+    return value;
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((item) => applySelection(item, select));
+  }
+
+  const selected: Record<string, any> = {};
+
+  for (const [key, selection] of Object.entries(select)) {
+    if (selection === true && key in value) {
+      selected[key] = value[key];
+      continue;
+    }
+
+    if (selection && typeof selection === 'object' && 'select' in selection && key in value) {
+      selected[key] = applySelection(value[key], selection.select);
+    }
+  }
+
+  return selected;
+}
+
 function createPrismaStub(podcastResult: any, episodesResult: any[] = []) {
   const calls: Array<{ type: string; args: any }> = [];
 
   const prisma = {
     podcast: {
+      create: async (args: any) => {
+        calls.push({ type: 'podcast.create', args });
+        return applySelection(podcastResult, args.select);
+      },
       findUnique: async (args: any) => {
         calls.push({ type: 'podcast.findUnique', args });
-        return podcastResult;
+        return applySelection(podcastResult, args.select);
+      },
+      update: async (args: any) => {
+        calls.push({ type: 'podcast.update', args });
+        return applySelection(podcastResult, args.select);
+      },
+      delete: async (args: any) => {
+        calls.push({ type: 'podcast.delete', args });
+        return applySelection(podcastResult, args.select);
       },
     },
     episode: {
       findMany: async (args: any) => {
         calls.push({ type: 'episode.findMany', args });
-        return episodesResult;
+        return applySelection(episodesResult, args.select);
       },
     },
   };
@@ -69,6 +106,61 @@ test('PodcastsService.findById returns public podcast details and related episod
   assert.equal(calls[0].args.select.rssUrl, undefined);
 });
 
+test('PodcastsService.create returns public podcast details without RSS infrastructure fields', async () => {
+  const podcast = {
+    id: 'pod-2',
+    title: 'Imported Podcast',
+    description: 'A public podcast description',
+    website: 'https://example.com',
+    artworkUrl: 'https://example.com/artwork.jpg',
+    rssUrl: 'https://example.com/feed.xml',
+    feedSourceId: 'feed-1',
+    ownerId: 'user-1',
+    createdAt: new Date('2024-01-01T00:00:00.000Z'),
+    updatedAt: new Date('2024-01-02T00:00:00.000Z'),
+  };
+
+  const { prisma, calls } = createPrismaStub(podcast);
+  const service = new PodcastsService(prisma as any);
+
+  const result = await service.create({ title: 'Imported Podcast', rssUrl: 'https://example.com/feed.xml', ownerId: 'user-1' } as any);
+
+  assert.equal(result.id, 'pod-2');
+  assert.equal('rssUrl' in result, false);
+  assert.equal('feedSourceId' in result, false);
+  assert.equal('syncStatus' in result, false);
+  assert.equal('lastSyncedAt' in result, false);
+  assert.equal('lastError' in result, false);
+  assert.equal(calls[0].args.select.title, true);
+  assert.equal(calls[0].args.select.rssUrl, undefined);
+});
+
+test('PodcastsService.update returns public podcast details without RSS infrastructure fields', async () => {
+  const podcast = {
+    id: 'pod-3',
+    title: 'Updated Podcast',
+    description: 'Updated description',
+    website: 'https://example.com',
+    artworkUrl: 'https://example.com/artwork.jpg',
+    rssUrl: 'https://example.com/feed.xml',
+    feedSourceId: 'feed-1',
+    ownerId: 'user-1',
+    createdAt: new Date('2024-01-01T00:00:00.000Z'),
+    updatedAt: new Date('2024-01-02T00:00:00.000Z'),
+  };
+
+  const { prisma, calls } = createPrismaStub(podcast);
+  const service = new PodcastsService(prisma as any);
+
+  const result = await service.update('pod-3', 'user-1', { title: 'Updated Podcast' } as any);
+
+  assert.equal(result.id, 'pod-3');
+  assert.equal('rssUrl' in result, false);
+  assert.equal('feedSourceId' in result, false);
+  assert.equal(calls[1].args.select.title, true);
+  assert.equal(calls[1].args.select.rssUrl, undefined);
+});
+
 test('PodcastsService.findById throws NotFoundException for missing podcasts', async () => {
   const { prisma } = createPrismaStub(null);
   const service = new PodcastsService(prisma as any);
@@ -85,7 +177,8 @@ test('PodcastsService.findEpisodesByPodcastId scopes episodes to the requested p
   const result = await service.findEpisodesByPodcastId('pod-1');
 
   assert.equal(result.length, 1);
-  assert.equal(result[0].podcastId, 'pod-1');
+  assert.equal(result[0].title, 'Episode 1');
+  assert.equal(result[0].podcastId, undefined);
   assert.deepEqual(calls[1].args.where, { podcastId: 'pod-1' });
   assert.equal(calls[1].args.select.title, true);
   assert.equal(calls[1].args.select.guid, undefined);
