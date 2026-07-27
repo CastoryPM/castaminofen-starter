@@ -13,6 +13,9 @@ const vazirmatn = Vazirmatn({
 export const metadata: Metadata = {
   title: 'Castaminofen',
   description: 'Castaminofen frontend foundation',
+  icons: {
+    icon: '/branding/favicon.ico',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

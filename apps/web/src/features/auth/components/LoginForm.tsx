@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -42,10 +43,13 @@ export function LoginPageView() {
   return (
     <main className="page-container">
       <section className="card mx-auto w-full max-w-xl space-y-6">
-        <div className="space-y-2">
-          <p className="text-caption">ورود</p>
-          <h1 className="text-heading">به حساب کاربری خود دسترسی پیدا کنید</h1>
-          <p className="text-body m-0">برای ادامه پخش و دسترسی به کتابخانه، اطلاعات حساب خود را وارد کنید.</p>
+        <div className="flex flex-col items-center gap-3 text-center">
+          <Image src="/branding/icon.png" alt="Castaminofen" width={64} height={64} className="h-16 w-16 rounded-2xl" />
+          <div className="space-y-2">
+            <p className="text-caption">ورود</p>
+            <h1 className="text-heading">به حساب کاربری خود دسترسی پیدا کنید</h1>
+            <p className="text-body m-0">برای ادامه پخش و دسترسی به کتابخانه، اطلاعات حساب خود را وارد کنید.</p>
+          </div>
         </div>
         <Form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
           <FormField>
