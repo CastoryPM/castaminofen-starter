@@ -96,6 +96,18 @@ export class RssSyncOrchestrator {
 
       this.logger.error(`Synchronization failed for FeedSource ${feedSourceId}: ${errorMessage}`);
 
+      try {
+        await this.prisma.feedSource.update({
+          where: { id: feedSourceId },
+          data: {
+            syncStatus: 'FAILED',
+            lastError: errorMessage,
+          },
+        });
+      } catch (stateError) {
+        this.logger.warn(`FeedSource status update failed after orchestrator error: ${stateError instanceof Error ? stateError.message : String(stateError)}`);
+      }
+
       return {
         status: 'FAILED',
         feedSourceId,

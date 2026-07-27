@@ -127,6 +127,40 @@ test('RssSyncOrchestrator', async (t) => {
       assert.equal(result.processedPodcasts, 0);
       assert.equal(result.processedEpisodes, 0);
     });
+
+    await t.test('should update FeedSource state when pre-sync fetch fails', async () => {
+      const services = createMockServices();
+      const feedSourceState = {
+        id: 'feed-1',
+        url: 'https://example.com/feed.xml',
+        syncStatus: 'IDLE',
+        lastSyncedAt: null,
+        lastError: null,
+      };
+
+      services.prisma.feedSource.findUnique = async () => ({ ...feedSourceState });
+      services.prisma.feedSource.update = async ({ data }: any) => {
+        Object.assign(feedSourceState, data);
+        return { ...feedSourceState };
+      };
+      services.fetcherService.fetchFeed = async () => {
+        throw new Error('fetch unavailable');
+      };
+
+      const orchestrator = new RssSyncOrchestrator(
+        services.prisma,
+        services.synchronizationService,
+        services.fetcherService,
+        services.parserService,
+        services.normalizerService,
+      );
+
+      const result = await orchestrator.syncFeedSource('feed-1');
+
+      assert.equal(result.status, 'FAILED');
+      assert.equal(feedSourceState.syncStatus, 'FAILED');
+      assert.equal(feedSourceState.lastError, 'fetch unavailable');
+    });
   });
 
   await t.test('syncAllFeedSources', async (t) => {

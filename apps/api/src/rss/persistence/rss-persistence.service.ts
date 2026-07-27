@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../../prisma/prisma.service';
 import { MatchingService } from '../matching/matching.service';
 import { SynchronizationService } from '../synchronization/synchronization.service';
@@ -48,8 +49,10 @@ export class RssPersistenceService {
           tx.episode.findMany({
             where: { podcastId },
           }),
-        createPodcast: async (tx: any, feedData: NormalizedPodcastInput, feedSourceId: string) =>
-          tx.podcast.create({
+        createPodcast: async (tx: any, feedData: NormalizedPodcastInput, feedSourceId: string) => {
+          const owner = await this.ensurePodcastOwner(tx, feedData);
+
+          return tx.podcast.create({
             data: {
               title: feedData.title,
               rssUrl: feedData.rssUrl ?? '',
@@ -57,8 +60,10 @@ export class RssPersistenceService {
               website: feedData.website ?? null,
               artworkUrl: feedData.artworkUrl ?? null,
               feedSourceId,
+              ownerId: owner.id,
             },
-          }),
+          });
+        },
         updatePodcast: async (tx: any, podcastId: string, data: Partial<NormalizedPodcastInput>) =>
           tx.podcast.update({
             where: { id: podcastId },
@@ -98,6 +103,26 @@ export class RssPersistenceService {
     );
 
     return synchronizationService.synchronize(feed);
+  }
+
+  private async ensurePodcastOwner(tx: any, feedData: NormalizedPodcastInput) {
+    const title = feedData.title?.trim() || 'Imported Podcast';
+    const slug = title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '') || 'imported-podcast';
+    const email = `podcast-${slug}@castaminofen.local`;
+    const password = await bcrypt.hash(`castaminofen-${slug}`, 10);
+
+    return tx.user.upsert({
+      where: { email },
+      update: { name: title },
+      create: {
+        email,
+        name: title,
+        password,
+      },
+    });
   }
 
   private assertValidFeed(feed: NormalizedFeed) {

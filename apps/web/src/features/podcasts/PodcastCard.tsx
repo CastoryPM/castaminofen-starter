@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { Card } from '@/components/ui/card';
 import type { Podcast } from '@/lib/types';
@@ -6,6 +7,16 @@ export function PodcastCard({ podcast }: { podcast: Podcast }) {
   return (
     <Card className="flex flex-col gap-4">
       <div className="space-y-2">
+        {podcast.artworkUrl ? (
+          <Image
+            src={podcast.artworkUrl}
+            alt={`${podcast.title} artwork`}
+            width={480}
+            height={270}
+            className="h-36 w-full rounded-xl object-cover"
+            unoptimized
+          />
+        ) : null}
         <h2 className="text-subheading">{podcast.title}</h2>
         <p className="text-body m-0 line-clamp-3">{podcast.description || 'توضیحی برای این پادکست ثبت نشده است.'}</p>
       </div>

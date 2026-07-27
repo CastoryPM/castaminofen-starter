@@ -10,7 +10,7 @@
 
 ## فاز جاری
 
-- Phase RSS.6.4 — End-to-End Synchronization Orchestrator
+- Phase RSS.13 — RSS Import Ownership & Playback Integration
 
 ## پیشرفت کلی
 
@@ -41,6 +41,7 @@
 - Frontend با Next.js و feature-based structure در حال حاضر برای MVP آماده است.
 - App shell، routing، provider، feature folders و UI state structure در حالت سازگار و قابل‌استفاده هستند.
 - Build، lint و تست وب با موفقیت اجرا شده‌اند.
+- Integrating RSS-backed podcast and episode content into the frontend now preserves the public podcast/episode domain experience without exposing internal RSS metadata.
 
 ## وضعیت Player
 
@@ -79,9 +80,15 @@
 
 ## تغییر اخیر — 2026-07-27
 
+- فاز RSS.13 — RSS Import Ownership & Playback Integration تکمیل شد. خط لوله‌ی RSS اکنون برای فایل feed list و import اولیه پادکست‌ها از RSS، ایجاد حساب مالک ساده برای پادکست‌های واردشده، و اتصال پخش اپیزود به Player runtime در UI فعلی تکمیل شد.
+- فاز RSS.12 — RSS Module Freeze & Documentation Finalization تکمیل شد. مستندات نهایی مرزهای معماری RSS، مالکیت دامنه، قواعد persistence، جریان sync، و API/Frontend boundaries را به‌صورت رسمی ثبت کرد و وضعیت freeze را برای توسعه‌دهندگان آینده تثبیت کرد.
+- فاز RSS.11 — Final Architecture Review تکمیل شد. بازبینی نهایی نشان داد معماری RSS با مرزهای MVP هم‌راستاست و APIهای عمومی Podcast دیگر فیلدهای عملیاتی RSS را بازنمی‌نمایند.
+- فاز RSS.9 — Frontend Integration تکمیل شد. نمایش پادکست و اپیزود از داده‌های RSS-backed اکنون از طریق همان contract عمومی Podcast/Episode انجام می‌شود و فیلدهای عملیاتی RSS در UI دیده نمی‌شوند.
+- تست‌های رگرسیونی برای render پادکست و اپیزود اضافه شد تا این رفتار در آینده پایدار بماند.
 - تست‌های یکپارچه‌سازی End-to-End برای خط لوله‌ی RSS اضافه شد (Phase RSS.8). این تست‌ها پوشش حالات موفق، تکرار، به‌روزرسانی اپیزود، فید نامعتبر و حالات جزئی نامعتبر را فراهم می‌کنند.
 - تغییر: APIهای خواندن Podcast به‌روزرسانی شدند تا فیلدهای عملیاتی RSS (مانند `rssUrl` و `feedSourceId`) را در پاسخ‌های عمومی بازنشان ندهند. این اصلاح کوچک تضمین می‌کند که فرانت‌اند تنها مدل‌های دامنه `Podcast` و `Episode` را مشاهده می‌کند و مفاهیم عملیات RSS پنهان می‌مانند. (RSS.8.1)
  - تغییر: APIهای خواندن Episode به‌روزرسانی شدند تا فیلدهای عملیاتی RSS (مانند `guid`) را در پاسخ‌های عمومی بازنشان ندهند. این اصلاح کوچک تضمین می‌کند که فرانت‌اند تنها مدل‌های دامنه `Podcast` و `Episode` را مشاهده می‌کند و مفاهیم عملیات RSS پنهان می‌مانند. (RSS.8.2)
+- تغییر: مسیر خواندن جزئیات Podcast با تست‌های رگرسیونی پوشش داده شد تا پاسخ‌های عمومی فقط شامل فیلدهای دامنه‌ی Podcast و Episode باشند و فیلدهای عملیاتی RSS پنهان بمانند. (RSS.8.3)
 
 
 ## وضعیت Tests

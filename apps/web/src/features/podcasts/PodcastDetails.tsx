@@ -1,7 +1,11 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { usePlayerRuntime } from '@/features/player';
+import { mapEpisodeToPlayableItem } from '@/features/player/adapters/episodeToPlayable';
 import type { Episode, Podcast } from '@/lib/types';
 
 export type PodcastDetailsProps = {
@@ -12,6 +16,12 @@ export type PodcastDetailsProps = {
 };
 
 export function PodcastDetails({ podcast, canManage = false, isDeleting = false, onDelete }: PodcastDetailsProps) {
+  const playerRuntime = usePlayerRuntime();
+
+  const handlePlayEpisode = async (episode: Episode) => {
+    await playerRuntime.loadItem(mapEpisodeToPlayableItem(episode));
+  };
+
   return (
     <section className="card space-y-6">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
@@ -44,9 +54,8 @@ export function PodcastDetails({ podcast, canManage = false, isDeleting = false,
             />
           ) : null}
           <div className="space-y-2 text-sm text-text-secondary">
-            <p><span className="font-semibold text-text-primary">RSS URL:</span> {podcast.rssUrl}</p>
             <p><span className="font-semibold text-text-primary">وب‌سایت:</span> {podcast.website || '—'}</p>
-            <p><span className="font-semibold text-text-primary">مالک:</span> {podcast.ownerId || '—'}</p>
+            <p><span className="font-semibold text-text-primary">حساب:</span> {podcast.owner?.name || podcast.title}</p>
           </div>
         </Card>
 
@@ -58,14 +67,19 @@ export function PodcastDetails({ podcast, canManage = false, isDeleting = false,
                 <div key={episode.id} className="rounded-2xl border border-border/80 bg-surface-primary/70 p-4">
                   <h3 className="text-sm font-semibold text-text-primary">{episode.title}</h3>
                   <p className="mt-2 text-sm text-text-secondary">{episode.description || 'بدون توضیح'}</p>
-                  <Link href={`/episodes/${episode.id}`} className="button button-secondary mt-3 justify-center">
-                    مشاهده اپیزود
-                  </Link>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <Button type="button" variant="secondary" onClick={() => void handlePlayEpisode(episode)}>
+                      پخش
+                    </Button>
+                    <Link href={`/episodes/${episode.id}`} className="button button-secondary justify-center">
+                      مشاهده اپیزود
+                    </Link>
+                  </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-body m-0">هنوز اپیزودی در این پادکست وجود ندارد. پس از همگام‌سازی، اپیزودها در اینجا ظاهر می‌شوند.</p>
+            <p className="text-body m-0">هنوز اپیزودی در این پادکست وجود ندارد.</p>
           )}
         </Card>
       </div>
