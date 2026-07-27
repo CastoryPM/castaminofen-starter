@@ -44,17 +44,20 @@ test('RssPersistenceService creates podcast and episode records from normalized 
         },
       },
       podcast: {
-        findUnique: async () => null,
+        findFirst: async () => null,
         create: async ({ data }: { data: unknown }) => {
           created.push({ model: 'podcast', data });
           return { id: 'podcast-1', ...(data as Record<string, unknown>) };
         },
+        update: async ({ data }: { data: unknown }) => ({ id: 'podcast-1', ...(data as Record<string, unknown>) }),
       },
       episode: {
+        findMany: async () => [],
         create: async ({ data }: { data: unknown }) => {
           created.push({ model: 'episode', data });
           return { id: 'episode-1', ...(data as Record<string, unknown>) };
         },
+        update: async ({ data }: { data: unknown }) => ({ id: 'episode-1', ...(data as Record<string, unknown>) }),
       },
     }),
   };

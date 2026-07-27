@@ -1,6 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { NormalizedFeed } from '../types';
+import { MatchingService } from '../matching/matching.service';
+import { SynchronizationService } from '../synchronization/synchronization.service';
+import { NormalizedFeed, NormalizedEpisodeInput, NormalizedPodcastInput } from '../types';
 
 @Injectable()
 export class RssPersistenceService {
@@ -9,32 +11,51 @@ export class RssPersistenceService {
   async persistNormalizedFeed(feed: NormalizedFeed) {
     this.assertValidFeed(feed);
 
-    return this.prisma.$transaction(async (tx) => {
-      const feedSource = await tx.feedSource.upsert({
-        where: { url: feed.podcast.rssUrl ?? '' },
-        update: {},
-        create: {
-          url: feed.podcast.rssUrl ?? '',
-          type: 'RSS',
-        },
-      });
-
-      const podcast = await tx.podcast.create({
-        data: {
-          title: feed.podcast.title,
-          rssUrl: feed.podcast.rssUrl ?? '',
-          description: feed.podcast.description ?? null,
-          website: feed.podcast.website ?? null,
-          artworkUrl: feed.podcast.artworkUrl ?? null,
-          feedSourceId: feedSource.id,
-        },
-      });
-
-      const episodes = await Promise.all(
-        feed.episodes.map(async (episode) =>
+    const synchronizationService = new SynchronizationService(
+      new MatchingService(),
+      {
+        ensureFeedSource: async (tx: any, url: string) =>
+          tx.feedSource.upsert({
+            where: { url },
+            update: {},
+            create: {
+              url,
+              type: 'RSS',
+            },
+          }),
+        findPodcastByRssUrl: async (tx: any, rssUrl: string) =>
+          tx.podcast.findFirst({
+            where: { rssUrl },
+          }),
+        findEpisodesByPodcastId: async (tx: any, podcastId: string) =>
+          tx.episode.findMany({
+            where: { podcastId },
+          }),
+        createPodcast: async (tx: any, feedData: NormalizedPodcastInput, feedSourceId: string) =>
+          tx.podcast.create({
+            data: {
+              title: feedData.title,
+              rssUrl: feedData.rssUrl ?? '',
+              description: feedData.description ?? null,
+              website: feedData.website ?? null,
+              artworkUrl: feedData.artworkUrl ?? null,
+              feedSourceId,
+            },
+          }),
+        updatePodcast: async (tx: any, podcastId: string, data: Partial<NormalizedPodcastInput>) =>
+          tx.podcast.update({
+            where: { id: podcastId },
+            data: {
+              title: data.title,
+              description: data.description ?? null,
+              website: data.website ?? null,
+              artworkUrl: data.artworkUrl ?? null,
+            },
+          }),
+        createEpisode: async (tx: any, podcastId: string, episode: NormalizedEpisodeInput) =>
           tx.episode.create({
             data: {
-              podcastId: podcast.id,
+              podcastId,
               title: episode.title,
               description: episode.description ?? null,
               guid: episode.guid ?? null,
@@ -43,11 +64,23 @@ export class RssPersistenceService {
               publishedAt: episode.publishedAt ?? null,
             },
           }),
-        ),
-      );
+        updateEpisode: async (tx: any, episodeId: string, data: Partial<NormalizedEpisodeInput>) =>
+          tx.episode.update({
+            where: { id: episodeId },
+            data: {
+              title: data.title,
+              description: data.description ?? null,
+              guid: data.guid ?? null,
+              audioUrl: data.audioUrl ?? null,
+              duration: data.duration ?? null,
+              publishedAt: data.publishedAt ?? null,
+            },
+          }),
+      },
+      this.prisma,
+    );
 
-      return { podcast, episodes };
-    });
+    return synchronizationService.synchronize(feed);
   }
 
   private assertValidFeed(feed: NormalizedFeed) {

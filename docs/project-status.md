@@ -10,7 +10,7 @@
 
 ## فاز جاری
 
-- Phase RSS.6.1 — Matching Engine
+- Phase RSS.6.2 — Idempotent Synchronization Engine
 
 ## پیشرفت کلی
 
@@ -74,7 +74,7 @@
 
 - Lint: passed
 - Build: passed
-- RSS ingestion regression tests: added for persistence boundary and matching decisions; backend build passed; direct TypeScript smoke verification confirmed the matching engine behavior
+- RSS ingestion regression tests: added for persistence boundary, matching decisions, and the new idempotent synchronization engine; backend build passed; Prisma schema validation and direct TypeScript verification confirmed the RSS sync behavior
 
 ## وضعیت Tests
 
