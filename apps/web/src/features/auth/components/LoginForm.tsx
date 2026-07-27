@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useAuthStore } from '@/stores/authStore';
+import { getErrorMessage } from '@/shared/lib/errors';
 
 const loginSchema = z.object({
   email: z.string().trim().min(1, 'ایمیل الزامی است.').email('لطفاً یک ایمیل معتبر وارد کنید.'),
@@ -35,9 +36,9 @@ export function LoginPageView() {
       const profile = await fetchProfile();
       useAuthStore.getState().setUser(profile);
       useAuthStore.getState().setHydrated(true);
-      router.push('/profile');
+      router.replace('/profile');
     } catch (err) {
-      setError((err as Error).message || 'ورود با مشکل مواجه شد. لطفاً دوباره تلاش کنید.');
+      setError(getErrorMessage(err, 'ورود با مشکل مواجه شد. لطفاً دوباره تلاش کنید.'));
     }
   }
 
@@ -75,7 +76,7 @@ export function LoginPageView() {
         <div className="rounded-2xl border border-border bg-surface-secondary/80 p-4 text-center">
           <p className="text-sm text-text-secondary">حساب کاربری ندارید؟</p>
           <Link href="/register" className="mt-3 inline-flex items-center justify-center rounded-2xl border border-border bg-surface-primary px-4 py-2 text-sm font-semibold text-primary transition hover:bg-surface-tertiary">
-            ثبت‌نام
+            ثبت‌نام کنید
           </Link>
         </div>
       </section>
