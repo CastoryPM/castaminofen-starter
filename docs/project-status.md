@@ -10,7 +10,7 @@
 
 ## فاز جاری
 
-- Phase 4.6 — Global UI & UX Polish
+- Phase RSS.5.1 — RSS Ingestion Core Services
 
 ## پیشرفت کلی
 
@@ -74,6 +74,7 @@
 
 - Lint: passed
 - Build: passed
+- RSS ingestion regression tests: passed
 
 ## وضعیت Tests
 
@@ -105,4 +106,5 @@
 
 ## فاز پیشنهادی بعدی
 
+- Phase RSS.1 — Content Ingestion Architecture Audit
 - Post-release hardening و آماده‌سازی برای نسخه‌های بعدی

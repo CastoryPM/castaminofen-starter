@@ -1,5 +1,19 @@
 # Decision Log
 
+## 2026-07-27
+
+### RSS ingestion ownership and MVP scope
+
+- تصمیم: ورود محتوا از RSS به‌عنوان یک لایه‌ی backend-oriented source adapter در نظر گرفته شود.
+- دلیل: نگه‌داشتن Podcast و Episode به‌عنوان هسته‌ی دامنه‌ی محصول و جلوگیری از پیچیده‌سازی معماری برای MVP.
+- وضعیت: تصویب‌شده در قالب Audit مستند
+
+### RSS persistence ownership and canonical models
+
+- تصمیم: Podcast و Episode به‌عنوان تنها مدل‌های کسب‌وکار canonical در لایه‌ی persistence حفظ شوند و FeedSource به‌عنوان زیرساخت عملیاتی باقی بماند.
+- دلیل: حفظ سادگی معماری MVP، جلوگیری از تبدیل منبع‌های خارجی به entity‌های تجاری، و پشتیبانی از آینده بدون تغییر مدل‌های اصلی.
+- وضعیت: تصویب‌شده در قالب Audit مستند
+
 ## 2026-07-16
 
 ### استفاده از pnpm workspaces
