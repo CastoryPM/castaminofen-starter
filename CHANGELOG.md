@@ -31,3 +31,7 @@ The format is based on Keep a Changelog, and this project adheres to a documenta
 - Lint: passed
 - Build: passed
 - Web tests: passed (21 tests)
+
+### RSS Phase
+- Added: End-to-end RSS ingestion validation tests (Phase RSS.8)
+
