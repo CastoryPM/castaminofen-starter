@@ -80,6 +80,7 @@
 
 ## تغییر اخیر — 2026-07-27
 
+- فاز RSS.12 — RSS Module Freeze & Documentation Finalization تکمیل شد. مستندات نهایی مرزهای معماری RSS، مالکیت دامنه، قواعد persistence، جریان sync، و API/Frontend boundaries را به‌صورت رسمی ثبت کرد و وضعیت freeze را برای توسعه‌دهندگان آینده تثبیت کرد.
 - فاز RSS.11 — Final Architecture Review تکمیل شد. بازبینی نهایی نشان داد معماری RSS با مرزهای MVP هم‌راستاست و APIهای عمومی Podcast دیگر فیلدهای عملیاتی RSS را بازنمی‌نمایند.
 - فاز RSS.9 — Frontend Integration تکمیل شد. نمایش پادکست و اپیزود از داده‌های RSS-backed اکنون از طریق همان contract عمومی Podcast/Episode انجام می‌شود و فیلدهای عملیاتی RSS در UI دیده نمی‌شوند.
 - تست‌های رگرسیونی برای render پادکست و اپیزود اضافه شد تا این رفتار در آینده پایدار بماند.
