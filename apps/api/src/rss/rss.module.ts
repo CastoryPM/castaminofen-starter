@@ -11,6 +11,7 @@ import { RssSyncOrchestrator } from './orchestration/rss-sync.orchestrator';
 import { RssSyncController } from './controllers/rss-sync.controller';
 import { FeedSourceController } from './controllers/feed-source.controller';
 import { FeedSourceService } from './services/feed-source.service';
+import { FeedSourceSeederService } from './bootstrap/feed-seeder.service';
 
 @Module({
   imports: [PrismaModule],
@@ -25,6 +26,7 @@ import { FeedSourceService } from './services/feed-source.service';
     SynchronizationService,
     RssSyncOrchestrator,
     FeedSourceService,
+    FeedSourceSeederService,
   ],
   exports: [ImporterService],
 })

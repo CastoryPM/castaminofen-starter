@@ -108,6 +108,19 @@ Last Verified:
 
 ---
 
+## pnpm --filter @castaminofen/api seed
+
+Purpose:
+Execute the API Prisma seed script that bootstraps predefined FeedSource records.
+
+Used in:
+Phase RSS.7.3
+
+Last Verified:
+2026-07-27
+
+---
+
 ## Documentation-only audit phase
 
 Purpose:
