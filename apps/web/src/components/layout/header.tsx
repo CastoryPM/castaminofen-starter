@@ -1,15 +1,19 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Search, Settings } from 'lucide-react';
 
 export function Header() {
   return (
     <header className="app-header sticky top-0 z-30 border-b border-border bg-surface-secondary/95 backdrop-blur-xl">
       <div className="mobile-container mx-auto flex w-full max-w-app items-center justify-between gap-3 px-3 py-4 sm:px-6 lg:px-8">
-        <div className="min-w-0">
-          <p className="text-caption uppercase tracking-[0.24em] text-text-secondary">Castaminofen</p>
-          <h1 className="text-heading">پخش و کشف صوتی</h1>
+        <div className="flex min-w-0 items-center gap-3">
+          <Image src="/branding/logo.png" alt="Castaminofen" width={40} height={40} className="h-10 w-10 rounded-2xl" />
+          <div>
+            <p className="text-caption uppercase tracking-[0.24em] text-text-secondary">Castaminofen</p>
+            <h1 className="text-heading">پخش و کشف صوتی</h1>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <Link href="/search" className="icon-button" aria-label="جستجو در پادکست‌ها">
