@@ -2,6 +2,20 @@
 
 ## RSS Phase Status
 
+- Phase RSS.7.2 — FeedSource Operational API: in progress
+- Implementing lightweight internal operational API for managing FeedSource records
+- Exposing 5 endpoints:
+  - `GET /api/v1/internal/rss/feed-sources` — List all FeedSources
+  - `GET /api/v1/internal/rss/feed-sources/:id` — Get a single FeedSource
+  - `POST /api/v1/internal/rss/feed-sources` — Create a new FeedSource
+  - `PATCH /api/v1/internal/rss/feed-sources/:id` — Update a FeedSource
+  - `DELETE /api/v1/internal/rss/feed-sources/:id` — Delete a FeedSource
+- Created FeedSourceService for CRUD operations with URL uniqueness validation
+- Added CreateFeedSourceDto and UpdateFeedSourceDto for type-safe input validation
+- Added comprehensive regression tests for both service and controller
+- No Prisma schema changes, no migrations, no synchronization logic changes
+- Podcast/Episode ownership remains unchanged
+
 - Phase RSS.7.1 — Internal Synchronization API: completed
 - The synchronization layer is now exposed through a minimal internal API with 4 endpoints:
   - `POST /api/v1/internal/rss/sync/:feedSourceId` — Sync a single FeedSource

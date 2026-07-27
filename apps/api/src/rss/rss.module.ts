@@ -9,10 +9,12 @@ import { RssPersistenceService } from './persistence/rss-persistence.service';
 import { SynchronizationService } from './synchronization/synchronization.service';
 import { RssSyncOrchestrator } from './orchestration/rss-sync.orchestrator';
 import { RssSyncController } from './controllers/rss-sync.controller';
+import { FeedSourceController } from './controllers/feed-source.controller';
+import { FeedSourceService } from './services/feed-source.service';
 
 @Module({
   imports: [PrismaModule],
-  controllers: [RssSyncController],
+  controllers: [RssSyncController, FeedSourceController],
   providers: [
     FetcherService,
     ParserService,
@@ -22,6 +24,7 @@ import { RssSyncController } from './controllers/rss-sync.controller';
     RssPersistenceService,
     SynchronizationService,
     RssSyncOrchestrator,
+    FeedSourceService,
   ],
   exports: [ImporterService],
 })
