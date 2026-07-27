@@ -77,6 +77,13 @@
 - RSS ingestion regression tests: added for persistence boundary, matching decisions, and the new idempotent synchronization engine; backend build passed; Prisma schema validation and direct TypeScript verification confirmed the RSS sync behavior
 - End-to-end RSS orchestration now coordinates fetch, parse, normalize, match, persist, and FeedSource state transitions for a single feed without introducing background execution or new business ownership
 
+## تغییر اخیر — 2026-07-27
+
+- تست‌های یکپارچه‌سازی End-to-End برای خط لوله‌ی RSS اضافه شد (Phase RSS.8). این تست‌ها پوشش حالات موفق، تکرار، به‌روزرسانی اپیزود، فید نامعتبر و حالات جزئی نامعتبر را فراهم می‌کنند.
+- تغییر: APIهای خواندن Podcast به‌روزرسانی شدند تا فیلدهای عملیاتی RSS (مانند `rssUrl` و `feedSourceId`) را در پاسخ‌های عمومی بازنشان ندهند. این اصلاح کوچک تضمین می‌کند که فرانت‌اند تنها مدل‌های دامنه `Podcast` و `Episode` را مشاهده می‌کند و مفاهیم عملیات RSS پنهان می‌مانند. (RSS.8.1)
+ - تغییر: APIهای خواندن Episode به‌روزرسانی شدند تا فیلدهای عملیاتی RSS (مانند `guid`) را در پاسخ‌های عمومی بازنشان ندهند. این اصلاح کوچک تضمین می‌کند که فرانت‌اند تنها مدل‌های دامنه `Podcast` و `Episode` را مشاهده می‌کند و مفاهیم عملیات RSS پنهان می‌مانند. (RSS.8.2)
+
+
 ## وضعیت Tests
 
 - Web tests: passed

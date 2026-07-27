@@ -21,12 +21,35 @@ export class EpisodesService {
   }
 
   async findAll() {
-    return this.prisma.episode.findMany();
+    return this.prisma.episode.findMany({
+      select: {
+        id: true,
+        podcastId: true,
+        title: true,
+        description: true,
+        audioUrl: true,
+        duration: true,
+        publishedAt: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
   }
 
   async findById(id: string) {
     return this.prisma.episode.findUnique({
       where: { id },
+      select: {
+        id: true,
+        podcastId: true,
+        title: true,
+        description: true,
+        audioUrl: true,
+        duration: true,
+        publishedAt: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
   }
 
