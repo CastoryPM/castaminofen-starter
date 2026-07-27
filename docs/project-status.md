@@ -10,7 +10,7 @@
 
 ## فاز جاری
 
-- Phase RSS.5.1 — RSS Ingestion Core Services
+- Phase RSS.5.2 — RSS Persistence Integration & Sync Preparation
 
 ## پیشرفت کلی
 
@@ -74,7 +74,7 @@
 
 - Lint: passed
 - Build: passed
-- RSS ingestion regression tests: passed
+- RSS ingestion regression tests: added for persistence boundary and validated through backend build; Node test runner remains limited by the workspace TypeScript runtime
 
 ## وضعیت Tests
 

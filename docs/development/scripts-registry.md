@@ -67,6 +67,19 @@ Last Verified:
 
 ---
 
+## pnpm --filter @castaminofen/api test
+
+Purpose:
+Execute the API regression tests, including the new RSS persistence boundary spec.
+
+Used in:
+Phase RSS.5.2
+
+Last Verified:
+2026-07-27
+
+---
+
 ## Documentation-only audit phase
 
 Purpose:
