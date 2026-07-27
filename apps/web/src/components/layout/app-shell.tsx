@@ -10,21 +10,22 @@ import { PlayerBar } from '@/features/player/components/PlayerBar';
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const isLanding = pathname === '/';
+  const isAuthRoute = pathname === '/login' || pathname === '/register';
 
   return (
     <div className="app-shell min-h-screen flex flex-col bg-surface-primary text-text-primary">
-      {!isLanding && <Header />}
+      {!isLanding && !isAuthRoute && <Header />}
       <main className="flex-1">
         <MobileContainer>
           <div className="app-shell__content px-1 py-3 sm:px-0 sm:py-4">{children}</div>
         </MobileContainer>
       </main>
-      {!isLanding && (
+      {!isLanding && !isAuthRoute && (
         <div className="px-3 pb-3 pt-2 sm:px-6 lg:px-8">
           <PlayerBar />
         </div>
       )}
-      {!isLanding && <BottomNavigation />}
+      {!isLanding && !isAuthRoute && <BottomNavigation />}
     </div>
   );
 }

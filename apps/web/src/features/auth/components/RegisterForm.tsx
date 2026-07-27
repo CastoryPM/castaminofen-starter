@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -83,6 +84,12 @@ export function RegisterPageView() {
             {form.formState.isSubmitting ? 'در حال ساخت حساب...' : 'ثبت‌نام'}
           </Button>
         </Form>
+        <div className="rounded-2xl border border-border bg-surface-secondary/80 p-4 text-center">
+          <p className="text-sm text-text-secondary">قبلاً حساب دارید؟</p>
+          <Link href="/login" className="mt-3 inline-flex items-center justify-center rounded-2xl border border-border bg-surface-primary px-4 py-2 text-sm font-semibold text-primary transition hover:bg-surface-tertiary">
+            ورود
+          </Link>
+        </div>
       </section>
     </main>
   );

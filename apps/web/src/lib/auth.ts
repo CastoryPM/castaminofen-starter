@@ -35,13 +35,12 @@ function syncAuthStore(user: UserProfile | null, hydrated = true) {
 }
 
 export async function registerUser(input: RegisterInput) {
-  const response = await apiFetch<{ accessToken: string }>('auth/register', {
+  await apiFetch('auth/register', {
     method: 'POST',
     body: input,
   });
 
-  setAccessToken(response.accessToken);
-  return response;
+  return loginUser({ email: input.email, password: input.password });
 }
 
 export async function refreshSession(): Promise<{ accessToken?: string; ok?: boolean }> {
