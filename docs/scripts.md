@@ -32,3 +32,19 @@ pnpm --filter @castaminofen/web test
 Related Phase:
 
 Phase 3.2.4 - Player Test Infrastructure Foundation
+
+## pnpm --filter @castaminofen/api test -- --test-name-pattern='orchestrator|synchronization'
+
+Location:
+apps/api/package.json
+
+Purpose:
+Run the RSS synchronization and orchestrator regression tests for the API package.
+
+Usage:
+
+pnpm --filter @castaminofen/api test -- --test-name-pattern='orchestrator|synchronization'
+
+Related Phase:
+
+Phase RSS.6.4 - End-to-End Synchronization Orchestrator

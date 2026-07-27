@@ -1,6 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
+import { FetcherService } from '../fetcher/fetcher.service';
 import { MatchingService } from '../matching/matching.service';
+import { NormalizerService } from '../normalizer/normalizer.service';
+import { ParserService } from '../parser/parser.service';
 import { NormalizedFeed, NormalizedEpisodeInput, NormalizedPodcastInput } from '../types';
 
 export interface SynchronizationResult {
@@ -35,10 +38,12 @@ export class SynchronizationService {
     private readonly matchingService: MatchingService,
     private readonly persistence: SynchronizationPersistence,
     private readonly prisma: PrismaService,
+    private readonly fetcher?: FetcherService,
+    private readonly parser?: ParserService,
+    private readonly normalizer?: NormalizerService,
   ) {}
 
-  async synchronize(feed: NormalizedFeed): Promise<SynchronizationResult> {
-    const rssUrl = feed.podcast.rssUrl ?? '';
+  async synchronize(input: string | NormalizedFeed): Promise<SynchronizationResult> {
     const result: SynchronizationResult = {
       podcastInserted: 0,
       podcastUpdated: 0,
@@ -51,17 +56,24 @@ export class SynchronizationService {
       episodes: [],
     };
 
-    this.logger.log(`Synchronization started for ${rssUrl || 'unknown feed'}`);
+    const feedSourceUrl = typeof input === 'string' ? input : input.podcast.rssUrl ?? '';
+    const feedSourceKey = feedSourceUrl || 'unknown feed';
 
-    if (this.runningFeedSources.has(rssUrl)) {
-      this.logger.warn(`Concurrent synchronization prevented for ${rssUrl || 'unknown feed'}`);
+    this.logger.log(`Synchronization started for ${feedSourceUrl || 'unknown feed'}`);
+
+    if (this.runningFeedSources.has(feedSourceKey)) {
+      this.logger.warn(`Concurrent synchronization prevented for ${feedSourceUrl || 'unknown feed'}`);
       return result;
     }
 
-    const feedSourceKey = rssUrl || 'unknown feed';
     this.runningFeedSources.add(feedSourceKey);
 
     try {
+      await this.markFeedSourceRunning(feedSourceUrl);
+
+      const feed = typeof input === 'string' ? await this.orchestrateFeed(input) : input;
+      const rssUrl = feed.podcast.rssUrl ?? feedSourceUrl;
+
       await this.prisma.$transaction(async (tx) => {
         const feedSource = await this.persistence.ensureFeedSource(tx, rssUrl);
         await this.updateFeedSourceOperationalState(tx, feedSource.id, { syncStatus: 'RUNNING', lastError: null });
@@ -147,7 +159,7 @@ export class SynchronizationService {
         });
       });
 
-      this.logger.log(`Synchronization completed for ${rssUrl || 'unknown feed'}`);
+      this.logger.log(`Synchronization completed for ${feedSourceUrl || 'unknown feed'}`);
       return result;
     } catch (error) {
       result.failed = true;
@@ -155,7 +167,7 @@ export class SynchronizationService {
       const message = error instanceof Error ? error.message : String(error);
       try {
         await this.prisma.$transaction(async (tx) => {
-          const feedSource = await this.persistence.ensureFeedSource(tx, rssUrl);
+          const feedSource = await this.persistence.ensureFeedSource(tx, feedSourceUrl);
           await this.updateFeedSourceOperationalState(tx, feedSource.id, {
             syncStatus: 'FAILED',
             lastError: message,
@@ -169,6 +181,27 @@ export class SynchronizationService {
     } finally {
       this.runningFeedSources.delete(feedSourceKey);
     }
+  }
+
+  private async markFeedSourceRunning(feedSourceUrl: string) {
+    if (!feedSourceUrl) {
+      return;
+    }
+
+    await this.prisma.$transaction(async (tx) => {
+      const feedSource = await this.persistence.ensureFeedSource(tx, feedSourceUrl);
+      await this.updateFeedSourceOperationalState(tx, feedSource.id, { syncStatus: 'RUNNING', lastError: null });
+    });
+  }
+
+  private async orchestrateFeed(feedUrl: string): Promise<NormalizedFeed> {
+    if (!this.fetcher || !this.parser || !this.normalizer) {
+      throw new Error('RSS orchestration services are not configured');
+    }
+
+    const rawFeed = await this.fetcher.fetchFeed(feedUrl);
+    const parsedFeed = this.parser.parse(rawFeed);
+    return this.normalizer.normalize(parsedFeed, feedUrl);
   }
 
   private async updateFeedSourceOperationalState(tx: unknown, feedSourceId: string, data: { syncStatus?: string; lastSyncedAt?: Date | null; lastError?: string | null }) {

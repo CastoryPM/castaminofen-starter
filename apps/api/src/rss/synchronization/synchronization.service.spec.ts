@@ -220,3 +220,73 @@ test('synchronization prevents concurrent execution for the same feed source', a
   await firstRun;
   assert.equal(persistence.state.syncStatus, 'SUCCESS');
 });
+
+test('orchestrator performs a complete feed synchronization workflow', async () => {
+  const persistence = createPersistenceStub();
+  const prisma = { $transaction: async (fn: (tx: unknown) => Promise<unknown>) => fn({}) };
+  const service = new SynchronizationService(
+    new MatchingService(),
+    persistence as never,
+    prisma as never,
+    { fetchFeed: async () => '<rss><channel><title>Example Podcast</title><description>Demo</description><link>https://example.com</link><item><title>Example Episode</title><guid>guid-1</guid><enclosure url="https://example.com/audio.mp3"/></item></channel></rss>' } as never,
+    { parse: () => ({ podcast: { title: 'Example Podcast', description: 'Demo', link: 'https://example.com' }, episodes: [{ title: 'Example Episode', guid: 'guid-1', audioUrl: 'https://example.com/audio.mp3' }] }) } as never,
+    { normalize: () => ({ podcast: { title: 'Example Podcast', rssUrl: 'https://example.com/feed.xml' }, episodes: [{ title: 'Example Episode', guid: 'guid-1', audioUrl: 'https://example.com/audio.mp3' }] }) } as never,
+  );
+
+  const result = await service.synchronize('https://example.com/feed.xml');
+
+  assert.equal(result.podcastInserted, 1);
+  assert.equal(result.episodeInserted, 1);
+  assert.equal(result.failed, false);
+  assert.equal(persistence.state.syncStatus, 'SUCCESS');
+  assert.equal(persistence.state.lastError, null);
+});
+
+test('orchestrator records feed-not-found failures without corrupting state', async () => {
+  const persistence = createPersistenceStub();
+  const prisma = { $transaction: async (fn: (tx: unknown) => Promise<unknown>) => fn({}) };
+  const service = new SynchronizationService(
+    new MatchingService(),
+    persistence as never,
+    prisma as never,
+    { fetchFeed: async () => { throw new Error('feed not found'); } } as never,
+    { parse: () => ({ podcast: {}, episodes: [] }) } as never,
+    { normalize: () => ({ podcast: { title: 'Example Podcast', rssUrl: 'https://example.com/feed.xml' }, episodes: [] }) } as never,
+  );
+
+  const result = await service.synchronize('https://example.com/feed.xml');
+
+  assert.equal(result.failed, true);
+  assert.equal(persistence.state.syncStatus, 'FAILED');
+  assert.equal(persistence.state.lastError, 'feed not found');
+});
+
+test('orchestrator propagates parser and normalization failures', async () => {
+  const persistence = createPersistenceStub();
+  const prisma = { $transaction: async (fn: (tx: unknown) => Promise<unknown>) => fn({}) };
+  const parserFailureService = new SynchronizationService(
+    new MatchingService(),
+    persistence as never,
+    prisma as never,
+    { fetchFeed: async () => '<rss />' } as never,
+    { parse: () => { throw new Error('invalid XML'); } } as never,
+    { normalize: () => ({ podcast: { title: 'Example Podcast', rssUrl: 'https://example.com/feed.xml' }, episodes: [] }) } as never,
+  );
+
+  const parserFailure = await parserFailureService.synchronize('https://example.com/feed.xml');
+  assert.equal(parserFailure.failed, true);
+  assert.equal(persistence.state.lastError, 'invalid XML');
+
+  const normalizationFailureService = new SynchronizationService(
+    new MatchingService(),
+    persistence as never,
+    prisma as never,
+    { fetchFeed: async () => '<rss />' } as never,
+    { parse: () => ({ podcast: {}, episodes: [] }) } as never,
+    { normalize: () => { throw new Error('normalization failed'); } } as never,
+  );
+
+  const normalizationFailure = await normalizationFailureService.synchronize('https://example.com/feed.xml');
+  assert.equal(normalizationFailure.failed, true);
+  assert.equal(persistence.state.lastError, 'normalization failed');
+});
