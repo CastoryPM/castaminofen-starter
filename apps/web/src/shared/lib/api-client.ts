@@ -10,7 +10,10 @@ export interface ApiFetchOptions extends Omit<RequestInit, 'body' | 'headers'> {
 
 export function buildApiUrl(path: string, query?: Record<string, unknown>) {
   const normalizedPath = path.replace(/^\//, '');
-  const url = new URL(`${getApiBaseUrl()}/${normalizedPath}`);
+  const baseUrl = getApiBaseUrl();
+  const url = baseUrl.startsWith('http')
+    ? new URL(`${baseUrl}/${normalizedPath}`)
+    : new URL(`${baseUrl}/${normalizedPath}`, typeof window !== 'undefined' ? window.location.origin : 'http://localhost');
 
   if (query) {
     Object.entries(query).forEach(([key, value]) => {
