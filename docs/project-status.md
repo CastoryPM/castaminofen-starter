@@ -10,7 +10,7 @@
 
 ## فاز جاری
 
-- Phase RSS.2 — Data Model & Persistence Audit
+- Phase RSS.4 — Prisma Schema & Database Migration
 
 ## پیشرفت کلی
 

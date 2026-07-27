@@ -7,6 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum FeedSourceType {
+  RSS
+}
+
+enum SynchronizationStatus {
+  IDLE
+  RUNNING
+  SUCCESS
+  FAILED
+}
+
 model User {
   id                  String   @id @default(cuid())
   email               String   @unique
@@ -21,19 +32,39 @@ model User {
   listeningHistories  ListeningHistory[]
 }
 
+model FeedSource {
+  id           String                @id @default(cuid())
+  type         FeedSourceType        @default(RSS)
+  url          String                @unique
+  syncStatus   SynchronizationStatus @default(IDLE)
+  lastSyncedAt DateTime?
+  lastError    String?
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+  podcast      Podcast?
+
+  @@index([syncStatus])
+  @@index([lastSyncedAt])
+}
+
 model Podcast {
-  id         String    @id @default(cuid())
-  title      String
-  rssUrl     String    @unique
-  description String?
-  website    String?
-  artworkUrl String?
-  ownerId    String?
-  owner      User?     @relation(fields: [ownerId], references: [id])
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  episodes   Episode[]
+  id            String            @id @default(cuid())
+  title         String
+  rssUrl        String            @unique
+  description   String?
+  website       String?
+  artworkUrl    String?
+  ownerId       String?
+  owner         User?             @relation(fields: [ownerId], references: [id])
+  feedSourceId  String?           @unique
+  feedSource    FeedSource?       @relation(fields: [feedSourceId], references: [id], onDelete: SetNull)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  episodes      Episode[]
   subscriptions UserSubscription[]
+
+  @@index([ownerId])
+  @@index([feedSourceId])
 }
 
 model Episode {
@@ -42,12 +73,18 @@ model Episode {
   podcastId           String
   title               String
   description         String?
+  guid                String?
   audioUrl            String?
+  duration            Int?
   publishedAt         DateTime?
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
   listeningHistories  ListeningHistory[]
   playlistItems       PlaylistItem[]
+
+  @@index([podcastId])
+  @@index([guid])
+  @@index([podcastId, publishedAt])
 }
 
 model Playlist {
