@@ -70,11 +70,38 @@ Last Verified:
 ## pnpm --filter @castaminofen/api test
 
 Purpose:
-Execute the API regression tests, including the new RSS persistence boundary and matching engine specs.
+Execute the API regression tests, including the new RSS persistence boundary, matching engine specs, and synchronization/orchestration coverage.
 
 Used in:
 Phase RSS.5.2
 Phase RSS.6.1
+Phase RSS.6.4
+
+Last Verified:
+2026-07-27
+
+---
+
+## pnpm --filter @castaminofen/api build
+
+Purpose:
+Verify the NestJS backend compiles after RSS synchronization orchestrator changes.
+
+Used in:
+Phase RSS.6.4
+
+Last Verified:
+2026-07-27
+
+---
+
+## pnpm --filter @castaminofen/api exec prisma validate
+
+Purpose:
+Validate the Prisma schema after RSS synchronization-related changes.
+
+Used in:
+Phase RSS.6.4
 
 Last Verified:
 2026-07-27
