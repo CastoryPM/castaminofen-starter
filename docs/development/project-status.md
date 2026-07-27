@@ -32,3 +32,10 @@
 - API regression tests: 47/47 passed (all existing tests continue to pass)
 - No scheduler, queue, worker, or API contract changes were introduced
 - ESLint errors: 5 pre-existing parsing errors in unrelated .spec.ts files (not new)
+
+## Frontend Player Runtime Status
+
+- Phase Player.1 — MVP Playback Runtime: completed
+- Player now restores the last selected episode and playback position from browser storage after refresh.
+- Episode metadata remains the only responsibility of the Episode feature; the Player runtime owns playback lifecycle and persistence.
+- Web test/lint/build verification: passed

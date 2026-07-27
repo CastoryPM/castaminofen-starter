@@ -28,15 +28,65 @@ const createEngineMock = (overrides: Partial<Record<keyof import('./audioEngine'
 };
 
 beforeEach(() => {
+  const storage = new Map<string, string>();
+  const createStorage = () => ({
+    getItem: (key: string) => (storage.has(key) ? storage.get(key) ?? null : null),
+    setItem: (key: string, value: string) => {
+      storage.set(key, value);
+    },
+    removeItem: (key: string) => {
+      storage.delete(key);
+    },
+    clear: () => {
+      storage.clear();
+    },
+  });
+
+  Object.defineProperty(globalThis, 'window', {
+    configurable: true,
+    value: {
+      localStorage: createStorage(),
+      addEventListener: () => {},
+    },
+  });
+
   usePlayerStore.getState().resetPlayer();
   destroyPlayerRuntimeController();
 });
 
 afterEach(() => {
   destroyPlayerRuntimeController();
+  Object.defineProperty(globalThis, 'window', {
+    configurable: true,
+    value: undefined,
+  });
 });
 
 describe('PlayerRuntime controller', () => {
+  test('restores the last player snapshot from storage when the runtime starts', () => {
+    const persistedItem = createItem('persisted');
+    window.localStorage.setItem(
+      'castaminofen-player-state',
+      JSON.stringify({
+        currentItem: persistedItem,
+        playbackStatus: 'paused',
+        duration: 180,
+        currentPosition: 42,
+        error: null,
+      }),
+    );
+
+    const store = usePlayerStore.getState();
+    const controller = createPlayerRuntimeController(store, createEngineMock());
+
+    const state = usePlayerStore.getState();
+    expect(state.currentItem?.id).toBe('persisted');
+    expect(state.currentPosition).toBe(42);
+    expect(state.playbackStatus).toBe('paused');
+
+    controller.destroy();
+  });
+
   test('repeat queue wraps to the first item when advancing from the end of the queue', () => {
     const store = usePlayerStore.getState();
     const items = [createItem('a'), createItem('b'), createItem('c')];
