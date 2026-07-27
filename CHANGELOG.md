@@ -34,4 +34,5 @@ The format is based on Keep a Changelog, and this project adheres to a documenta
 
 ### RSS Phase
 - Added: End-to-end RSS ingestion validation tests (Phase RSS.8)
+ - Fixed: Podcast read APIs to hide RSS operational fields from public responses (RSS.8.1)
 

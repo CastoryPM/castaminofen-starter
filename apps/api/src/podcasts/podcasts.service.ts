@@ -31,7 +31,21 @@ export class PodcastsService {
 
     const [total, data] = await Promise.all([
       this.prisma.podcast.count({ where }),
-      this.prisma.podcast.findMany({ where, orderBy, skip, take: limit }),
+      this.prisma.podcast.findMany({
+        where,
+        orderBy,
+        skip,
+        take: limit,
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          website: true,
+          artworkUrl: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      }),
     ]);
 
     const totalPages = Math.max(1, Math.ceil(total / limit));
@@ -50,7 +64,29 @@ export class PodcastsService {
   async findById(id: string) {
     const podcast = await this.prisma.podcast.findUnique({
       where: { id },
-      include: { episodes: true },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        website: true,
+        artworkUrl: true,
+        createdAt: true,
+        updatedAt: true,
+        episodes: {
+          orderBy: { createdAt: 'desc' },
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            guid: true,
+            audioUrl: true,
+            duration: true,
+            publishedAt: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+      },
     });
 
     if (!podcast) {
@@ -69,6 +105,17 @@ export class PodcastsService {
     return this.prisma.episode.findMany({
       where: { podcastId },
       orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        guid: true,
+        audioUrl: true,
+        duration: true,
+        publishedAt: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
   }
 
