@@ -58,6 +58,7 @@ export class SynchronizationService {
 
     const feedSourceUrl = typeof input === 'string' ? input : input.podcast.rssUrl ?? '';
     const feedSourceKey = feedSourceUrl || 'unknown feed';
+    const startedAt = Date.now();
 
     this.logger.log(`Synchronization started for ${feedSourceUrl || 'unknown feed'}`);
 
@@ -74,81 +75,99 @@ export class SynchronizationService {
       const feed = typeof input === 'string' ? await this.orchestrateFeed(input) : input;
       const rssUrl = feed.podcast.rssUrl ?? feedSourceUrl;
 
+      const existingPodcast = await this.persistence.findPodcastByRssUrl(this.prisma, rssUrl);
+      const existingEpisodes = existingPodcast ? await this.persistence.findEpisodesByPodcastId(this.prisma, existingPodcast.id) : [];
+
+      const podcastChanged = existingPodcast ? this.hasPodcastChanges(existingPodcast, feed.podcast) : true;
+      const podcastAction = existingPodcast ? (podcastChanged ? 'update' : 'none') : 'insert';
+
+      const episodesToPersist: Array<{
+        kind: 'insert' | 'update';
+        episode: NormalizedEpisodeInput;
+        existingEpisode?: { id: string };
+      }> = [];
+
+      if (podcastAction !== 'none') {
+        result.noOp = false;
+      }
+
+      for (const episode of feed.episodes) {
+        if (!this.hasMeaningfulValue(episode.title)) {
+          result.episodeIgnored += 1;
+          this.logger.log('Episode ignored: missing title');
+          continue;
+        }
+
+        const matchingResult = this.matchingService.matchEpisode(
+          episode,
+          existingEpisodes.map((existing) => ({
+            guid: existing.guid,
+            audioUrl: existing.audioUrl,
+            title: existing.title,
+            publishedAt: existing.publishedAt,
+          })),
+        );
+
+        if (matchingResult.kind === 'Ignored') {
+          result.episodeIgnored += 1;
+          this.logger.log('Episode ignored: insufficient identity');
+          continue;
+        }
+
+        const existingEpisode = this.findMatchingEpisode(existingEpisodes, episode);
+        if (!existingEpisode) {
+          episodesToPersist.push({ kind: 'insert', episode });
+          result.noOp = false;
+          this.logger.log(`Episode queued for insert: ${episode.title}`);
+          continue;
+        }
+
+        const episodeChanged = this.hasEpisodeChanges(existingEpisode, episode);
+        if (episodeChanged) {
+          episodesToPersist.push({ kind: 'update', episode, existingEpisode: { id: existingEpisode.id } });
+          result.noOp = false;
+          this.logger.log(`Episode queued for update: ${existingEpisode.id}`);
+        } else {
+          this.logger.log(`Episode ignored: unchanged ${existingEpisode.id}`);
+        }
+      }
+
       await this.prisma.$transaction(async (tx) => {
         const feedSource = await this.persistence.ensureFeedSource(tx, rssUrl);
-        await this.updateFeedSourceOperationalState(tx, feedSource.id, { syncStatus: 'RUNNING', lastError: null });
-
-        const existingPodcast = await this.persistence.findPodcastByRssUrl(tx, rssUrl);
 
         let podcast = existingPodcast;
         if (!existingPodcast) {
-          const createdPodcast = await this.persistence.createPodcast(tx, feed.podcast, feedSource.id);
-          podcast = createdPodcast;
+          podcast = await this.persistence.createPodcast(tx, feed.podcast, feedSource.id);
           result.podcast = podcast;
           result.podcastInserted += 1;
-          result.noOp = false;
           this.logger.log(`Podcast inserted: ${podcast.id}`);
+        } else if (podcastChanged) {
+          podcast = await this.persistence.updatePodcast(tx, existingPodcast.id, this.buildPodcastUpdatePayload(feed.podcast));
+          result.podcast = podcast;
+          result.podcastUpdated += 1;
+          this.logger.log(`Podcast updated: ${existingPodcast.id}`);
         } else {
-          const podcastChanged = this.hasPodcastChanges(existingPodcast, feed.podcast);
-          if (podcastChanged) {
-            podcast = await this.persistence.updatePodcast(tx, existingPodcast.id, this.buildPodcastUpdatePayload(feed.podcast));
-            result.podcast = podcast;
-            result.podcastUpdated += 1;
-            result.noOp = false;
-            this.logger.log(`Podcast updated: ${existingPodcast.id}`);
-          } else {
-            result.podcast = existingPodcast;
-          }
+          result.podcast = existingPodcast;
         }
 
         if (!podcast) {
           throw new Error('Podcast synchronization failed to resolve a podcast entity');
         }
 
-        const existingEpisodes = await this.persistence.findEpisodesByPodcastId(tx, podcast.id);
-        for (const episode of feed.episodes) {
-          if (!this.hasMeaningfulValue(episode.title)) {
-            result.episodeIgnored += 1;
-            this.logger.log('Episode ignored: missing title');
-            continue;
-          }
-
-          const matchingResult = this.matchingService.matchEpisode(
-            episode,
-            existingEpisodes.map((existing) => ({
-              guid: existing.guid,
-              audioUrl: existing.audioUrl,
-              title: existing.title,
-              publishedAt: existing.publishedAt,
-            })),
-          );
-
-          if (matchingResult.kind === 'Ignored') {
-            result.episodeIgnored += 1;
-            this.logger.log('Episode ignored: insufficient identity');
-            continue;
-          }
-
-          const existingEpisode = this.findMatchingEpisode(existingEpisodes, episode);
-
-          if (!existingEpisode) {
-            const createdEpisode = await this.persistence.createEpisode(tx, podcast.id, episode);
+        for (const action of episodesToPersist) {
+          if (action.kind === 'insert') {
+            const createdEpisode = await this.persistence.createEpisode(tx, podcast.id, action.episode);
             result.episodes.push(createdEpisode);
             result.episodeInserted += 1;
-            result.noOp = false;
-            this.logger.log(`Episode inserted: ${episode.title}`);
+            this.logger.log(`Episode inserted: ${action.episode.title}`);
             continue;
           }
 
-          const episodeChanged = this.hasEpisodeChanges(existingEpisode, episode);
-          if (episodeChanged) {
-            const updatedEpisode = await this.persistence.updateEpisode(tx, existingEpisode.id, this.buildEpisodeUpdatePayload(episode));
+          if (action.kind === 'update' && action.existingEpisode) {
+            const updatedEpisode = await this.persistence.updateEpisode(tx, action.existingEpisode.id, this.buildEpisodeUpdatePayload(action.episode));
             result.episodes.push(updatedEpisode);
             result.episodeUpdated += 1;
-            result.noOp = false;
-            this.logger.log(`Episode updated: ${existingEpisode.id}`);
-          } else {
-            this.logger.log(`Episode ignored: unchanged ${existingEpisode.id}`);
+            this.logger.log(`Episode updated: ${action.existingEpisode.id}`);
           }
         }
 
@@ -159,7 +178,15 @@ export class SynchronizationService {
         });
       });
 
-      this.logger.log(`Synchronization completed for ${feedSourceUrl || 'unknown feed'}`);
+      const finishedAt = Date.now();
+      this.logger.log(
+        `Synchronization completed for ${feedSourceUrl || 'unknown feed'}; ` +
+          `duration=${finishedAt - startedAt}ms; ` +
+          `podcastProcessed=${result.podcastInserted + result.podcastUpdated}; ` +
+          `episodesProcessed=${result.episodeInserted + result.episodeUpdated}; ` +
+          `episodesIgnored=${result.episodeIgnored}`,
+      );
+
       return result;
     } catch (error) {
       result.failed = true;
@@ -176,7 +203,7 @@ export class SynchronizationService {
       } catch (stateError) {
         this.logger.error(`FeedSource status update failed: ${stateError instanceof Error ? stateError.message : String(stateError)}`);
       }
-      this.logger.error(`Synchronization failed: ${message}`);
+      this.logger.error(`Synchronization failed for ${feedSourceUrl || 'unknown feed'}: ${message}`);
       return result;
     } finally {
       this.runningFeedSources.delete(feedSourceKey);

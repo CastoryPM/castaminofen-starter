@@ -4,9 +4,17 @@ import { ParsedEpisode, ParsedFeed, ParsedPodcast } from '../types';
 @Injectable()
 export class ParserService {
   parse(xml: string): ParsedFeed {
+    if (!xml || !xml.trim()) {
+      throw new Error('invalid RSS format: empty response');
+    }
+
+    if (!/<rss\b[^>]*>/i.test(xml)) {
+      throw new Error('invalid RSS format: unsupported feed type');
+    }
+
     const channelMatch = xml.match(/<channel\b[^>]*>([\s\S]*?)<\/channel>/i);
     if (!channelMatch) {
-      throw new Error('invalid RSS');
+      throw new Error('invalid RSS format: missing channel');
     }
 
     const channel = channelMatch[1];
