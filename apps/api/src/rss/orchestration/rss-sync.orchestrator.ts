@@ -60,6 +60,8 @@ export class RssSyncOrchestrator {
       throw new NotFoundException(`FeedSource with ID ${feedSourceId} not found`);
     }
 
+    const feedUrl = feedSource.url;
+
     // Check if already running
     if (this.runningSyncs.has(feedSourceId)) {
       throw new ConflictException(`Synchronization already running for FeedSource ${feedSourceId}`);
@@ -68,7 +70,7 @@ export class RssSyncOrchestrator {
     this.runningSyncs.add(feedSourceId);
 
     try {
-      this.logger.log(`Starting synchronization for FeedSource ${feedSourceId}`);
+      this.logger.log(`Starting synchronization for FeedSource ${feedSourceId} url=${feedUrl}`);
 
       // Fetch and normalize the feed
       const rawFeed = await this.fetcherService.fetchFeed(feedSource.url);

@@ -58,6 +58,7 @@ export class SynchronizationService {
 
     const feedSourceUrl = typeof input === 'string' ? input : input.podcast.rssUrl ?? '';
     const feedSourceKey = feedSourceUrl || 'unknown feed';
+    const startedAt = Date.now();
 
     this.logger.log(`Synchronization started for ${feedSourceUrl || 'unknown feed'}`);
 
@@ -74,84 +75,102 @@ export class SynchronizationService {
       const feed = typeof input === 'string' ? await this.orchestrateFeed(input) : input;
       const rssUrl = feed.podcast.rssUrl ?? feedSourceUrl;
 
-      await this.prisma.$transaction(async (tx) => {
-        const feedSource = await this.persistence.ensureFeedSource(tx, rssUrl);
-        await this.updateFeedSourceOperationalState(tx, feedSource.id, { syncStatus: 'RUNNING', lastError: null });
+      const existingPodcast = await this.persistence.findPodcastByRssUrl(this.prisma, rssUrl);
+      const existingEpisodes = existingPodcast ? await this.persistence.findEpisodesByPodcastId(this.prisma, existingPodcast.id) : [];
 
-        const existingPodcast = await this.persistence.findPodcastByRssUrl(tx, rssUrl);
+      const podcastChanged = existingPodcast ? this.hasPodcastChanges(existingPodcast, feed.podcast) : true;
+      const podcastAction = existingPodcast ? (podcastChanged ? 'update' : 'none') : 'insert';
+
+      const episodesToPersist: Array<{
+        kind: 'insert' | 'update';
+        episode: NormalizedEpisodeInput;
+        existingEpisode?: { id: string };
+      }> = [];
+
+      if (podcastAction !== 'none') {
+        result.noOp = false;
+      }
+
+      for (const episode of feed.episodes) {
+        if (!this.hasMeaningfulValue(episode.title)) {
+          result.episodeIgnored += 1;
+          this.logger.log('Episode ignored: missing title');
+          continue;
+        }
+
+        const matchingResult = this.matchingService.matchEpisode(
+          episode,
+          existingEpisodes.map((existing) => ({
+            guid: existing.guid,
+            audioUrl: existing.audioUrl,
+            title: existing.title,
+            publishedAt: existing.publishedAt,
+          })),
+        );
+
+        if (matchingResult.kind === 'Ignored') {
+          result.episodeIgnored += 1;
+          this.logger.log('Episode ignored: insufficient identity');
+          continue;
+        }
+
+        const existingEpisode = this.findMatchingEpisode(existingEpisodes, episode);
+        if (!existingEpisode) {
+          episodesToPersist.push({ kind: 'insert', episode });
+          result.episodeInserted += 1;
+          result.noOp = false;
+          this.logger.log(`Episode queued for insert: ${episode.title}`);
+          continue;
+        }
+
+        const episodeChanged = this.hasEpisodeChanges(existingEpisode, episode);
+        if (episodeChanged) {
+          episodesToPersist.push({ kind: 'update', episode, existingEpisode: { id: existingEpisode.id } });
+          result.episodeUpdated += 1;
+          result.noOp = false;
+          this.logger.log(`Episode queued for update: ${existingEpisode.id}`);
+        } else {
+          this.logger.log(`Episode ignored: unchanged ${existingEpisode.id}`);
+        }
+      }
+
+      const feedSource = await this.prisma.$transaction(async (tx) => {
+        const persistedFeedSource = await this.persistence.ensureFeedSource(tx, rssUrl);
 
         let podcast = existingPodcast;
         if (!existingPodcast) {
-          const createdPodcast = await this.persistence.createPodcast(tx, feed.podcast, feedSource.id);
-          podcast = createdPodcast;
+          podcast = await this.persistence.createPodcast(tx, feed.podcast, persistedFeedSource.id);
           result.podcast = podcast;
           result.podcastInserted += 1;
-          result.noOp = false;
           this.logger.log(`Podcast inserted: ${podcast.id}`);
+        } else if (podcastChanged) {
+          podcast = await this.persistence.updatePodcast(tx, existingPodcast.id, this.buildPodcastUpdatePayload(feed.podcast));
+          result.podcast = podcast;
+          result.podcastUpdated += 1;
+          this.logger.log(`Podcast updated: ${existingPodcast.id}`);
         } else {
-          const podcastChanged = this.hasPodcastChanges(existingPodcast, feed.podcast);
-          if (podcastChanged) {
-            podcast = await this.persistence.updatePodcast(tx, existingPodcast.id, this.buildPodcastUpdatePayload(feed.podcast));
-            result.podcast = podcast;
-            result.podcastUpdated += 1;
-            result.noOp = false;
-            this.logger.log(`Podcast updated: ${existingPodcast.id}`);
-          } else {
-            result.podcast = existingPodcast;
-          }
+          result.podcast = existingPodcast;
         }
 
         if (!podcast) {
           throw new Error('Podcast synchronization failed to resolve a podcast entity');
         }
 
-        const existingEpisodes = await this.persistence.findEpisodesByPodcastId(tx, podcast.id);
-        for (const episode of feed.episodes) {
-          if (!this.hasMeaningfulValue(episode.title)) {
-            result.episodeIgnored += 1;
-            this.logger.log('Episode ignored: missing title');
-            continue;
-          }
+        await this.updateFeedSourceOperationalState(tx, persistedFeedSource.id, {
+          syncStatus: 'RUNNING',
+          lastError: null,
+        });
 
-          const matchingResult = this.matchingService.matchEpisode(
-            episode,
-            existingEpisodes.map((existing) => ({
-              guid: existing.guid,
-              audioUrl: existing.audioUrl,
-              title: existing.title,
-              publishedAt: existing.publishedAt,
-            })),
-          );
+        return persistedFeedSource;
+      });
 
-          if (matchingResult.kind === 'Ignored') {
-            result.episodeIgnored += 1;
-            this.logger.log('Episode ignored: insufficient identity');
-            continue;
-          }
+      if (!feedSource) {
+        throw new Error('FeedSource persistence failed unexpectedly');
+      }
 
-          const existingEpisode = this.findMatchingEpisode(existingEpisodes, episode);
+      result.episodes = await this.persistEpisodesInBatches(feedSource.id, result.podcast?.id ?? '', episodesToPersist);
 
-          if (!existingEpisode) {
-            const createdEpisode = await this.persistence.createEpisode(tx, podcast.id, episode);
-            result.episodes.push(createdEpisode);
-            result.episodeInserted += 1;
-            result.noOp = false;
-            this.logger.log(`Episode inserted: ${episode.title}`);
-            continue;
-          }
-
-          const episodeChanged = this.hasEpisodeChanges(existingEpisode, episode);
-          if (episodeChanged) {
-            const updatedEpisode = await this.persistence.updateEpisode(tx, existingEpisode.id, this.buildEpisodeUpdatePayload(episode));
-            result.episodes.push(updatedEpisode);
-            result.episodeUpdated += 1;
-            result.noOp = false;
-            this.logger.log(`Episode updated: ${existingEpisode.id}`);
-          } else {
-            this.logger.log(`Episode ignored: unchanged ${existingEpisode.id}`);
-          }
-        }
-
+      await this.prisma.$transaction(async (tx) => {
         await this.updateFeedSourceOperationalState(tx, feedSource.id, {
           syncStatus: 'SUCCESS',
           lastSyncedAt: new Date(),
@@ -159,7 +178,15 @@ export class SynchronizationService {
         });
       });
 
-      this.logger.log(`Synchronization completed for ${feedSourceUrl || 'unknown feed'}`);
+      const finishedAt = Date.now();
+      this.logger.log(
+        `Synchronization completed for ${feedSourceUrl || 'unknown feed'}; ` +
+          `duration=${finishedAt - startedAt}ms; ` +
+          `podcastProcessed=${result.podcastInserted + result.podcastUpdated}; ` +
+          `episodesProcessed=${result.episodeInserted + result.episodeUpdated}; ` +
+          `episodesIgnored=${result.episodeIgnored}`,
+      );
+
       return result;
     } catch (error) {
       result.failed = true;
@@ -176,7 +203,7 @@ export class SynchronizationService {
       } catch (stateError) {
         this.logger.error(`FeedSource status update failed: ${stateError instanceof Error ? stateError.message : String(stateError)}`);
       }
-      this.logger.error(`Synchronization failed: ${message}`);
+      this.logger.error(`Synchronization failed for ${feedSourceUrl || 'unknown feed'}: ${message}`);
       return result;
     } finally {
       this.runningFeedSources.delete(feedSourceKey);
@@ -202,6 +229,41 @@ export class SynchronizationService {
     const rawFeed = await this.fetcher.fetchFeed(feedUrl);
     const parsedFeed = this.parser.parse(rawFeed);
     return this.normalizer.normalize(parsedFeed, feedUrl);
+  }
+
+  private async persistEpisodesInBatches(
+    feedSourceId: string,
+    podcastId: string,
+    actions: Array<{ kind: 'insert' | 'update'; episode: NormalizedEpisodeInput; existingEpisode?: { id: string } }>,
+  ): Promise<Array<{ id: string; title: string }>> {
+    const batchSize = Number(process.env.RSS_EPISODE_BATCH_SIZE ?? '50');
+    const persistedEpisodes: Array<{ id: string; title: string }> = [];
+
+    for (let start = 0; start < actions.length; start += batchSize) {
+      const batch = actions.slice(start, start + batchSize);
+      const createdOrUpdated = await this.prisma.$transaction(async (tx) => {
+        const batchResults: Array<{ id: string; title: string }> = [];
+        for (const action of batch) {
+          if (action.kind === 'insert') {
+            const createdEpisode = await this.persistence.createEpisode(tx, podcastId, action.episode);
+            batchResults.push(createdEpisode);
+            this.logger.log(`Episode inserted: ${action.episode.title}`);
+            continue;
+          }
+
+          if (action.kind === 'update' && action.existingEpisode) {
+            const updatedEpisode = await this.persistence.updateEpisode(tx, action.existingEpisode.id, this.buildEpisodeUpdatePayload(action.episode));
+            batchResults.push(updatedEpisode);
+            this.logger.log(`Episode updated: ${action.existingEpisode.id}`);
+          }
+        }
+        return batchResults;
+      });
+
+      persistedEpisodes.push(...createdOrUpdated);
+    }
+
+    return persistedEpisodes;
   }
 
   private async updateFeedSourceOperationalState(tx: unknown, feedSourceId: string, data: { syncStatus?: string; lastSyncedAt?: Date | null; lastError?: string | null }) {
