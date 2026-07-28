@@ -49,6 +49,14 @@ function createPrismaStub(podcastResult: any, episodesResult: any[] = []) {
         calls.push({ type: 'podcast.delete', args });
         return applySelection(podcastResult, args.select);
       },
+      count: async (args: any) => {
+        calls.push({ type: 'podcast.count', args });
+        return 1;
+      },
+      findMany: async (args: any) => {
+        calls.push({ type: 'podcast.findMany', args });
+        return applySelection(Array.isArray(podcastResult) ? podcastResult : [podcastResult], args.select);
+      },
     },
     episode: {
       findMany: async (args: any) => {
@@ -182,4 +190,18 @@ test('PodcastsService.findEpisodesByPodcastId scopes episodes to the requested p
   assert.deepEqual(calls[1].args.where, { podcastId: 'pod-1' });
   assert.equal(calls[1].args.select.title, true);
   assert.equal(calls[1].args.select.guid, undefined);
+});
+
+test('PodcastsService.findAll searches by title and podcast author name', async () => {
+  const { prisma, calls } = createPrismaStub({ id: 'pod-1', title: 'Example Podcast', owner: { name: 'Ada Lovelace' } });
+  const service = new PodcastsService(prisma as any);
+
+  await service.findAll({ search: 'Ada' } as any);
+
+  assert.deepEqual(calls[0].args.where, {
+    OR: [
+      { title: { contains: 'Ada', mode: 'insensitive' } },
+      { owner: { name: { contains: 'Ada', mode: 'insensitive' } } },
+    ],
+  });
 });

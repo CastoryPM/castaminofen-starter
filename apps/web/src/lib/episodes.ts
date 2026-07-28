@@ -8,9 +8,14 @@ export type CreateEpisodeInput = {
   publishedAt?: string;
 };
 
-export async function getEpisodes(): Promise<Episode[]> {
+export type GetEpisodesQuery = {
+  search?: string;
+};
+
+export async function getEpisodes(query: GetEpisodesQuery = {}): Promise<Episode[]> {
   return apiFetch<Episode[]>('episodes', {
     method: 'GET',
+    query,
   });
 }
 

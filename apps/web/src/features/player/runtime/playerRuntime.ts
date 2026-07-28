@@ -103,6 +103,8 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
     });
     persistCurrentPlayerState();
 
+    engine.load(item.audioUrl);
+
     if (startTime > 0) {
       engine.setCurrentTime(startTime);
     }

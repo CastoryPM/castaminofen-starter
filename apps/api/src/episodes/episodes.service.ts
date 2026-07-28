@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { StorageService } from '../storage/storage.service';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { UpdateEpisodeDto } from './dto/update-episode.dto';
+import { GetEpisodesQueryDto } from './dto/get-episodes-query.dto';
 
 @Injectable()
 export class EpisodesService {
@@ -20,8 +21,15 @@ export class EpisodesService {
     return this.prisma.episode.create({ data });
   }
 
-  async findAll() {
+  async findAll(query: GetEpisodesQueryDto = {}) {
+    const where = query.search
+      ? {
+          title: { contains: query.search, mode: 'insensitive' as const },
+        }
+      : undefined;
+
     return this.prisma.episode.findMany({
+      where,
       select: {
         id: true,
         podcastId: true,
@@ -32,7 +40,14 @@ export class EpisodesService {
         publishedAt: true,
         createdAt: true,
         updatedAt: true,
+        podcast: {
+          select: {
+            title: true,
+            artworkUrl: true,
+          },
+        },
       },
+      orderBy: query.search ? { title: 'asc' } : { createdAt: 'desc' },
     });
   }
 

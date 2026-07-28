@@ -1,41 +1,44 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import SearchInput from './components/SearchInput';
-import SearchResults from './components/SearchResults';
-
-type SearchParams = {
-  q: string;
-  page: number;
-};
+import { SearchResultsPanel } from './components/SearchResultsPanel';
 
 export default function SearchPage() {
-  const [params, setParams] = useState<SearchParams | null>(null);
-  const [offline, setOffline] = useState(false);
+  const [query, setQuery] = useState('');
+  const [debouncedQuery, setDebouncedQuery] = useState('');
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const q = searchParams.get('q') ?? '';
-    const page = Number(searchParams.get('page') ?? '1') || 1;
-    const offlineFlag = searchParams.get('offline') === '1' || searchParams.get('offline') === 'true';
-    setOffline(offlineFlag);
-    setParams({ q, page });
-  }, []);
+    const timer = window.setTimeout(() => {
+      setDebouncedQuery(query.trim());
+    }, 300);
+
+    return () => window.clearTimeout(timer);
+  }, [query]);
+
+  const searchSummary = useMemo(() => {
+    const value = debouncedQuery.trim();
+    return value ? `نتایج برای «${value}»` : 'جستجو در پادکست‌ها و اپیزودها';
+  }, [debouncedQuery]);
 
   return (
     <main className="page-container">
       <section className="card space-y-6">
         <div className="space-y-2">
-          <h1 className="text-heading">{offline ? 'جستجوی آفلاین' : 'جستجو'}</h1>
-          <p className="text-body m-0">{offline ? 'جستجو فقط در کتابخانهٔ آفلاین شما انجام می‌شود.' : 'برای کشف پادکست‌های جدید، عنوان، توضیحات یا نام پادکست را وارد کنید.'}</p>
+          <h1 className="text-heading">جستجو</h1>
+          <p className="text-body m-0">به‌سرعت پادکست‌ها و اپیزودهای موجود را در پلتفرم پیدا کنید.</p>
         </div>
 
         <SearchInput
-          defaultQuery={params?.q ?? ''}
-          onNavigate={(newQ) => (window.location.href = `/search?offline=${offline ? '1' : '0'}&q=${encodeURIComponent(newQ)}&page=1`)}
+          defaultQuery={query}
+          onNavigate={(value) => setQuery(value)}
         />
 
-        {params ? <SearchResults q={params.q} page={params.page} /> : null}
+        <div className="rounded-2xl border border-border/80 bg-surface-secondary/70 px-4 py-3 text-sm text-text-secondary">
+          {searchSummary}
+        </div>
+
+        <SearchResultsPanel query={debouncedQuery} />
       </section>
     </main>
   );
