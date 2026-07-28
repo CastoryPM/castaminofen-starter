@@ -2,6 +2,7 @@
 
 | تاریخ | فاز | تغییرات | وضعیت |
 | --- | --- | --- | --- |
+| 2026-07-28 | Phase Library.1 — MVP Stabilization | Resolved the Library TypeScript build blocker in the progress-summary mapper by safely handling nullable numeric inputs without changing runtime behavior or contracts | انجام شده |
 | 2026-07-27 | Phase Podcast.1 — Podcast Discovery Experience | Added a more complete podcast discovery experience by improving podcast list/detail presentation, surfacing owner and episode metadata, and routing episode play actions through the existing Player runtime while preserving the frozen Podcast/Episode/Player boundaries | انجام شده |
 | 2026-07-27 | Phase RSS.13 — RSS Import Ownership & Playback Integration | Extended the RSS bootstrap path to include feed URLs from rss-feeds.txt, ensured imported podcasts receive a minimal internal owner account, exposed the owner in public podcast responses, and wired episode play actions into the existing Player runtime from podcast and episode views | انجام شده |
 | 2026-07-27 | Phase Player.1 — MVP Playback Runtime | Added Player-owned persistence for the current episode and playback position, restored the last playback snapshot on runtime startup, kept Episode ownership limited to metadata/playable data, and verified web tests/lint/build | انجام شده |

@@ -10,7 +10,7 @@
 
 ## فاز جاری
 
-- Phase Podcast.1 — Podcast Discovery Experience
+- Phase Library.1 — MVP Stabilization
 
 ## پیشرفت کلی
 
@@ -74,7 +74,8 @@
 ## وضعیت Build
 
 - Lint: passed
-- Build: passed
+- Library TypeScript validation: resolved
+- Web build: blocked by an unrelated Search page suspense issue during prerender (`useSearchParams()` on `/search`)
 - RSS ingestion regression tests: added for persistence boundary, matching decisions, and the new idempotent synchronization engine; backend build passed; Prisma schema validation and direct TypeScript verification confirmed the RSS sync behavior
 - End-to-end RSS orchestration now coordinates fetch, parse, normalize, match, persist, and FeedSource state transitions for a single feed without introducing background execution or new business ownership
 
