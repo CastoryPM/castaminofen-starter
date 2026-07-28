@@ -19,13 +19,9 @@ export function useSearchResults(query: string) {
         normalized ? getEpisodes({ search: normalized }) : Promise.resolve([] as Episode[]),
       ]);
 
-      const episodes = normalized
-        ? (episodesResponse as Episode[]).filter((episode) => episode.title.toLowerCase().includes(normalized.toLowerCase()))
-        : [];
-
       return {
         podcasts: podcastsResponse,
-        episodes,
+        episodes: normalized ? (episodesResponse as Episode[]) : [],
       } satisfies SearchResultsResponse;
     },
     staleTime: 1000 * 30,

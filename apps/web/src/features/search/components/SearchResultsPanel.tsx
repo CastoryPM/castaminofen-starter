@@ -90,12 +90,17 @@ export function SearchResultsPanel({ query, page }: SearchResultsPanelProps) {
         {episodes.length ? (
           <div className="space-y-3">
             {episodes.map((episode: Episode) => (
-              <Link key={episode.id} href={`/episodes/${episode.id}`} className="flex items-center justify-between rounded-2xl border border-border/80 bg-surface-primary px-4 py-3 transition hover:border-primary/60 hover:bg-surface-secondary">
-                <div>
-                  <h3 className="font-semibold text-text-primary">{episode.title}</h3>
-                  <p className="text-sm text-text-secondary">{episode.podcast?.title ?? 'پادکست'}</p>
+              <Link key={episode.id} href={`/episodes/${episode.id}`} className="flex items-center gap-3 rounded-2xl border border-border/80 bg-surface-primary px-4 py-3 transition hover:border-primary/60 hover:bg-surface-secondary">
+                {episode.podcast?.artworkUrl ? (
+                  <Image src={episode.podcast.artworkUrl} alt={`${episode.title} artwork`} width={56} height={56} className="h-14 w-14 rounded-xl object-cover" unoptimized />
+                ) : null}
+                <div className="flex min-w-0 flex-1 items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <h3 className="truncate font-semibold text-text-primary">{episode.title}</h3>
+                    <p className="truncate text-sm text-text-secondary">{episode.podcast?.title ?? 'پادکست'}</p>
+                  </div>
+                  <span className="shrink-0 text-sm text-primary">مشاهده</span>
                 </div>
-                <span className="text-sm text-primary">مشاهده</span>
               </Link>
             ))}
           </div>
