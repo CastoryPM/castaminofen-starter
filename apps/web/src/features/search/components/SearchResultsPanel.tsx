@@ -11,11 +11,13 @@ import type { Episode, Podcast } from '@/lib/types';
 
 type SearchResultsPanelProps = {
   query: string;
+  page?: number;
 };
 
-export function SearchResultsPanel({ query }: SearchResultsPanelProps) {
+export function SearchResultsPanel({ query, page }: SearchResultsPanelProps) {
   const debouncedQuery = query.trim();
   const result = useSearchResults(debouncedQuery);
+  const pageLabel = typeof page === 'number' && page > 1 ? ` · صفحه ${page}` : '';
 
   if (result.isLoading) {
     return <LoadingState title="در حال جستجو" message="در حال بررسی نتایج برای عبارت موردنظر هستیم…" />;
@@ -51,7 +53,7 @@ export function SearchResultsPanel({ query }: SearchResultsPanelProps) {
       <section className="space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="text-subheading">پادکست‌ها</h2>
-          <span className="text-sm text-text-secondary">{podcasts.length} نتیجه</span>
+          <span className="text-sm text-text-secondary">{podcasts.length} نتیجه{pageLabel}</span>
         </div>
         {podcasts.length ? (
           <div className="grid gap-4 md:grid-cols-2">
@@ -83,7 +85,7 @@ export function SearchResultsPanel({ query }: SearchResultsPanelProps) {
       <section className="space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="text-subheading">اپیزودها</h2>
-          <span className="text-sm text-text-secondary">{episodes.length} نتیجه</span>
+          <span className="text-sm text-text-secondary">{episodes.length} نتیجه{pageLabel}</span>
         </div>
         {episodes.length ? (
           <div className="space-y-3">
