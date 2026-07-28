@@ -1,10 +1,12 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Inject } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { FetcherService } from '../fetcher/fetcher.service';
 import { MatchingService } from '../matching/matching.service';
 import { NormalizerService } from '../normalizer/normalizer.service';
 import { ParserService } from '../parser/parser.service';
 import { NormalizedFeed, NormalizedEpisodeInput, NormalizedPodcastInput } from '../types';
+
+export const SYNCHRONIZATION_PERSISTENCE = Symbol('SYNCHRONIZATION_PERSISTENCE');
 
 export interface SynchronizationResult {
   podcastInserted: number;
@@ -36,7 +38,7 @@ export class SynchronizationService {
 
   constructor(
     private readonly matchingService: MatchingService,
-    private readonly persistence: SynchronizationPersistence,
+    @Inject(SYNCHRONIZATION_PERSISTENCE) private readonly persistence: SynchronizationPersistence,
     private readonly prisma: PrismaService,
     private readonly fetcher?: FetcherService,
     private readonly parser?: ParserService,
