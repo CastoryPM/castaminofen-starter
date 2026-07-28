@@ -53,7 +53,7 @@ export class PodcastsService {
       ? {
           OR: [
             { title: { contains: query.search, mode: 'insensitive' } },
-            { description: { contains: query.search, mode: 'insensitive' } },
+            { owner: { name: { contains: query.search, mode: 'insensitive' } } },
           ],
         }
       : undefined;

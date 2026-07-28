@@ -217,3 +217,16 @@ Before starting a new phase, run a Project Rules Audit and confirm no RED (criti
 ## 15. Project Mission
 
 Every engineering decision should serve: excellent UX, maintainability, scalability, performance, security, developer experience, and long-term growth. The codebase should stay approachable for future contributors and simple enough to evolve without rewrites. **The goal is not to write the most code — it's to build the best software.**
+
+
+## 16. Project Rule — Reporting
+
+Every implementation phase MUST generate a Markdown report file inside `docs/phases/`.
+
+Never write the full report in chat.
+
+The report must follow the project's standard phase report template.
+
+In chat, only provide:
+- A brief completion summary (max 5 lines).
+- The path to the generated report.

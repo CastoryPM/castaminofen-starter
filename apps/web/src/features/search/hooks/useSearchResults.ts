@@ -1,0 +1,33 @@
+import { useQuery } from '@tanstack/react-query';
+import { getEpisodes } from '@/lib/episodes';
+import { type Episode, type PaginatedResponse } from '@/lib/types';
+
+type SearchResultsResponse = {
+  podcasts: PaginatedResponse<any>;
+  episodes: Episode[];
+};
+
+export function useSearchResults(query: string) {
+  const normalized = query.trim();
+
+  return useQuery({
+    queryKey: ['search-results', normalized],
+    queryFn: async () => {
+      const [podcastsResponse, episodesResponse] = await Promise.all([
+        import('@/lib/podcasts').then((m) => m.getPodcasts({ search: normalized || undefined, limit: 6 })),
+        normalized ? getEpisodes({ search: normalized }) : Promise.resolve([] as Episode[]),
+      ]);
+
+      const episodes = normalized
+        ? (episodesResponse as Episode[]).filter((episode) => episode.title.toLowerCase().includes(normalized.toLowerCase()))
+        : [];
+
+      return {
+        podcasts: podcastsResponse,
+        episodes,
+      } satisfies SearchResultsResponse;
+    },
+    enabled: true,
+    staleTime: 1000 * 30,
+  });
+}

@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, UploadedFile, UseInterceptors, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, UploadedFile, UseInterceptors, BadRequestException, Query } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import multer from 'multer';
 import { EpisodesService } from './episodes.service';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { UpdateEpisodeDto } from './dto/update-episode.dto';
+import { GetEpisodesQueryDto } from './dto/get-episodes-query.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { GetUser } from '../common/decorators/get-user.decorator';
 
@@ -47,8 +48,8 @@ export class EpisodesController {
   }
 
   @Get()
-  findAll() {
-    return this.episodesService.findAll();
+  findAll(@Query() query: GetEpisodesQueryDto) {
+    return this.episodesService.findAll(query);
   }
 
   @Get(':id')
