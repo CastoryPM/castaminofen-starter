@@ -117,6 +117,7 @@ export class SynchronizationService {
         const existingEpisode = this.findMatchingEpisode(existingEpisodes, episode);
         if (!existingEpisode) {
           episodesToPersist.push({ kind: 'insert', episode });
+          result.episodeInserted += 1;
           result.noOp = false;
           this.logger.log(`Episode queued for insert: ${episode.title}`);
           continue;
@@ -125,6 +126,7 @@ export class SynchronizationService {
         const episodeChanged = this.hasEpisodeChanges(existingEpisode, episode);
         if (episodeChanged) {
           episodesToPersist.push({ kind: 'update', episode, existingEpisode: { id: existingEpisode.id } });
+          result.episodeUpdated += 1;
           result.noOp = false;
           this.logger.log(`Episode queued for update: ${existingEpisode.id}`);
         } else {
@@ -132,12 +134,12 @@ export class SynchronizationService {
         }
       }
 
-      await this.prisma.$transaction(async (tx) => {
-        const feedSource = await this.persistence.ensureFeedSource(tx, rssUrl);
+      const feedSource = await this.prisma.$transaction(async (tx) => {
+        const persistedFeedSource = await this.persistence.ensureFeedSource(tx, rssUrl);
 
         let podcast = existingPodcast;
         if (!existingPodcast) {
-          podcast = await this.persistence.createPodcast(tx, feed.podcast, feedSource.id);
+          podcast = await this.persistence.createPodcast(tx, feed.podcast, persistedFeedSource.id);
           result.podcast = podcast;
           result.podcastInserted += 1;
           this.logger.log(`Podcast inserted: ${podcast.id}`);
@@ -154,23 +156,21 @@ export class SynchronizationService {
           throw new Error('Podcast synchronization failed to resolve a podcast entity');
         }
 
-        for (const action of episodesToPersist) {
-          if (action.kind === 'insert') {
-            const createdEpisode = await this.persistence.createEpisode(tx, podcast.id, action.episode);
-            result.episodes.push(createdEpisode);
-            result.episodeInserted += 1;
-            this.logger.log(`Episode inserted: ${action.episode.title}`);
-            continue;
-          }
+        await this.updateFeedSourceOperationalState(tx, persistedFeedSource.id, {
+          syncStatus: 'RUNNING',
+          lastError: null,
+        });
 
-          if (action.kind === 'update' && action.existingEpisode) {
-            const updatedEpisode = await this.persistence.updateEpisode(tx, action.existingEpisode.id, this.buildEpisodeUpdatePayload(action.episode));
-            result.episodes.push(updatedEpisode);
-            result.episodeUpdated += 1;
-            this.logger.log(`Episode updated: ${action.existingEpisode.id}`);
-          }
-        }
+        return persistedFeedSource;
+      });
 
+      if (!feedSource) {
+        throw new Error('FeedSource persistence failed unexpectedly');
+      }
+
+      result.episodes = await this.persistEpisodesInBatches(feedSource.id, result.podcast?.id ?? '', episodesToPersist);
+
+      await this.prisma.$transaction(async (tx) => {
         await this.updateFeedSourceOperationalState(tx, feedSource.id, {
           syncStatus: 'SUCCESS',
           lastSyncedAt: new Date(),
@@ -229,6 +229,41 @@ export class SynchronizationService {
     const rawFeed = await this.fetcher.fetchFeed(feedUrl);
     const parsedFeed = this.parser.parse(rawFeed);
     return this.normalizer.normalize(parsedFeed, feedUrl);
+  }
+
+  private async persistEpisodesInBatches(
+    feedSourceId: string,
+    podcastId: string,
+    actions: Array<{ kind: 'insert' | 'update'; episode: NormalizedEpisodeInput; existingEpisode?: { id: string } }>,
+  ): Promise<Array<{ id: string; title: string }>> {
+    const batchSize = Number(process.env.RSS_EPISODE_BATCH_SIZE ?? '50');
+    const persistedEpisodes: Array<{ id: string; title: string }> = [];
+
+    for (let start = 0; start < actions.length; start += batchSize) {
+      const batch = actions.slice(start, start + batchSize);
+      const createdOrUpdated = await this.prisma.$transaction(async (tx) => {
+        const batchResults: Array<{ id: string; title: string }> = [];
+        for (const action of batch) {
+          if (action.kind === 'insert') {
+            const createdEpisode = await this.persistence.createEpisode(tx, podcastId, action.episode);
+            batchResults.push(createdEpisode);
+            this.logger.log(`Episode inserted: ${action.episode.title}`);
+            continue;
+          }
+
+          if (action.kind === 'update' && action.existingEpisode) {
+            const updatedEpisode = await this.persistence.updateEpisode(tx, action.existingEpisode.id, this.buildEpisodeUpdatePayload(action.episode));
+            batchResults.push(updatedEpisode);
+            this.logger.log(`Episode updated: ${action.existingEpisode.id}`);
+          }
+        }
+        return batchResults;
+      });
+
+      persistedEpisodes.push(...createdOrUpdated);
+    }
+
+    return persistedEpisodes;
   }
 
   private async updateFeedSourceOperationalState(tx: unknown, feedSourceId: string, data: { syncStatus?: string; lastSyncedAt?: Date | null; lastError?: string | null }) {
