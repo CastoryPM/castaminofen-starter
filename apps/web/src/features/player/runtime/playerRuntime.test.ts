@@ -341,6 +341,17 @@ describe('PlayerRuntime controller', () => {
     expect(engine.stop).toHaveBeenCalled();
   });
 
+  test('loadItem loads the episode audio source before playback starts', async () => {
+    const store = usePlayerStore.getState();
+    const engine = createEngineMock();
+    const controller = createPlayerRuntimeController(store, engine);
+
+    await controller.loadItem(createItem('audio-load'));
+
+    expect(engine.load).toHaveBeenCalledWith('https://example.com/audio-load.mp3');
+    expect(engine.play).toHaveBeenCalled();
+  });
+
   test('play after pause resumes playback and syncs state', async () => {
     const store = usePlayerStore.getState();
     const engine = createEngineMock({
