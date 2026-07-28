@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Card } from '@/components/ui/card';
 import type { Podcast } from '@/lib/types';
+import { getPodcastOwnerLabel } from './utils/podcastPresentation';
 
 export function PodcastCard({ podcast }: { podcast: Podcast }) {
   return (
@@ -18,6 +19,7 @@ export function PodcastCard({ podcast }: { podcast: Podcast }) {
           />
         ) : null}
         <h2 className="text-subheading">{podcast.title}</h2>
+        <p className="text-sm font-medium text-text-secondary">{getPodcastOwnerLabel(podcast)}</p>
         <p className="text-body m-0 line-clamp-3">{podcast.description || 'توضیحی برای این پادکست ثبت نشده است.'}</p>
       </div>
       <div className="flex flex-wrap gap-2">

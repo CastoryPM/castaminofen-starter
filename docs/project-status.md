@@ -10,7 +10,7 @@
 
 ## فاز جاری
 
-- Phase RSS.13 — RSS Import Ownership & Playback Integration
+- Phase Podcast.1 — Podcast Discovery Experience
 
 ## پیشرفت کلی
 

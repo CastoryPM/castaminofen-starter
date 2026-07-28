@@ -2,6 +2,7 @@ import { createBrowserAudioEngine, type AudioEngine } from './audioEngine';
 import { usePlayerStore } from '../store/playerStore';
 import type { PlayableItem, PlayerPlaybackStatus } from '../types';
 import type { PlayerState } from '../store/playerStore';
+import { clearPersistedPlayerSnapshot, persistCurrentPlayerState, readPersistedPlayerSnapshot } from './playerPersistence';
 
 export type PlayerRuntimeController = {
   loadItem(item: PlayableItem, options?: { startTime?: number }): Promise<void>;
@@ -27,6 +28,22 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
 
   const normalizeTime = (value: number) => (Number.isFinite(value) && value >= 0 ? value : 0);
 
+  const restorePersistedSnapshot = () => {
+    const snapshot = readPersistedPlayerSnapshot();
+
+    if (!snapshot) {
+      return;
+    }
+
+    store.setPlaybackState({
+      currentItem: snapshot.currentItem,
+      playbackStatus: snapshot.playbackStatus,
+      duration: snapshot.duration,
+      currentPosition: snapshot.currentPosition,
+      error: snapshot.error,
+    });
+  };
+
   const syncState = (snapshot?: { playbackStatus: PlayerPlaybackStatus; duration: number; currentPosition: number; error: string | null }) => {
     store.setPlaybackState({
       currentPosition: normalizeTime(snapshot?.currentPosition ?? engine.getCurrentTime()),
@@ -34,6 +51,7 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
       error: snapshot?.error ?? null,
       playbackStatus: snapshot?.playbackStatus ?? 'paused',
     });
+    persistCurrentPlayerState();
   };
 
   const stopPlaybackGracefully = (snapshot?: { playbackStatus: PlayerPlaybackStatus; duration: number; currentPosition: number; error: string | null }) => {
@@ -52,6 +70,7 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
       currentPosition: finalPosition,
       error: snapshot?.error ?? null,
     });
+    persistCurrentPlayerState();
   };
 
   const playItem = async (item: PlayableItem, options?: { startTime?: number }) => {
@@ -70,6 +89,7 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
       });
       engine.stop();
       activeItemId = null;
+      persistCurrentPlayerState();
       return;
     }
 
@@ -81,8 +101,7 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
       currentPosition: startTime,
       error: null,
     });
-
-    engine.load(item.audioUrl);
+    persistCurrentPlayerState();
 
     if (startTime > 0) {
       engine.setCurrentTime(startTime);
@@ -101,6 +120,7 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
         currentPosition: startTime > 0 ? startTime : normalizeTime(engine.getCurrentTime()),
         error: null,
       });
+      persistCurrentPlayerState();
     } catch (error) {
       if (loadToken !== currentLoadToken) return;
       if (activeItemId !== item.id) return;
@@ -112,6 +132,7 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
         currentPosition: normalizeTime(engine.getCurrentTime()),
         error: 'Unable to start playback.',
       });
+      persistCurrentPlayerState();
       throw error;
     }
   };
@@ -166,11 +187,14 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
         currentPosition: normalizeTime(snapshot.currentPosition),
         error: snapshot.error,
       });
+      persistCurrentPlayerState();
       return;
     }
 
     syncState(snapshot);
   });
+
+  restorePersistedSnapshot();
 
   return {
     async loadItem(item, options) {
@@ -191,6 +215,7 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
         engine.stop();
         currentLoadToken += 1;
         activeItemId = null;
+        persistCurrentPlayerState();
         return;
       }
 
@@ -220,6 +245,7 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
           currentPosition: normalizeTime(engine.getCurrentTime()),
           error: null,
         });
+        persistCurrentPlayerState();
       } catch (error) {
         if (token !== currentLoadToken) return;
 
@@ -229,6 +255,7 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
           currentPosition: normalizeTime(engine.getCurrentTime()),
           error: 'Unable to start playback.',
         });
+        persistCurrentPlayerState();
         throw error;
       }
     },
@@ -240,6 +267,7 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
         currentPosition: normalizeTime(engine.getCurrentTime()),
         error: null,
       });
+      persistCurrentPlayerState();
     },
     stop() {
       const currentStore = getStoreState();
@@ -253,6 +281,7 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
         currentPosition: 0,
         error: null,
       });
+      persistCurrentPlayerState();
     },
     setVolume(volume) {
       engine.setVolume(volume);
@@ -277,6 +306,7 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
           error: null,
         });
         engine.stop();
+        clearPersistedPlayerSnapshot();
         return;
       }
 
@@ -298,6 +328,7 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
         error: null,
       });
       engine.stop();
+      clearPersistedPlayerSnapshot();
     },
     async next() {
       await moveToNextQueueItem();
@@ -335,8 +366,10 @@ export function getPlayerRuntimeController(): PlayerRuntimeController {
   if (!sharedPlayerRuntimeController) {
     sharedPlayerRuntimeController = createPlayerRuntimeController(usePlayerStore.getState());
 
-    if (typeof window !== 'undefined' && 'addEventListener' in window) {
-      window.addEventListener('beforeunload', destroyPlayerRuntimeController, { once: true });
+    const browserWindow = (globalThis as typeof globalThis & { window?: Window }).window;
+
+    if (browserWindow && 'addEventListener' in browserWindow) {
+      browserWindow.addEventListener('beforeunload', destroyPlayerRuntimeController, { once: true });
     }
   }
 
