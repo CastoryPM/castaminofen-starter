@@ -30,6 +30,7 @@ export function SubscriptionsSection({ items }: { items: LibrarySubscription[] }
           <LibraryPodcastCard
             key={item.id}
             podcast={item.podcast}
+            subscribedAt={item.subscribedAt}
             isSubscribed
             onSubscribe={() => subscribeMutation.mutate(item.podcast.id)}
             onUnsubscribe={() => unsubscribeMutation.mutate(item.podcast.id)}

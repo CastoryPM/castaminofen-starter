@@ -69,6 +69,9 @@ export function ContinueListeningSection({ items }: { items: LibraryListeningHis
           <LibraryEpisodeRow
             key={item.id}
             episode={item.episode}
+            podcastTitle={item.episode.podcast?.title}
+            positionSeconds={item.positionSeconds}
+            durationSeconds={(item.episode as typeof item.episode & { duration?: number | null }).duration}
             isPlaying={playerState.currentItem?.id === item.episode.id}
             onResume={() => {
               const startTime = Number.isFinite(item.positionSeconds ?? 0) ? Math.max(0, item.positionSeconds ?? 0) : 0;
@@ -80,7 +83,7 @@ export function ContinueListeningSection({ items }: { items: LibraryListeningHis
                   title: item.episode.title,
                   subtitle: item.episode.description,
                   audioUrl: item.episode.audioUrl,
-                  artworkUrl: undefined,
+                  artworkUrl: item.episode.podcast?.artworkUrl,
                   duration: undefined,
                   podcastId: item.episode.podcast?.id,
                   sourceType: 'library',

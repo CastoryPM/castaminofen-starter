@@ -13,7 +13,10 @@ export class LibraryService {
     await this.podcastsService.findById(podcastId);
 
     try {
-      return await this.prisma.userSubscription.create({ data: { userId, podcastId } });
+      return await this.prisma.userSubscription.create({
+        data: { userId, podcastId },
+        include: { podcast: true },
+      });
     } catch (e: any) {
       if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
         throw new ConflictException('Already subscribed');
