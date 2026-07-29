@@ -14,7 +14,7 @@ import { LibraryService } from './library.service';
 import { UpdateListeningHistoryDto } from './dto/update-listening-history.dto';
 
 @UseGuards(JwtAuthGuard)
-@Controller('api/v1/library')
+@Controller('library')
 export class LibraryController {
   constructor(private libraryService: LibraryService) {}
 
