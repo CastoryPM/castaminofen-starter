@@ -10,7 +10,7 @@ export class LibraryService {
   constructor(private prisma: PrismaService, private podcastsService: PodcastsService) {}
 
   async getFavorites(userId: string) {
-    return (this.prisma as any).favoriteEpisode.findMany({
+    return this.prisma.favoriteEpisode.findMany({
       where: { userId },
       include: { episode: { include: { podcast: true } } },
       orderBy: { savedAt: 'desc' },
@@ -25,12 +25,15 @@ export class LibraryService {
     if (!episode) throw new NotFoundException('Episode not found');
 
     try {
-      return await (this.prisma as any).favoriteEpisode.create({
+      return await this.prisma.favoriteEpisode.create({
         data: { userId, episodeId },
         include: { episode: { include: { podcast: true } } },
       });
     } catch (e: any) {
-      if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
+      if (
+        (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') ||
+        e?.code === 'P2002'
+      ) {
         throw new ConflictException('Already saved');
       }
       throw e;
@@ -38,7 +41,7 @@ export class LibraryService {
   }
 
   async removeFavorite(userId: string, episodeId: string) {
-    const existing = await (this.prisma as any).favoriteEpisode.findUnique({
+    const existing = await this.prisma.favoriteEpisode.findUnique({
       where: { userId_episodeId: { userId, episodeId } },
     });
 
@@ -46,7 +49,7 @@ export class LibraryService {
       throw new NotFoundException('Favorite not found');
     }
 
-    return (this.prisma as any).favoriteEpisode.delete({ where: { id: existing.id } });
+    return this.prisma.favoriteEpisode.delete({ where: { id: existing.id } });
   }
 
   async subscribe(userId: string, podcastId: string) {

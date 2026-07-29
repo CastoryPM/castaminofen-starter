@@ -12,7 +12,9 @@ export function FavoriteActionButton({ episodeId }: { episodeId: string }) {
   const [localError, setLocalError] = useState<string | null>(null);
 
   const isSaved = !!favorites?.some((f) => f.episodeId === episodeId);
-  const isLoading = saveMutation.isPending || removeMutation.isPending;
+  const isProcessing = saveMutation.isPending || removeMutation.isPending;
+  const mutationError = saveMutation.error?.message ?? removeMutation.error?.message ?? null;
+  const errorMessage = localError ?? mutationError;
 
   const handleToggle = async () => {
     setLocalError(null);
@@ -28,18 +30,21 @@ export function FavoriteActionButton({ episodeId }: { episodeId: string }) {
   };
 
   return (
-    <div>
+    <div className="space-y-1">
       <Button
+        type="button"
         variant={isSaved ? 'ghost' : 'secondary'}
         onClick={() => void handleToggle()}
         aria-pressed={isSaved}
         aria-label={isSaved ? 'Remove saved episode' : 'Save episode'}
-        disabled={isLoading}
+        aria-busy={isProcessing || undefined}
+        loading={isProcessing}
+        disabled={isProcessing}
         className={isSaved ? 'text-accent' : ''}
       >
         <Heart className={`h-4 w-4 ${isSaved ? 'fill-accent text-accent' : ''}`} aria-hidden="true" />
       </Button>
-      {localError ? <p className="mt-1 text-xs text-destructive">{localError}</p> : null}
+      {errorMessage ? <p className="text-xs text-destructive">{errorMessage}</p> : null}
     </div>
   );
 }
