@@ -8,6 +8,7 @@ import { LibraryErrorState } from './LibraryErrorState';
 import { LibraryLoadingState } from './LibraryLoadingState';
 import { SubscriptionsSection } from './SubscriptionsSection';
 import { LibraryCollectionsSection } from './LibraryCollectionsSection';
+import { getLastActivityLabel, getLibraryGreeting, getListeningStreakFromHistory } from '../utils/library-personalization';
 
 export function LibraryPage() {
   const overviewQuery = useLibraryOverview();
@@ -19,6 +20,18 @@ export function LibraryPage() {
   const continueListening = overviewQuery.data?.continueListening ?? [];
   const collectionSummary = buildLibraryCollectionsSummary({ subscriptions, continueListening });
   const hasAnyContent = subscriptions.length > 0 || continueListening.length > 0;
+  const now = new Date();
+  const greeting = getLibraryGreeting(now);
+  const latestActivityItem = continueListening.slice().sort((left, right) => new Date(right.lastPlayedAt).getTime() - new Date(left.lastPlayedAt).getTime())[0];
+  const lastActivityLabel = getLastActivityLabel(latestActivityItem?.lastPlayedAt, now);
+  const listeningStreak = getListeningStreakFromHistory(continueListening);
+  const greetingSubtitle = now.getHours() < 12
+    ? 'برای شروع روز، یک اپیزود آرام انتخاب کن.'
+    : now.getHours() < 18
+      ? 'برای ادامه‌ی گوش دادن، اینجا جای خوبی برای برگرداندن خودت است.'
+      : now.getHours() < 22
+        ? 'امشب هم می‌توانی به جایی که قطع کردی برگردی.'
+        : 'شب آرامی برای گوش دادن داشته باش.';
 
   if (isLoading) {
     return <LibraryLoadingState />;
@@ -32,13 +45,13 @@ export function LibraryPage() {
     return (
       <div className="space-y-6 sm:space-y-8">
         <section className="rounded-[1.75rem] border border-border/80 bg-surface-secondary/70 p-4 shadow-soft sm:p-6">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div className="space-y-2">
-              <p className="m-0 text-sm font-medium text-accent">کتابخانه‌ی شخصی</p>
-              <h1 className="text-heading">سلام، اینجا خانه‌ی پادکست‌های شماست</h1>
-              <p className="text-body m-0 max-w-2xl">از ادامه پخش گرفته تا اشتراک‌های فعال، همه‌ی چیزهایی که به آن‌ها نیاز دارید در یک تجربه‌ی آرام و منظم کنار هم جمع شده‌اند.</p>
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+            <div className="space-y-3">
+              <p className="m-0 text-sm font-medium text-accent">کتابخانه‌ی شما</p>
+              <h1 className="text-heading">{greeting}</h1>
+              <p className="text-body m-0 max-w-2xl">{greetingSubtitle}</p>
             </div>
-            <div className="flex flex-wrap items-center gap-2 text-sm text-text-secondary">
+            <div className="flex flex-wrap items-center gap-2 text-sm text-text-secondary" role="list" aria-label="خلاصه‌ی کتابخانه">
               <span className="inline-flex items-center rounded-full border border-border bg-surface-primary px-3 py-1.5">در انتظار شروع</span>
             </div>
           </div>
@@ -55,18 +68,32 @@ export function LibraryPage() {
   return (
     <div className="space-y-6 sm:space-y-8">
       <section className="rounded-[1.75rem] border border-border/80 bg-surface-secondary/70 p-4 shadow-soft sm:p-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div className="space-y-2">
-            <p className="m-0 text-sm font-medium text-accent">کتابخانه‌ی شخصی</p>
-            <h1 className="text-heading">سلام، اینجا خانه‌ی پادکست‌های شماست</h1>
-            <p className="text-body m-0 max-w-2xl">از ادامه پخش گرفته تا اشتراک‌های فعال، همه‌ی چیزهایی که به آن‌ها نیاز دارید در یک تجربه‌ی آرام و منظم کنار هم جمع شده‌اند.</p>
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div className="space-y-3">
+            <p className="m-0 text-sm font-medium text-accent">کتابخانه‌ی شما</p>
+            <h1 className="text-heading">{greeting}</h1>
+            <p className="text-body m-0 max-w-2xl">{greetingSubtitle}</p>
           </div>
-          <div className="flex flex-wrap items-center gap-2 text-sm text-text-secondary">
-            {collectionSummary.continueListeningCount > 0 ? (
-              <span className="inline-flex items-center rounded-full border border-border bg-surface-primary px-3 py-1.5">{collectionSummary.continueListeningCount} اپیزود در ادامه پخش</span>
-            ) : null}
-            {collectionSummary.subscriptionsCount > 0 ? (
-              <span className="inline-flex items-center rounded-full border border-border bg-surface-primary px-3 py-1.5">{collectionSummary.subscriptionsCount} اشتراک فعال</span>
+          <div className="flex flex-col gap-3 sm:items-end">
+            <div className="flex flex-wrap items-center gap-2 text-sm text-text-secondary" role="list" aria-label="خلاصه‌ی کتابخانه">
+              {collectionSummary.continueListeningCount > 0 ? (
+                <span className="inline-flex items-center rounded-full border border-border bg-surface-primary px-3 py-1.5">{collectionSummary.continueListeningCount} اپیزود در ادامه پخش</span>
+              ) : null}
+              {collectionSummary.subscriptionsCount > 0 ? (
+                <span className="inline-flex items-center rounded-full border border-border bg-surface-primary px-3 py-1.5">{collectionSummary.subscriptionsCount} اشتراک فعال</span>
+              ) : null}
+              {continueListening.length > 0 ? (
+                <span className="inline-flex items-center rounded-full border border-border bg-surface-primary px-3 py-1.5">{continueListening.length} اپیزود در تاریخچه</span>
+              ) : null}
+              {lastActivityLabel ? (
+                <span className="inline-flex items-center rounded-full border border-border bg-surface-primary px-3 py-1.5">آخرین فعالیت · {lastActivityLabel}</span>
+              ) : null}
+              {listeningStreak ? (
+                <span className="inline-flex items-center rounded-full border border-border bg-surface-primary px-3 py-1.5">استریک · {listeningStreak} روز</span>
+              ) : null}
+            </div>
+            {lastActivityLabel ? (
+              <p className="text-sm text-text-secondary">آخرین بازدید شما در این کتابخانه · {lastActivityLabel}</p>
             ) : null}
           </div>
         </div>
