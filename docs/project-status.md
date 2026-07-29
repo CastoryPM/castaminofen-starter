@@ -1,6 +1,6 @@
 # گزارش وضعیت پروژه — Castaminofen
 
-تاریخ: 2026-07-26
+تاریخ: 2026-07-29
 
 ## وضعیت فعلی
 
@@ -10,7 +10,7 @@
 
 ## فاز جاری
 
-- Phase PODCAST.1 — Podcast Detail Experience MVP
+- Phase FAVORITES.1.2 — Prisma Schema Stabilization
 
 ## پیشرفت کلی
 
@@ -80,6 +80,8 @@
 - End-to-end RSS orchestration now coordinates fetch, parse, normalize, match, persist, and FeedSource state transitions for a single feed without introducing background execution or new business ownership
 
 ## تغییر اخیر — 2026-07-29
+
+- Phase FAVORITES.1.2 — Prisma Schema Stabilization completed. Added inverse relations for `FavoriteEpisode`, regenerated Prisma Client, and verified API/web build and test baseline without changing Favorites UX or Player/Library ownership.
 
 - Phase HISTORY.1 — Listening History MVP تکمیل شد. تجربه‌ی تاریخچه‌ی گوش دادن اکنون از داده‌های موجود `ListeningHistory` استفاده می‌کند، بخش تاریخچه در Library اضافه شد، برچسب‌های زمان نسبی نمایش داده می‌شوند، پخش مجدد از تاریخچه از مسیر Player runtime انجام و مالکیت پخش به همان Player موجود حفظ شد.
 - Phase PODCAST.1 — Podcast Detail Experience MVP تکمیل شد. تجربه‌ی جزئیات پادکست به یک مقصد متمرکز و حرفه‌ای تبدیل شد با hero قوی‌تر، نمایش metadata واضح‌تر، لیست اپیزودهای روان‌تر، stateهای خالی/بارگذاری/خطا، و اتصال به Player/Library فعلی بدون تغییر در روت‌ها، API‌ها یا مرزهای feature.
