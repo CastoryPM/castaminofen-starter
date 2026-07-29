@@ -549,7 +549,7 @@ describe('PlayerRuntime controller', () => {
 
     await expect(controller.play()).rejects.toThrow('Play failed');
     expect(usePlayerStore.getState().playbackStatus).toBe('paused');
-    expect(usePlayerStore.getState().error).toBe('Unable to start playback.');
+    expect(usePlayerStore.getState().error).toBe('Unable to play episode.');
   });
 
   test('multiple rapid next calls only preserve the latest transition', async () => {

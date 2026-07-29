@@ -31,6 +31,24 @@ export function PlayerProgress() {
     setPreviewPosition(clampedPosition);
   };
 
+  const handleSeekKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (disabled) {
+      return;
+    }
+
+    const step = event.shiftKey ? 15 : 5;
+
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      commitPosition(displayedPosition + step);
+    }
+
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      commitPosition(displayedPosition - step);
+    }
+  };
+
   return (
     <div className="flex flex-1 items-center gap-3 rounded-full bg-surface-secondary/70 px-3 py-2">
       <span className="min-w-[2.75rem] text-right text-[11px] font-medium text-text-secondary">{formatTime(displayedPosition)}</span>
@@ -60,7 +78,11 @@ export function PlayerProgress() {
           className="absolute inset-0 h-full w-full cursor-pointer appearance-none bg-transparent opacity-0"
           disabled={disabled}
           aria-label="Playback progress"
+          aria-valuemin={0}
+          aria-valuemax={safeDuration}
+          aria-valuenow={Math.round(displayedPosition)}
           aria-valuetext={`${formatTime(displayedPosition)} of ${formatTime(safeDuration)}`}
+          onKeyDown={handleSeekKeyDown}
         />
       </div>
       <span className="min-w-[2.75rem] text-left text-[11px] font-medium text-text-secondary">{formatTime(safeDuration)}</span>

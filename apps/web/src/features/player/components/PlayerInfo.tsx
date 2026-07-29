@@ -33,7 +33,7 @@ export function PlayerInfo() {
           <p className="truncate text-sm font-semibold text-text-primary">{title}</p>
           <span className="rounded-full border border-accent/20 bg-accent/10 px-2 py-0.5 text-[11px] font-medium text-accent">{statusLabel}</span>
         </div>
-        <p className="mt-1 truncate text-xs text-text-secondary">{subtitle}</p>
+        <p className="mt-1 truncate text-xs text-text-secondary" aria-live="polite">{subtitle}</p>
         <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-text-muted">
           {queueHint ? <span className="rounded-full bg-surface-secondary px-2 py-0.5">{queueHint}</span> : null}
           {currentItem?.podcastId ? <span className="rounded-full bg-surface-secondary px-2 py-0.5">پادکست</span> : null}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ListMusic, Play, Plus, Trash2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PlayerControls } from './PlayerControls';
@@ -9,19 +9,53 @@ import { PlayerProgress } from './PlayerProgress';
 import { PlayerVolume } from './PlayerVolume';
 import { usePlayerRuntime } from '../hooks/usePlayerRuntime';
 import { usePlayerState } from '../hooks/usePlayerState';
-import { getArtworkFallback, getQueueDisplayItems } from '../utils/playerPresentation';
+import { formatTime, getArtworkFallback, getQueueDisplayItems } from '../utils/playerPresentation';
 
 export function PlayerBar() {
   const playerRuntime = usePlayerRuntime();
-  const { currentItem, playbackStatus, error, queue, currentIndex, repeatMode, shuffleEnabled } = usePlayerState();
+  const { currentItem, playbackStatus, error, queue, currentIndex, repeatMode, shuffleEnabled, currentPosition } = usePlayerState();
   const [isQueueOpen, setIsQueueOpen] = useState(false);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   const queueDisplay = useMemo(() => getQueueDisplayItems(queue, currentIndex), [queue, currentIndex]);
   const queueCountLabel = queue.length > 1 ? `${queue.length - (currentIndex >= 0 ? 1 : 0)} مورد دیگر در صف` : 'صف خالی';
+  const resumeHint = currentItem && currentPosition > 0 && ['loading', 'paused'].includes(playbackStatus)
+    ? `ادامه از ${formatTime(currentPosition)}`
+    : null;
+  const canRetry = Boolean(currentItem?.audioUrl) && Boolean(error) && playbackStatus !== 'loading';
+  const queueDialogId = 'player-queue-panel';
+
+  useEffect(() => {
+    if (!isQueueOpen) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsQueueOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    closeButtonRef.current?.focus();
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isQueueOpen]);
+
   const handleQueueAction = () => {
     if (currentItem) {
       playerRuntime.appendToQueue(currentItem);
     }
+  };
+
+  const handleRetryPlayback = async () => {
+    if (!currentItem) {
+      return;
+    }
+
+    await playerRuntime.loadItem(currentItem, { startTime: currentPosition });
   };
 
   return (
@@ -36,7 +70,24 @@ export function PlayerBar() {
             <p className="mt-2 text-xs text-text-secondary">صف انتظار آماده است؛ برای شروع پخش، دکمه Play را بزنید.</p>
           ) : null}
           {playbackStatus === 'loading' ? <p className="mt-2 text-xs text-text-secondary">در حال آماده‌سازی پخش…</p> : null}
-          {error ? <p className="mt-2 text-xs text-accent" role="alert">{error}</p> : null}
+          {resumeHint ? <p className="mt-2 text-xs text-text-secondary">{resumeHint}</p> : null}
+          {error ? (
+            <div className="mt-2 flex flex-wrap items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3 py-2" role="alert">
+              <p className="text-xs text-accent">{error}</p>
+              {canRetry ? (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  className="rounded-full px-3 py-1 text-[11px]"
+                  onClick={() => void handleRetryPlayback()}
+                  aria-label="تلاش مجدد برای پخش"
+                >
+                  تلاش مجدد
+                </Button>
+              ) : null}
+            </div>
+          ) : null}
         </div>
         <div className="flex flex-col gap-3 xl:min-w-[28rem] xl:flex-1">
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -48,8 +99,10 @@ export function PlayerBar() {
                 size="sm"
                 className="flex items-center gap-2 rounded-full border border-border/60 bg-surface-card/70 px-3 py-2 text-xs text-text-secondary focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface-secondary"
                 onClick={() => setIsQueueOpen((open) => !open)}
-                aria-label="باز کردن صف پخش"
-                title="باز کردن صف پخش"
+                aria-label={isQueueOpen ? 'بستن صف پخش' : 'باز کردن صف پخش'}
+                aria-expanded={isQueueOpen}
+                aria-controls={queueDialogId}
+                title={isQueueOpen ? 'بستن صف پخش' : 'باز کردن صف پخش'}
               >
                 <ListMusic size={14} />
                 <span>{queue.length > 0 ? queueCountLabel : 'صف پخش'}</span>
@@ -69,16 +122,17 @@ export function PlayerBar() {
       </div>
 
       {isQueueOpen ? (
-        <div className="mt-4 rounded-[1.25rem] border border-border/70 bg-surface-card/90 p-4 shadow-soft">
+        <div id={queueDialogId} role="dialog" aria-modal="true" aria-labelledby="player-queue-title" className="mt-4 rounded-[1.25rem] border border-border/70 bg-surface-card/90 p-4 shadow-soft">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-sm font-semibold text-text-primary">صف پخش</p>
+              <p id="player-queue-title" className="text-sm font-semibold text-text-primary">صف پخش</p>
               <p className="text-xs text-text-secondary">
                 {queue.length > 0 ? `${queue.length} مورد در صف` : 'هیچ اپیزودی برای پخش بعدی وجود ندارد.'}
               </p>
             </div>
             <Button
               type="button"
+              ref={closeButtonRef}
               variant="ghost"
               size="sm"
               className="rounded-full p-2"

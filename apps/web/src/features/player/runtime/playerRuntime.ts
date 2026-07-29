@@ -154,7 +154,7 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
         playbackStatus: 'paused',
         duration: normalizeTime(engine.getDuration()),
         currentPosition: normalizeTime(engine.getCurrentTime()),
-        error: 'Unable to start playback.',
+        error: 'Unable to play episode.',
       });
       persistCurrentPlayerState();
       throw error;
@@ -280,7 +280,7 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
           playbackStatus: 'paused',
           duration: normalizeTime(engine.getDuration()),
           currentPosition: normalizeTime(engine.getCurrentTime()),
-          error: 'Unable to start playback.',
+          error: 'Unable to play episode.',
         });
         persistCurrentPlayerState();
         throw error;

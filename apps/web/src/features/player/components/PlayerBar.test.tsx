@@ -62,6 +62,8 @@ describe('PlayerBar', () => {
       currentItem: createItem('current', 'Current Episode'),
       playbackStatus: 'playing',
       error: null,
+      currentPosition: 0,
+      duration: 180,
       queue: [createItem('current', 'Current Episode'), createItem('next', 'Next Episode')],
       currentIndex: 0,
       repeatMode: 'off',
@@ -112,5 +114,46 @@ describe('PlayerBar', () => {
     });
 
     expect(mockRuntime.removeFromQueue).toHaveBeenCalledWith('next');
+  });
+
+  it('renders a retry action for playback errors and resumes from the saved position', () => {
+    mockState = {
+      ...mockState,
+      error: 'Unable to play episode.',
+      playbackStatus: 'paused',
+      currentPosition: 42,
+    };
+
+    act(() => {
+      root.render(<PlayerBar />);
+    });
+
+    const retryButton = container.querySelector('button[aria-label="تلاش مجدد برای پخش"]') as HTMLButtonElement | null;
+    expect(retryButton).not.toBeNull();
+
+    act(() => {
+      retryButton?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+
+    expect(mockRuntime.loadItem).toHaveBeenCalledWith(expect.objectContaining({ id: 'current' }), { startTime: 42 });
+  });
+
+  it('closes the queue panel when Escape is pressed', () => {
+    act(() => {
+      root.render(<PlayerBar />);
+    });
+
+    const openButton = container.querySelector('button[aria-label="باز کردن صف پخش"]') as HTMLButtonElement;
+    act(() => {
+      openButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+
+    expect(container.querySelector('[role="dialog"]')).not.toBeNull();
+
+    act(() => {
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    });
+
+    expect(container.querySelector('[role="dialog"]')).toBeNull();
   });
 });

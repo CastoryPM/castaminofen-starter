@@ -38,4 +38,6 @@
 - Phase Player.1 — MVP Playback Runtime: completed
 - Player now restores the last selected episode and playback position from browser storage after refresh.
 - Episode metadata remains the only responsibility of the Episode feature; the Player runtime owns playback lifecycle and persistence.
+- Phase PLAYER.7 — UX & Accessibility Polish: completed
+- The current player experience now includes clearer resume hints, actionable retry flows for playback failures, improved accessibility labels/ARIA values, Escape-based queue dismissal, and stronger state messaging while preserving the existing runtime architecture.
 - Web test/lint/build verification: passed
