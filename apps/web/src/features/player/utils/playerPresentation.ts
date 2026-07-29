@@ -1,5 +1,14 @@
 import type { PlayableItem, PlayerPlaybackStatus, PlayerRepeatMode } from '../types';
 
+export interface QueueDisplayItem extends PlayableItem {
+  position: number;
+}
+
+export interface QueueDisplayState {
+  currentItem: QueueDisplayItem | null;
+  upNext: QueueDisplayItem[];
+}
+
 export function formatTime(seconds: number) {
   if (!Number.isFinite(seconds) || seconds <= 0) {
     return '00:00';
@@ -84,4 +93,18 @@ export function getArtworkFallback(item: Pick<PlayableItem, 'title' | 'podcastId
   }
 
   return initials[0] ?? 'EP';
+}
+
+export function getQueueDisplayItems(queue: PlayableItem[], currentIndex: number): QueueDisplayState {
+  if (!queue.length) {
+    return { currentItem: null, upNext: [] };
+  }
+
+  const safeIndex = Math.max(0, Math.min(currentIndex, queue.length - 1));
+  const currentItem = queue[safeIndex] ? { ...queue[safeIndex], position: safeIndex + 1 } : null;
+  const upNext = queue
+    .slice(safeIndex + 1)
+    .map((item, index) => ({ ...item, position: safeIndex + index + 2 }));
+
+  return { currentItem, upNext };
 }
