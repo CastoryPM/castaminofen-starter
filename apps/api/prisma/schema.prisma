@@ -153,3 +153,17 @@ model ListeningHistory {
   @@unique([userId, episodeId])
   @@index([userId, lastPlayedAt])
 }
+
+model FavoriteEpisode {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  episode   Episode  @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+  episodeId String
+  savedAt   DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@unique([userId, episodeId])
+  @@index([userId, savedAt])
+}

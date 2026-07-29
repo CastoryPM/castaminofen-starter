@@ -9,6 +9,7 @@ import { LibraryHistorySection } from './LibraryHistorySection';
 import { LibraryLoadingState } from './LibraryLoadingState';
 import { SubscriptionsSection } from './SubscriptionsSection';
 import { LibraryCollectionsSection } from './LibraryCollectionsSection';
+import { LibraryFavoritesSection } from './LibraryFavoritesSection';
 import { getLastActivityLabel, getLibraryGreeting, getListeningStreakFromHistory } from '../utils/library-personalization';
 
 export function LibraryPage() {
@@ -113,6 +114,7 @@ export function LibraryPage() {
 
       <div className="space-y-4 sm:space-y-6">
         <LibraryCollectionsSection summary={collectionSummary} />
+        <LibraryFavoritesSection />
         <ContinueListeningSection items={continueListening} />
         <LibraryHistorySection items={historyItems} />
         <SubscriptionsSection items={subscriptions} />

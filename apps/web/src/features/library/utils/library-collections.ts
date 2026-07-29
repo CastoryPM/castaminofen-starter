@@ -17,21 +17,22 @@ export type LibraryCollectionsSummary = {
 export function buildLibraryCollectionsSummary(data: {
   subscriptions: LibrarySubscription[];
   continueListening: LibraryListeningHistoryItem[];
-  history: LibraryListeningHistoryItem[];
+  history?: LibraryListeningHistoryItem[];
 }): LibraryCollectionsSummary {
-  const continueListeningCount = data.continueListening.length;
-  const subscriptionsCount = data.subscriptions.length;
-  const historyCount = data.history.length;
-  const uniqueEpisodeIds = new Set<string>([
-    ...data.continueListening.map((item) => item.episodeId),
-    ...data.history.map((item) => item.episodeId),
-  ]);
+  const continueListening = data.continueListening ?? [];
+  const subscriptions = data.subscriptions ?? [];
+  const history = data.history ?? [];
+
+  const continueListeningCount = continueListening.length;
+  const subscriptionsCount = subscriptions.length;
+  const historyCount = history.length;
+  const uniqueEpisodeIds = new Set<string>([...continueListening.map((item) => item.episodeId), ...history.map((item) => item.episodeId)]);
 
   return {
     continueListeningCount,
     subscriptionsCount,
     historyCount,
-    recentlyPlayedCount: historyCount,
+    recentlyPlayedCount: historyCount || continueListeningCount,
     favoritesComingSoon: true,
     savedEpisodesComingSoon: true,
     historyComingSoon: historyCount === 0,
