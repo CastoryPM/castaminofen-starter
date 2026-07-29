@@ -1,11 +1,13 @@
 'use client';
 
 import { useLibraryOverview } from '../hooks/useLibraryOverview';
+import { buildLibraryCollectionsSummary } from '../utils/library-collections';
 import { ContinueListeningSection } from './ContinueListeningSection';
 import { LibraryEmptyState } from './LibraryEmptyState';
 import { LibraryErrorState } from './LibraryErrorState';
 import { LibraryLoadingState } from './LibraryLoadingState';
 import { SubscriptionsSection } from './SubscriptionsSection';
+import { LibraryCollectionsSection } from './LibraryCollectionsSection';
 
 export function LibraryPage() {
   const overviewQuery = useLibraryOverview();
@@ -15,6 +17,7 @@ export function LibraryPage() {
 
   const subscriptions = overviewQuery.data?.subscriptions ?? [];
   const continueListening = overviewQuery.data?.continueListening ?? [];
+  const collectionSummary = buildLibraryCollectionsSummary({ subscriptions, continueListening });
   const hasAnyContent = subscriptions.length > 0 || continueListening.length > 0;
 
   if (isLoading) {
@@ -59,11 +62,11 @@ export function LibraryPage() {
             <p className="text-body m-0 max-w-2xl">پادکست‌های دنبال‌شده و اپیزودهای در حال ادامه پخش خود را در یک نمای مرتب مدیریت کنید.</p>
           </div>
           <div className="flex flex-wrap items-center gap-2 text-sm text-text-secondary">
-            {continueListening.length > 0 ? (
-              <span className="inline-flex items-center rounded-full border border-border bg-surface-primary px-3 py-1.5">{continueListening.length} اپیزود در ادامه پخش</span>
+            {collectionSummary.continueListeningCount > 0 ? (
+              <span className="inline-flex items-center rounded-full border border-border bg-surface-primary px-3 py-1.5">{collectionSummary.continueListeningCount} اپیزود در ادامه پخش</span>
             ) : null}
-            {subscriptions.length > 0 ? (
-              <span className="inline-flex items-center rounded-full border border-border bg-surface-primary px-3 py-1.5">{subscriptions.length} اشتراک فعال</span>
+            {collectionSummary.subscriptionsCount > 0 ? (
+              <span className="inline-flex items-center rounded-full border border-border bg-surface-primary px-3 py-1.5">{collectionSummary.subscriptionsCount} اشتراک فعال</span>
             ) : null}
           </div>
         </div>
@@ -76,6 +79,7 @@ export function LibraryPage() {
       ) : null}
 
       <div className="space-y-4 sm:space-y-6">
+        <LibraryCollectionsSection summary={collectionSummary} />
         <ContinueListeningSection items={continueListening} />
         <SubscriptionsSection items={subscriptions} />
       </div>
