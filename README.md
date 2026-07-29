@@ -148,7 +148,7 @@ pnpm --filter @castaminofen/web test
 - [docs/architecture.md](docs/architecture.md)
 - [docs/quick-start.md](docs/quick-start.md)
 - [docs/project-status.md](docs/project-status.md)
-- [docs/releases/v1.0.0-mvp.md](docs/releases/v1.0.0-mvp.md)
+- [docs/releases/v0.1.0-release-notes.md](docs/releases/v0.1.0-release-notes.md)
 
 ## بخش اسکرین‌شات
 
