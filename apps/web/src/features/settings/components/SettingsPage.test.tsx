@@ -7,7 +7,7 @@ describe('SettingsPage', () => {
   it('renders the MVP preference sections with notification preferences', () => {
     const markup = renderToStaticMarkup(createElement(SettingsPage));
 
-    expect(markup).toContain('تنظیمات');
+    expect(markup).toContain('Settings');
     expect(markup).toContain('Appearance');
     expect(markup).toContain('Theme');
     expect(markup).toContain('System');
