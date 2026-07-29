@@ -19,10 +19,15 @@ export function formatDurationLabel(seconds?: number | null) {
 export function formatProgressSummary(positionSeconds?: number | null, durationSeconds?: number | null) {
   const elapsedLabel = formatDurationLabel(positionSeconds);
 
-  if (!Number.isFinite(durationSeconds) || (durationSeconds ?? 0) <= 0) {
+  if (typeof durationSeconds !== 'number' || !Number.isFinite(durationSeconds) || durationSeconds <= 0) {
     return elapsedLabel;
   }
 
-  const remainingLabel = formatDurationLabel(Math.max(0, Math.floor(durationSeconds) - Math.floor(positionSeconds ?? 0)));
-  return `${elapsedLabel} / ${formatDurationLabel(durationSeconds)} · ${remainingLabel} باقی مانده`;
+  const safeDurationSeconds = Math.max(0, Math.floor(durationSeconds));
+  const safePositionSeconds = typeof positionSeconds === 'number' && Number.isFinite(positionSeconds)
+    ? Math.max(0, Math.floor(positionSeconds))
+    : 0;
+  const remainingLabel = formatDurationLabel(Math.max(0, safeDurationSeconds - safePositionSeconds));
+
+  return `${elapsedLabel} / ${formatDurationLabel(safeDurationSeconds)} · ${remainingLabel} باقی مانده`;
 }

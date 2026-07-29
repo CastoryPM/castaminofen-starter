@@ -41,6 +41,10 @@ export interface Episode {
   publishedAt?: string;
   createdAt: string;
   updatedAt: string;
+  podcast?: {
+    title?: string | null;
+    artworkUrl?: string | null;
+  };
 }
 
 export interface PaginationMeta {

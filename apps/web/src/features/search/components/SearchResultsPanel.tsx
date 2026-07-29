@@ -11,11 +11,13 @@ import type { Episode, Podcast } from '@/lib/types';
 
 type SearchResultsPanelProps = {
   query: string;
+  page?: number;
 };
 
-export function SearchResultsPanel({ query }: SearchResultsPanelProps) {
+export function SearchResultsPanel({ query, page }: SearchResultsPanelProps) {
   const debouncedQuery = query.trim();
   const result = useSearchResults(debouncedQuery);
+  const pageLabel = typeof page === 'number' && page > 1 ? ` · صفحه ${page}` : '';
 
   if (result.isLoading) {
     return <LoadingState title="در حال جستجو" message="در حال بررسی نتایج برای عبارت موردنظر هستیم…" />;
@@ -51,7 +53,7 @@ export function SearchResultsPanel({ query }: SearchResultsPanelProps) {
       <section className="space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="text-subheading">پادکست‌ها</h2>
-          <span className="text-sm text-text-secondary">{podcasts.length} نتیجه</span>
+          <span className="text-sm text-text-secondary">{podcasts.length} نتیجه{pageLabel}</span>
         </div>
         {podcasts.length ? (
           <div className="grid gap-4 md:grid-cols-2">
@@ -83,17 +85,22 @@ export function SearchResultsPanel({ query }: SearchResultsPanelProps) {
       <section className="space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="text-subheading">اپیزودها</h2>
-          <span className="text-sm text-text-secondary">{episodes.length} نتیجه</span>
+          <span className="text-sm text-text-secondary">{episodes.length} نتیجه{pageLabel}</span>
         </div>
         {episodes.length ? (
           <div className="space-y-3">
             {episodes.map((episode: Episode) => (
-              <Link key={episode.id} href={`/episodes/${episode.id}`} className="flex items-center justify-between rounded-2xl border border-border/80 bg-surface-primary px-4 py-3 transition hover:border-primary/60 hover:bg-surface-secondary">
-                <div>
-                  <h3 className="font-semibold text-text-primary">{episode.title}</h3>
-                  <p className="text-sm text-text-secondary">{episode.podcast?.title ?? 'پادکست'}</p>
+              <Link key={episode.id} href={`/episodes/${episode.id}`} className="flex items-center gap-3 rounded-2xl border border-border/80 bg-surface-primary px-4 py-3 transition hover:border-primary/60 hover:bg-surface-secondary">
+                {episode.podcast?.artworkUrl ? (
+                  <Image src={episode.podcast.artworkUrl} alt={`${episode.title} artwork`} width={56} height={56} className="h-14 w-14 rounded-xl object-cover" unoptimized />
+                ) : null}
+                <div className="flex min-w-0 flex-1 items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <h3 className="truncate font-semibold text-text-primary">{episode.title}</h3>
+                    <p className="truncate text-sm text-text-secondary">{episode.podcast?.title ?? 'پادکست'}</p>
+                  </div>
+                  <span className="shrink-0 text-sm text-primary">مشاهده</span>
                 </div>
-                <span className="text-sm text-primary">مشاهده</span>
               </Link>
             ))}
           </div>

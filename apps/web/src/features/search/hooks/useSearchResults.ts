@@ -12,22 +12,18 @@ export function useSearchResults(query: string) {
 
   return useQuery({
     queryKey: ['search-results', normalized],
+    enabled: Boolean(normalized),
     queryFn: async () => {
       const [podcastsResponse, episodesResponse] = await Promise.all([
         import('@/lib/podcasts').then((m) => m.getPodcasts({ search: normalized || undefined, limit: 6 })),
         normalized ? getEpisodes({ search: normalized }) : Promise.resolve([] as Episode[]),
       ]);
 
-      const episodes = normalized
-        ? (episodesResponse as Episode[]).filter((episode) => episode.title.toLowerCase().includes(normalized.toLowerCase()))
-        : [];
-
       return {
         podcasts: podcastsResponse,
-        episodes,
+        episodes: normalized ? (episodesResponse as Episode[]) : [],
       } satisfies SearchResultsResponse;
     },
-    enabled: true,
     staleTime: 1000 * 30,
   });
 }

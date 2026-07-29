@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from '../prisma/prisma.module';
-import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { FetcherService } from './fetcher/fetcher.service';
 import { ParserService } from './parser/parser.service';
@@ -14,7 +13,7 @@ import { RssSyncController } from './controllers/rss-sync.controller';
 import { FeedSourceController } from './controllers/feed-source.controller';
 import { FeedSourceService } from './services/feed-source.service';
 import { FeedSourceSeederService } from './bootstrap/feed-seeder.service';
-import { NormalizedFeed, NormalizedEpisodeInput, NormalizedPodcastInput } from './types';
+import { NormalizedEpisodeInput, NormalizedPodcastInput } from './types';
 
 @Module({
   imports: [PrismaModule],
@@ -28,7 +27,7 @@ import { NormalizedFeed, NormalizedEpisodeInput, NormalizedPodcastInput } from '
     RssPersistenceService,
     {
       provide: SYNCHRONIZATION_PERSISTENCE,
-      useFactory: (prisma: PrismaService) => ({
+      useFactory: () => ({
         ensureFeedSource: async (tx: any, url: string) =>
           tx.feedSource.upsert({
             where: { url },
@@ -120,7 +119,6 @@ import { NormalizedFeed, NormalizedEpisodeInput, NormalizedPodcastInput } from '
             },
           }),
       }),
-      inject: [PrismaService],
     },
     SynchronizationService,
     RssSyncOrchestrator,
