@@ -147,9 +147,10 @@ export function ProfilePage() {
     },
     {
       label: 'تنظیمات',
-      description: 'به‌زودی در دسترس',
+      description: 'تنظیمات ترجیحات برنامه',
       variant: 'ghost' as const,
-      disabled: true,
+      disabled: false,
+      href: '/settings',
     },
   ];
 
