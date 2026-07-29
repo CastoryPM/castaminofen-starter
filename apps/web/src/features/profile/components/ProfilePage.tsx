@@ -26,8 +26,8 @@ export function formatAccountDate(value?: string) {
 
   return parsedDate.toLocaleDateString('fa-IR', {
     year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
   });
 }
 

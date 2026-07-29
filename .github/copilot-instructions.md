@@ -230,3 +230,17 @@ The report must follow the project's standard phase report template.
 In chat, only provide:
 - A brief completion summary (max 5 lines).
 - The path to the generated report.
+
+
+## 17. Validation Gate
+
+From now on, no phase (whether Feature, Refactor, or Technical Dept) will not be considered a completed phase until these items are passed:
+
+- Build
+- Lint
+- Type Check
+- Related Tests (در صورت وجود)
+- Runtime Verification
+
+After that, the status of the phase becomes:
+- Completed
