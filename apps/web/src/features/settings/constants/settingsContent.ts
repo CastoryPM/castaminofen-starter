@@ -25,10 +25,9 @@ export const settingsSections: SettingsSectionContent[] = [
       {
         label: 'Theme',
         value: 'System',
-        status: 'Coming Soon',
-        description: 'Theme switching remains unavailable in this MVP.',
+        description: 'Choose the app theme used across the interface.',
         options: ['System', 'Light', 'Dark'],
-        disabled: true,
+        disabled: false,
       },
       {
         label: 'Language',
@@ -48,9 +47,22 @@ export const settingsSections: SettingsSectionContent[] = [
       {
         label: 'Autoplay',
         value: 'Off',
-        status: 'Coming Soon',
-        description: 'Playback defaults will be added in a future phase.',
-        disabled: true,
+        description: 'Continue automatically to the next item when playback ends.',
+        options: ['Off', 'On'],
+        disabled: false,
+      },
+      {
+        label: 'Default Volume',
+        value: '80%',
+        description: 'Set the initial player volume for new playback sessions.',
+        disabled: false,
+      },
+      {
+        label: 'Resume Playback',
+        value: 'On',
+        description: 'Restore the last saved playback position after a refresh.',
+        options: ['Off', 'On'],
+        disabled: false,
       },
       {
         label: 'Playback Speed',

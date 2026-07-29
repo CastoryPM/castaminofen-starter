@@ -19,7 +19,7 @@ const iconMap = {
 };
 
 export function SettingsPage() {
-  const { preferences, updateTheme } = useSettingsPreferences();
+  const { preferences, updateTheme, updateAutoplay, updateDefaultVolume, updateResumePlayback } = useSettingsPreferences();
   const appEnvironment = getPublicEnv().NEXT_PUBLIC_APP_ENV;
   const appEnvironmentLabel =
     appEnvironment === 'production'
@@ -37,6 +37,26 @@ export function SettingsPage() {
     ],
     [appEnvironmentLabel],
   );
+
+  const getDisplayValue = (item: SettingsItemContent) => {
+    if (item.label === 'Theme') {
+      return preferences.theme;
+    }
+
+    if (item.label === 'Autoplay') {
+      return preferences.autoplay ? 'On' : 'Off';
+    }
+
+    if (item.label === 'Default Volume') {
+      return `${Math.round(preferences.defaultVolume * 100)}%`;
+    }
+
+    if (item.label === 'Resume Playback') {
+      return preferences.resumePlayback ? 'On' : 'Off';
+    }
+
+    return item.value;
+  };
 
   return (
     <main className="page-container">
@@ -87,7 +107,7 @@ export function SettingsPage() {
                         <div className="min-w-0 flex-1">
                           <p className="text-caption">{item.label}</p>
                           <p className="text-body m-0 font-medium">
-                            {section.id === 'about' ? item.value : item.label === 'Theme' ? preferences.theme : item.value}
+                            {section.id === 'about' ? item.value : getDisplayValue(item)}
                           </p>
                           {item.description ? (
                             <p className="mt-1 text-sm text-text-secondary">{item.description}</p>
@@ -102,7 +122,10 @@ export function SettingsPage() {
                       {item.options?.length ? (
                         <div className="mt-3 flex flex-wrap gap-2">
                           {item.options.map((option: string) => {
-                            const isActive = item.label === 'Theme' && preferences.theme === option;
+                            const isActive =
+                              (item.label === 'Theme' && preferences.theme === option) ||
+                              (item.label === 'Autoplay' && ((preferences.autoplay && option === 'On') || (!preferences.autoplay && option === 'Off'))) ||
+                              (item.label === 'Resume Playback' && ((preferences.resumePlayback && option === 'On') || (!preferences.resumePlayback && option === 'Off')));
 
                             return (
                               <Button
@@ -115,6 +138,14 @@ export function SettingsPage() {
                                   if (item.label === 'Theme') {
                                     updateTheme(option as SettingsThemePreference);
                                   }
+
+                                  if (item.label === 'Autoplay') {
+                                    updateAutoplay(option === 'On');
+                                  }
+
+                                  if (item.label === 'Resume Playback') {
+                                    updateResumePlayback(option === 'On');
+                                  }
                                 }}
                                 className="min-w-[84px] justify-center"
                               >
@@ -122,6 +153,22 @@ export function SettingsPage() {
                               </Button>
                             );
                           })}
+                        </div>
+                      ) : null}
+                      {item.label === 'Default Volume' ? (
+                        <div className="mt-3 flex items-center gap-3">
+                          <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.05"
+                            value={preferences.defaultVolume}
+                            disabled={item.disabled}
+                            onChange={(event) => updateDefaultVolume(Number(event.target.value))}
+                            className="w-full accent-accent"
+                            aria-label="Default Volume"
+                          />
+                          <span className="min-w-[3rem] text-sm text-text-secondary">{Math.round(preferences.defaultVolume * 100)}%</span>
                         </div>
                       ) : null}
                     </div>

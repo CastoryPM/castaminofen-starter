@@ -37,9 +37,12 @@ describe('preferencesPersistence', () => {
     expect(readSettingsPreferences()).toEqual(DEFAULT_SETTINGS_PREFERENCES);
   });
 
-  it('persists and restores preferences through local storage', () => {
+  it('persists and restores playback preferences through local storage', () => {
     const preferences = {
       theme: 'Dark' as const,
+      autoplay: false,
+      defaultVolume: 0.25 as const,
+      resumePlayback: false,
     };
 
     writeSettingsPreferences(preferences);

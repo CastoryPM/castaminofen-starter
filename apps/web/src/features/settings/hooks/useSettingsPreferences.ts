@@ -9,11 +9,11 @@ export function useSettingsPreferences() {
     setPreferences(readSettingsPreferences());
   }, []);
 
-  const updateTheme = (theme: SettingsThemePreference) => {
+  const updatePreference = (updates: Partial<SettingsPreferences>) => {
     setPreferences((currentPreferences) => {
       const nextPreferences = {
         ...currentPreferences,
-        theme,
+        ...updates,
       };
 
       writeSettingsPreferences(nextPreferences);
@@ -22,8 +22,27 @@ export function useSettingsPreferences() {
     });
   };
 
+  const updateTheme = (theme: SettingsThemePreference) => {
+    updatePreference({ theme });
+  };
+
+  const updateAutoplay = (autoplay: boolean) => {
+    updatePreference({ autoplay });
+  };
+
+  const updateDefaultVolume = (defaultVolume: number) => {
+    updatePreference({ defaultVolume });
+  };
+
+  const updateResumePlayback = (resumePlayback: boolean) => {
+    updatePreference({ resumePlayback });
+  };
+
   return {
     preferences,
     updateTheme,
+    updateAutoplay,
+    updateDefaultVolume,
+    updateResumePlayback,
   };
 }

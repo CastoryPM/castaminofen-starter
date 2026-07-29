@@ -15,6 +15,8 @@ describe('SettingsPage', () => {
     expect(markup).toContain('Dark');
     expect(markup).toContain('Playback');
     expect(markup).toContain('Autoplay');
+    expect(markup).toContain('Default Volume');
+    expect(markup).toContain('Resume Playback');
     expect(markup).toContain('Notifications');
     expect(markup).toContain('About');
     expect(markup).toContain('Castaminofen');
