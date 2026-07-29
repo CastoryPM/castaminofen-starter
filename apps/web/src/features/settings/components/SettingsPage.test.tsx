@@ -4,10 +4,10 @@ import { describe, expect, it } from 'vitest';
 import { SettingsPage } from './SettingsPage';
 
 describe('SettingsPage', () => {
-  it('renders the MVP preference sections with placeholders', () => {
+  it('renders the MVP preference sections with notification preferences', () => {
     const markup = renderToStaticMarkup(createElement(SettingsPage));
 
-    expect(markup).toContain('تنظیمات');
+    expect(markup).toContain('Settings');
     expect(markup).toContain('Appearance');
     expect(markup).toContain('Theme');
     expect(markup).toContain('System');
@@ -18,6 +18,9 @@ describe('SettingsPage', () => {
     expect(markup).toContain('Default Volume');
     expect(markup).toContain('Resume Playback');
     expect(markup).toContain('Notifications');
+    expect(markup).toContain('Enable Notifications');
+    expect(markup).toContain('New Episode Notifications');
+    expect(markup).toContain('Product Updates');
     expect(markup).toContain('About');
     expect(markup).toContain('Castaminofen');
     expect(markup).toContain('Coming Soon');

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720">
+  <rect width="1200" height="720" fill="#f8fafc"/>
+  <rect x="80" y="80" width="480" height="560" rx="28" fill="#ffffff" stroke="#dbe3ea" stroke-width="2"/>
+  <text x="100" y="130" fill="#0f172a" font-size="24" font-family="Arial, sans-serif" font-weight="700">Before</text>
+  <rect x="100" y="160" width="340" height="160" rx="20" fill="#f8fafc" stroke="#e2e8f0"/>
+  <rect x="120" y="182" width="56" height="56" rx="14" fill="#e2e8f0"/>
+  <rect x="200" y="182" width="180" height="14" rx="7" fill="#dbe3ea"/>
+  <rect x="200" y="206" width="140" height="12" rx="6" fill="#e2e8f0"/>
+  <rect x="200" y="232" width="160" height="12" rx="6" fill="#e2e8f0"/>
+  <rect x="100" y="340" width="120" height="38" rx="19" fill="#e2e8f0"/>
+
+  <rect x="640" y="80" width="480" height="560" rx="28" fill="#ffffff" stroke="#dbe3ea" stroke-width="2"/>
+  <text x="660" y="130" fill="#0f172a" font-size="24" font-family="Arial, sans-serif" font-weight="700">After</text>
+  <rect x="660" y="160" width="340" height="210" rx="24" fill="#f8fafc" stroke="#dbe3ea"/>
+  <rect x="684" y="182" width="72" height="72" rx="16" fill="#eef2ff"/>
+  <rect x="780" y="182" width="180" height="16" rx="8" fill="#cbd5e1"/>
+  <rect x="780" y="208" width="150" height="12" rx="6" fill="#e2e8f0"/>
+  <rect x="780" y="234" width="160" height="12" rx="6" fill="#e2e8f0"/>
+  <rect x="780" y="260" width="130" height="12" rx="6" fill="#e2e8f0"/>
+  <rect x="700" y="320" width="150" height="40" rx="20" fill="#e2e8f0"/>
+  <rect x="865" y="320" width="120" height="40" rx="20" fill="#e2e8f0"/>
+</svg>

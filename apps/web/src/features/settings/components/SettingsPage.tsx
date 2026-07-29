@@ -19,7 +19,7 @@ const iconMap = {
 };
 
 export function SettingsPage() {
-  const { preferences, updateTheme, updateAutoplay, updateDefaultVolume, updateResumePlayback } = useSettingsPreferences();
+  const { preferences, updateTheme, updateAutoplay, updateDefaultVolume, updateResumePlayback, updateNotifications } = useSettingsPreferences();
   const appEnvironment = getPublicEnv().NEXT_PUBLIC_APP_ENV;
   const appEnvironmentLabel =
     appEnvironment === 'production'
@@ -55,6 +55,18 @@ export function SettingsPage() {
       return preferences.resumePlayback ? 'On' : 'Off';
     }
 
+    if (item.label === 'Enable Notifications') {
+      return preferences.notifications.enabled ? 'On' : 'Off';
+    }
+
+    if (item.label === 'New Episode Notifications') {
+      return preferences.notifications.newEpisodes ? 'On' : 'Off';
+    }
+
+    if (item.label === 'Product Updates') {
+      return preferences.notifications.productUpdates ? 'On' : 'Off';
+    }
+
     return item.value;
   };
 
@@ -66,15 +78,15 @@ export function SettingsPage() {
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <SettingsIcon className="h-5 w-5 text-accent" aria-hidden="true" />
-                <h1 className="text-heading">تنظیمات</h1>
+                <h1 className="text-heading">Settings</h1>
               </div>
               <p className="text-body m-0">
-                مدیریت ترجیحات برنامه در MVP با تمرکز بر تنظیمات ساده و قابل‌فهم.
+                Manage MVP app preferences with a simple, clear settings experience.
               </p>
             </div>
             <Link href="/profile" className="button button-secondary inline-flex items-center gap-2">
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              بازگشت به پروفایل
+              Back to profile
             </Link>
           </div>
         </div>
@@ -125,7 +137,10 @@ export function SettingsPage() {
                             const isActive =
                               (item.label === 'Theme' && preferences.theme === option) ||
                               (item.label === 'Autoplay' && ((preferences.autoplay && option === 'On') || (!preferences.autoplay && option === 'Off'))) ||
-                              (item.label === 'Resume Playback' && ((preferences.resumePlayback && option === 'On') || (!preferences.resumePlayback && option === 'Off')));
+                              (item.label === 'Resume Playback' && ((preferences.resumePlayback && option === 'On') || (!preferences.resumePlayback && option === 'Off'))) ||
+                              (item.label === 'Enable Notifications' && ((preferences.notifications.enabled && option === 'On') || (!preferences.notifications.enabled && option === 'Off'))) ||
+                              (item.label === 'New Episode Notifications' && ((preferences.notifications.newEpisodes && option === 'On') || (!preferences.notifications.newEpisodes && option === 'Off'))) ||
+                              (item.label === 'Product Updates' && ((preferences.notifications.productUpdates && option === 'On') || (!preferences.notifications.productUpdates && option === 'Off')));
 
                             return (
                               <Button
@@ -145,6 +160,18 @@ export function SettingsPage() {
 
                                   if (item.label === 'Resume Playback') {
                                     updateResumePlayback(option === 'On');
+                                  }
+
+                                  if (item.label === 'Enable Notifications') {
+                                    updateNotifications({ enabled: option === 'On' });
+                                  }
+
+                                  if (item.label === 'New Episode Notifications') {
+                                    updateNotifications({ newEpisodes: option === 'On' });
+                                  }
+
+                                  if (item.label === 'Product Updates') {
+                                    updateNotifications({ productUpdates: option === 'On' });
                                   }
                                 }}
                                 className="min-w-[84px] justify-center"
