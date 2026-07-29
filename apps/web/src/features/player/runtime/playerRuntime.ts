@@ -3,7 +3,7 @@ import { usePlayerStore } from '../store/playerStore';
 import type { PlayableItem, PlayerPlaybackStatus } from '../types';
 import type { PlayerState } from '../store/playerStore';
 import { readSettingsPreferences } from '../../settings/services/preferencesPersistence';
-import { clearPersistedPlayerSnapshot, persistCurrentPlayerState, readPersistedPlayerSnapshot } from './playerPersistence';
+import { clearPersistedPlayerSnapshot, persistCurrentPlayerState, readPersistedPlayerSnapshot, applyPersistedSnapshotToStore } from './playerPersistence';
 
 export type PlayerRuntimeController = {
   loadItem(item: PlayableItem, options?: { startTime?: number }): Promise<void>;
@@ -51,13 +51,16 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
       return;
     }
 
-    store.setPlaybackState({
-      currentItem: snapshot.currentItem,
-      playbackStatus: snapshot.playbackStatus,
-      duration: snapshot.duration,
-      currentPosition: snapshot.currentPosition,
-      error: snapshot.error,
-    });
+    // Apply the full persisted snapshot to the store (queue, index, modes, volume)
+    // and then ensure the engine volume matches the restored volume.
+    // applyPersistedSnapshotToStore handles normalization and queue reconstruction.
+    applyPersistedSnapshotToStore(snapshot);
+
+    try {
+      engine.setVolume(snapshot.volume ?? store.volume ?? 0.8);
+    } catch {
+      // ignore engine volume failures in non-browser or test environments
+    }
   };
 
   const syncState = (snapshot?: { playbackStatus: PlayerPlaybackStatus; duration: number; currentPosition: number; error: string | null }) => {

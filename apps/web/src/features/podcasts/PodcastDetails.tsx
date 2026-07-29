@@ -14,6 +14,7 @@ import { usePlayerRuntime, usePlayerState } from '@/features/player';
 import { mapEpisodeToPlayableItem } from '@/features/player/adapters/episodeToPlayable';
 import type { Episode, Podcast } from '@/lib/types';
 import { buildPodcastMetadataItems, canPlayEpisode, formatDisplayDate, getContinueListeningSummary, getPodcastOwnerLabel } from './utils/podcastPresentation';
+import { FavoriteActionButton } from '@/features/library/components/FavoriteActionButton';
 
 export type PodcastDetailsProps = {
   podcast: Podcast;
@@ -248,6 +249,7 @@ export function PodcastDetails({ podcast, canManage = false, isDeleting = false,
                       <Link href={`/episodes/${episode.id}`} className="button button-secondary min-h-[2.75rem] justify-center">
                         مشاهده اپیزود
                       </Link>
+                      <FavoriteActionButton episodeId={episode.id} />
                     </div>
                   </article>
                 );

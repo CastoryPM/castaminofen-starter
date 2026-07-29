@@ -3,6 +3,7 @@ import type { LibraryListeningHistoryItem, LibrarySubscription } from '../types'
 export type LibraryCollectionsSummary = {
   continueListeningCount: number;
   subscriptionsCount: number;
+  historyCount: number;
   recentlyPlayedCount: number;
   favoritesComingSoon: boolean;
   savedEpisodesComingSoon: boolean;
@@ -16,20 +17,28 @@ export type LibraryCollectionsSummary = {
 export function buildLibraryCollectionsSummary(data: {
   subscriptions: LibrarySubscription[];
   continueListening: LibraryListeningHistoryItem[];
+  history?: LibraryListeningHistoryItem[];
 }): LibraryCollectionsSummary {
-  const continueListeningCount = data.continueListening.length;
-  const subscriptionsCount = data.subscriptions.length;
+  const continueListening = data.continueListening ?? [];
+  const subscriptions = data.subscriptions ?? [];
+  const history = data.history ?? [];
+
+  const continueListeningCount = continueListening.length;
+  const subscriptionsCount = subscriptions.length;
+  const historyCount = history.length;
+  const uniqueEpisodeIds = new Set<string>([...continueListening.map((item) => item.episodeId), ...history.map((item) => item.episodeId)]);
 
   return {
     continueListeningCount,
     subscriptionsCount,
-    recentlyPlayedCount: continueListeningCount,
+    historyCount,
+    recentlyPlayedCount: historyCount || continueListeningCount,
     favoritesComingSoon: true,
     savedEpisodesComingSoon: true,
-    historyComingSoon: true,
+    historyComingSoon: historyCount === 0,
     downloadsComingSoon: true,
     collectionsCount: 4,
-    episodesCount: continueListeningCount,
+    episodesCount: uniqueEpisodeIds.size,
     followingCount: subscriptionsCount,
   };
 }

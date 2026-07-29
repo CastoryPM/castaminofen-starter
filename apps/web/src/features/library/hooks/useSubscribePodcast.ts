@@ -19,7 +19,7 @@ export function useSubscribePodcast() {
 
       queryClient.setQueryData<LibraryOverviewResponse>(['library'], (current) => {
         if (!current) {
-          return { subscriptions: [subscription], continueListening: [] };
+          return { subscriptions: [subscription], continueListening: [], history: [] };
         }
 
         return {

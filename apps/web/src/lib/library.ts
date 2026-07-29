@@ -22,10 +22,15 @@ export type LibraryContinueListeningResponse = {
 export type LibraryOverviewResponse = {
   subscriptions: LibrarySubscriptionResponse[];
   continueListening: LibraryContinueListeningResponse[];
+  history: LibraryContinueListeningResponse[];
 };
 
 export async function getLibraryOverview(): Promise<LibraryOverviewResponse> {
   return apiFetch<LibraryOverviewResponse>('library');
+}
+
+export async function getLibraryHistory(): Promise<LibraryContinueListeningResponse[]> {
+  return apiFetch<LibraryContinueListeningResponse[]>('library/history');
 }
 
 export async function getLibrarySubscriptions(): Promise<LibrarySubscriptionResponse[]> {
@@ -56,4 +61,27 @@ export async function updateListeningHistory(variables: { episodeId: string; pos
       completed: variables.completed,
     },
   });
+}
+
+export type LibraryFavoriteResponse = {
+  id: string;
+  userId: string;
+  episodeId: string;
+  savedAt: string;
+  episode: Episode & { podcast?: Podcast | null };
+};
+
+export async function getLibraryFavorites(): Promise<LibraryFavoriteResponse[]> {
+  return apiFetch<LibraryFavoriteResponse[]>('library/favorites');
+}
+
+export async function saveFavorite(variables: { episodeId: string }): Promise<LibraryFavoriteResponse> {
+  return apiFetch<LibraryFavoriteResponse>('library/favorites', {
+    method: 'POST',
+    body: { episodeId: variables.episodeId },
+  });
+}
+
+export async function removeFavorite(episodeId: string): Promise<{ ok: boolean } | LibraryFavoriteResponse> {
+  return apiFetch<any>(`library/favorites/${episodeId}`, { method: 'DELETE' });
 }

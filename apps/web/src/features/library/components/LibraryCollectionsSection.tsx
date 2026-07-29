@@ -8,32 +8,35 @@ export function LibraryCollectionsSection({ summary }: { summary: LibraryCollect
   const stats = [
     { label: 'مجموعه‌ها', value: summary.collectionsCount },
     { label: 'اپیزودهای ادامه پخش', value: summary.episodesCount },
+    { label: 'تاریخچه گوش دادن', value: summary.historyCount },
     { label: 'اشتراک‌ها', value: summary.followingCount },
-    { label: 'ادامه پخش', value: summary.continueListeningCount },
   ];
 
   const collections = [
     {
+      title: 'تاریخچه گوش دادن',
+      description: summary.historyComingSoon
+        ? 'گوش دادن‌های اخیر شما در یک روایت آرام و قابل بازگشت کنار هم قرار می‌گیرند.'
+        : 'نگاهی به اپیزودهایی که اخیراً گوش داده‌اید و دوباره آن‌ها را پخش کنید.',
+      eyebrow: 'History',
+      actionLabel: summary.historyComingSoon ? 'به‌زودی' : 'مشاهده تاریخچه',
+      href: summary.historyComingSoon ? undefined : '#history',
+      badge: summary.historyComingSoon ? 'Coming Soon' : undefined,
+      icon: Clock3,
+      iconClassName: summary.historyComingSoon ? 'border-border/70 bg-surface-secondary text-text-secondary' : 'border-accent/20 bg-accent/10 text-accent',
+      badgeClassName: summary.historyComingSoon ? 'border-border/70 bg-surface-secondary text-text-secondary' : 'border-accent/20 bg-accent/10 text-accent',
+      statusLabel: summary.historyComingSoon ? 'به‌زودی' : `${summary.historyCount} مورد تاریخچه`,
+    },
+    {
       title: 'علاقه‌مندی‌ها',
       description: 'اپیزودها و پادکست‌هایی که دوست دارید برای بازگشت‌های بعدی در اینجا نگه داشته می‌شوند.',
       eyebrow: 'Favorites',
-      actionLabel: 'به‌زودی',
-      badge: 'Coming Soon',
+      actionLabel: 'مشاهده',
+      href: '/library#favorites',
       icon: Heart,
       iconClassName: 'border-accent/20 bg-accent/10 text-accent',
       badgeClassName: 'border-accent/20 bg-accent/10 text-accent',
-      statusLabel: 'در حال آماده‌سازی',
-    },
-    {
-      title: 'تاریخچه گوش دادن',
-      description: 'گوش دادن‌های اخیر شما در یک روایت آرام و قابل بازگشت کنار هم قرار می‌گیرند.',
-      eyebrow: 'History',
-      actionLabel: 'به‌زودی',
-      badge: 'Coming Soon',
-      icon: Clock3,
-      iconClassName: 'border-border/70 bg-surface-secondary text-text-secondary',
-      badgeClassName: 'border-border/70 bg-surface-secondary text-text-secondary',
-      statusLabel: 'به‌زودی',
+      statusLabel: 'در دسترس',
     },
     {
       title: 'دنبال‌شده‌ها',
