@@ -63,6 +63,16 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
     } catch {
       // ignore engine volume failures in non-browser or test environments
     }
+
+    const restoredItem = snapshot.currentItem ?? getStoreState().currentItem;
+    const restoredPosition = normalizeTime(snapshot.currentPosition ?? 0);
+
+    if (restoredItem?.audioUrl) {
+      engine.load(restoredItem.audioUrl);
+      if (restoredPosition > 0) {
+        engine.setCurrentTime(restoredPosition);
+      }
+    }
   };
 
   const syncState = (snapshot?: { playbackStatus: PlayerPlaybackStatus; duration: number; currentPosition: number; error: string | null }) => {

@@ -87,6 +87,34 @@ describe('PlayerRuntime controller', () => {
     controller.destroy();
   });
 
+  test('restores persisted playback by reloading the audio source and restoring the saved position', () => {
+    const persistedItem = createItem('resume-on-refresh');
+    window.localStorage.setItem(
+      'castaminofen-player-state',
+      JSON.stringify({
+        currentItem: persistedItem,
+        queue: [persistedItem],
+        currentIndex: 0,
+        playbackStatus: 'paused',
+        duration: 180,
+        currentPosition: 42,
+        volume: 0.5,
+        repeatMode: 'off',
+        shuffleEnabled: false,
+        error: null,
+      }),
+    );
+
+    const store = usePlayerStore.getState();
+    const engine = createEngineMock();
+    const controller = createPlayerRuntimeController(store, engine);
+
+    expect(engine.load).toHaveBeenCalledWith('https://example.com/resume-on-refresh.mp3');
+    expect(engine.setCurrentTime).toHaveBeenCalledWith(42);
+
+    controller.destroy();
+  });
+
   test('applies a persisted default volume preference on startup', () => {
     window.localStorage.setItem(
       'castaminofen-settings-preferences',
