@@ -2,6 +2,7 @@
 
 | تاریخ | فاز | تغییرات | وضعیت |
 | --- | --- | --- | --- |
+| 2026-07-29 | Phase UI.DESIGN.2 — Design Tokens & Component Specification System | Expanded the design-system documentation into a full implementation specification covering semantic design tokens, component standards, spacing/layout, typography, elevation, motion, responsive rules, iconography, component inventory, naming conventions, accessibility, and a formal report while preserving routes, APIs, and feature boundaries | انجام شده |
 | 2026-07-29 | Phase UI.DESIGN.1 — Brand Identity System | Consolidated the web design system into a semantic brand system with a premium audio-first token map, shared surface hierarchy, motion/radius/typography rules, updated shared styling primitives, and formal design documentation while preserving routes, APIs, and feature boundaries | انجام شده |
 | 2026-07-29 | Phase QA.2 — Full Test Suite Stabilization (Profile & Settings) | Restored the remaining frontend test suite stability for Profile and Settings by fixing the Vitest/TSX transform path and adding the required jsdom test environment, keeping runtime behavior unchanged and returning the web suite to a fully green state | انجام شده |
 | 2026-07-29 | Phase SETTINGS.2 — Preferences Ownership & Local Persistence MVP | Established Settings as the owner of basic preference state and local persistence, introduced a feature-owned preferences model and persistence service, exposed the boundary through the Settings public API, and preserved the existing Settings UI and routes | انجام شده |
