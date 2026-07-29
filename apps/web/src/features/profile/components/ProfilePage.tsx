@@ -65,14 +65,6 @@ export function ProfilePage() {
         return { ...current, ...updatedUser };
       });
 
-      queryClient.setQueryData<UserProfile | null>(['session'], (current) => {
-        if (!current) {
-          return updatedUser;
-        }
-
-        return { ...current, ...updatedUser };
-      });
-
       const authStore = useAuthStore.getState();
       authStore.setUser(updatedUser);
       setFeedback({
