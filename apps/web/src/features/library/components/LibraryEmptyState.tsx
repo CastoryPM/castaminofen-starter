@@ -8,16 +8,19 @@ export function LibraryEmptyState({
   title,
   description,
   actionLabel = 'مشاهده پادکست‌ها',
+  eyebrow,
 }: {
   title: string;
   description: string;
   actionLabel?: string;
+  eyebrow?: string;
 }) {
   return (
     <EmptyState
-      className="border border-border/80 bg-surface-primary/70 p-6 sm:p-8"
+      className="border border-border/80 bg-surface-primary/90 p-6 shadow-soft sm:p-8"
       title={title}
       description={description}
+      eyebrow={eyebrow}
       action={
         <Link href="/podcasts" className="inline-flex">
           <Button variant="primary" size="sm">

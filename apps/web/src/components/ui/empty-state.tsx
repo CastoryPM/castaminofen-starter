@@ -7,11 +7,13 @@ export function EmptyState({
   description,
   action,
   className,
+  eyebrow,
 }: {
   title: string;
   description?: string;
   action?: ReactNode;
   className?: string;
+  eyebrow?: string;
 }) {
   return (
     <div className={clsx('flex flex-col items-start gap-4 rounded-2xl border border-dashed border-border/80 bg-surface-secondary/80 p-6 text-start shadow-soft sm:p-8', className)} role="status" aria-live="polite">
@@ -20,6 +22,7 @@ export function EmptyState({
           <Sparkles className="h-5 w-5" aria-hidden="true" />
         </div>
         <div className="space-y-2">
+          {eyebrow ? <p className="m-0 text-xs font-semibold uppercase tracking-[0.24em] text-accent">{eyebrow}</p> : null}
           <h3 className="text-subheading">{title}</h3>
           {description ? <p className="text-body m-0">{description}</p> : null}
         </div>

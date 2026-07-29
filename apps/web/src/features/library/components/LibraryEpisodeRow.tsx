@@ -25,19 +25,19 @@ export function LibraryEpisodeRow({
   const progressSummary = formatProgressSummary(positionSeconds, durationSeconds);
 
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-border/80 bg-surface-primary/70 p-4 shadow-sm transition hover:border-accent/30 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex flex-col gap-3 rounded-[1.5rem] border border-border/80 bg-surface-primary/90 p-4 shadow-sm transition-all duration-200 hover:border-accent/30 hover:bg-surface-primary sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-start gap-3">
         {artworkUrl ? (
-          <Image src={artworkUrl} alt={episode.title} width={56} height={56} className="h-14 w-14 shrink-0 rounded-2xl object-cover" />
+          <Image src={artworkUrl} alt={episode.title} width={56} height={56} className="h-14 w-14 shrink-0 rounded-[1.25rem] object-cover" />
         ) : (
-          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-accent/25 to-accent/5 text-sm font-semibold text-accent">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[1.25rem] bg-gradient-to-br from-accent/25 to-accent/5 text-sm font-semibold text-accent">
             {artworkInitial}
           </div>
         )}
         <div className="min-w-0 space-y-1">
           <h3 className="text-sm font-semibold text-text-primary sm:text-base">{episode.title}</h3>
           <p className="m-0 text-sm text-text-secondary">{podcastTitle || 'پادکست'}</p>
-          <p className="m-0 text-sm leading-6 text-text-secondary">{episode.description || 'بدون توضیح'}</p>
+          <p className="m-0 line-clamp-2 text-sm leading-6 text-text-secondary">{episode.description || 'بدون توضیح'}</p>
           <p className="m-0 text-xs text-text-secondary">{progressSummary}</p>
         </div>
       </div>
