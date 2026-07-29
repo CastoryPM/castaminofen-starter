@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Play, Sparkles } from 'lucide-react';
+import { Check, Play, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { SubscriptionActionButton } from '@/features/library/components/SubscriptionActionButton';
@@ -74,7 +74,17 @@ export function PodcastDetails({ podcast, canManage = false, isDeleting = false,
   const latestEpisode = podcast.episodes?.[0];
   const heroSummary = podcast.description?.trim() || 'توضیحی برای این پادکست ثبت نشده است.';
   const isSubscribed = subscriptionsQuery.data?.some((item) => item.podcastId === podcast.id) ?? false;
+  const isFollowPending = subscriptionsQuery.isPending || subscribeMutation.isPending || unsubscribeMutation.isPending;
+  const followError = subscribeMutation.error || unsubscribeMutation.error ? 'در انجام این عملیات مشکلی پیش آمد. دوباره تلاش کنید.' : null;
   const continueListeningEntries = new Map((continueListeningQuery.data ?? []).map((item) => [item.episodeId, item]));
+
+  const handleSubscribe = () => {
+    void subscribeMutation.mutateAsync(podcast.id).catch(() => undefined);
+  };
+
+  const handleUnsubscribe = () => {
+    void unsubscribeMutation.mutateAsync(podcast.id).catch(() => undefined);
+  };
 
   return (
     <section className="space-y-6" aria-labelledby="podcast-detail-heading">
@@ -109,11 +119,21 @@ export function PodcastDetails({ podcast, canManage = false, isDeleting = false,
                   {latestEpisode ? 'پخش آخرین اپیزود' : 'پخش در دسترس نیست'}
                 </span>
               </Button>
-              <SubscriptionActionButton
-                isSubscribed={isSubscribed}
-                onSubscribe={() => void subscribeMutation.mutateAsync(podcast.id)}
-                onUnsubscribe={() => void unsubscribeMutation.mutateAsync(podcast.id)}
-              />
+              <div className="flex flex-col items-start gap-2">
+                <SubscriptionActionButton
+                  isSubscribed={isSubscribed}
+                  onSubscribe={handleSubscribe}
+                  onUnsubscribe={handleUnsubscribe}
+                  isLoading={isFollowPending}
+                  error={followError}
+                />
+                {isSubscribed ? (
+                  <span className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3 py-1.5 text-sm font-medium text-accent">
+                    <Check className="h-4 w-4" aria-hidden="true" />
+                    در کتابخانه شما
+                  </span>
+                ) : null}
+              </div>
               {canManage ? (
                 <div className="flex flex-wrap gap-2">
                   <Link href={`/podcasts/${podcast.id}/edit`} className="button button-secondary min-h-[3rem]">

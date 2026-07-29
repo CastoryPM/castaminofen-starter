@@ -25,8 +25,8 @@ export function SubscriptionsSection({ items }: { items: LibrarySubscription[] }
         </div>
         <LibraryEmptyState
           title="هنوز پادکستی را دنبال نمی‌کنید"
-          description="پادکست‌هایی که در کتابخانه خود دارید در این بخش نمایش داده می‌شوند."
-          eyebrow="جستجو و شروع به دنبال کردن"
+          description="پادکست‌هایی که دنبال می‌کنید در این بخش ظاهر می‌شوند و بعداً در کتابخانه شما دسترسی سریعی خواهند داشت."
+          eyebrow="جستجو و دنبال کردن"
           icon={LibraryIcon}
         />
       </section>
@@ -53,6 +53,8 @@ export function SubscriptionsSection({ items }: { items: LibrarySubscription[] }
             isSubscribed
             onSubscribe={() => subscribeMutation.mutate(item.podcast.id)}
             onUnsubscribe={() => unsubscribeMutation.mutate(item.podcast.id)}
+            isLoading={subscribeMutation.isPending || unsubscribeMutation.isPending}
+            error={subscribeMutation.error || unsubscribeMutation.error ? 'در انجام این عملیات مشکلی پیش آمد. دوباره تلاش کنید.' : null}
           />
         ))}
       </div>
