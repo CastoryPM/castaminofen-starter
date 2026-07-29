@@ -14,12 +14,16 @@ export function LibraryPodcastCard({
   isSubscribed,
   onSubscribe,
   onUnsubscribe,
+  isLoading = false,
+  error,
 }: {
   podcast: Podcast;
   subscribedAt?: string;
   isSubscribed: boolean;
   onSubscribe: () => void;
   onUnsubscribe: () => void;
+  isLoading?: boolean;
+  error?: string | null;
 }) {
   const artworkInitial = podcast.title.trim().charAt(0) || 'پ';
   const playerState = usePlayerState();
@@ -54,7 +58,7 @@ export function LibraryPodcastCard({
               مشاهده پادکست
             </Link>
           </div>
-          <SubscriptionActionButton isSubscribed={isSubscribed} onSubscribe={onSubscribe} onUnsubscribe={onUnsubscribe} />
+          <SubscriptionActionButton isSubscribed={isSubscribed} onSubscribe={onSubscribe} onUnsubscribe={onUnsubscribe} isLoading={isLoading} error={error} />
         </div>
       </div>
     </Card>
