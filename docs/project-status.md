@@ -10,12 +10,12 @@
 
 ## فاز جاری
 
-- Phase PROFILE.3 — Edit Profile (MVP)
+- Phase RELEASE.1 — MVP Release Preparation
 
 ## پیشرفت کلی
 
 - Overall Progress: آماده برای انتشار MVP
-- Status: Release documentation and repository packaging in progress
+- Status: Ready for Release
 
 ## امکانات تکمیل‌شده
 
@@ -115,12 +115,12 @@
 
 ## نسخه‌ی جاری
 
-- Release target: v1.0.0-mvp
-- Release scope: MVP documentation and packaging preparation
+- Release target: v0.1.0
+- Release scope: First official MVP release preparation
 
 ## سلامت مخزن
 
-- Repository Health: Good for MVP release
+- Repository Health: Ready for MVP release
 - Documentation: aligned with implementation
 - Build/Test Health: green
 

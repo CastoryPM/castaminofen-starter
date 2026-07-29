@@ -231,7 +231,6 @@ In chat, only provide:
 - A brief completion summary (max 5 lines).
 - The path to the generated report.
 
-
 ## 17. Validation Gate
 
 From now on, no phase (whether Feature, Refactor, or Technical Dept) will not be considered a completed phase until these items are passed:
@@ -244,3 +243,29 @@ From now on, no phase (whether Feature, Refactor, or Technical Dept) will not be
 
 After that, the status of the phase becomes:
 - Completed
+
+
+## Release Branch Policy
+
+Every major feature MUST be developed under a dedicated Release Branch.
+
+Workflow:
+
+main
+│
+├── release/v0.1.0
+│   ├── feature/settings
+│   ├── feature/avatar
+│   ├── feature/notifications
+│   └── feature/search
+
+Rules:
+
+- Never create major feature branches directly from `main`.
+- Every major feature branch MUST be created from its target `release/*` branch.
+- Multiple related features intended for the same release MUST share the same release branch.
+- Feature branches MUST be merged back into their corresponding `release/*` branch first.
+- Only after the release is stabilized and approved may the `release/*` branch be merged into `main`.
+- Hotfixes are the only exception and may branch directly from `main` when necessary.
+
+

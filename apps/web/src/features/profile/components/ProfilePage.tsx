@@ -69,7 +69,7 @@ export function ProfilePage() {
       authStore.setUser(updatedUser);
       setFeedback({
         type: 'success',
-        message: 'پروفایل با موفقیت به‌روزرسانی شد.',
+        message: 'Profile updated successfully.',
       });
       setIsEditing(false);
     },
@@ -79,7 +79,7 @@ export function ProfilePage() {
         message:
           error instanceof Error
             ? error.message
-            : 'به‌روزرسانی پروفایل با مشکل مواجه شد.',
+            : 'Profile update failed.',
       });
     },
   });
@@ -105,7 +105,7 @@ export function ProfilePage() {
     const normalizedName = normalizeProfileName(nameInput);
 
     if (!normalizedName) {
-      setFeedback({ type: 'error', message: 'نام نمی‌تواند خالی باشد.' });
+      setFeedback({ type: 'error', message: 'Name cannot be empty.' });
       return;
     }
 
@@ -115,7 +115,7 @@ export function ProfilePage() {
 
   const quickActions = [
     {
-      label: 'ویرایش پروفایل',
+      label: 'Edit profile',
       description: 'به‌روزرسانی اطلاعات حساب',
       variant: 'primary' as const,
       disabled: true,
