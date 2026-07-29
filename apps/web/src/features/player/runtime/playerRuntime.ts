@@ -13,6 +13,8 @@ export type PlayerRuntimeController = {
   setVolume(volume: number): void;
   setCurrentTime(position: number): void;
   replaceQueue(items: PlayableItem[], startIndex?: number): Promise<void>;
+  appendToQueue(item: PlayableItem): void;
+  removeFromQueue(itemId: string): boolean;
   clearQueue(): void;
   next(): Promise<void>;
   previous(): Promise<void>;
@@ -339,7 +341,21 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
       const targetItem = items[targetIndex] ?? items[0];
 
       store.replaceQueue(items, targetIndex);
+      persistCurrentPlayerState();
       await playItem(targetItem);
+    },
+    appendToQueue(item) {
+      if (!item) {
+        return;
+      }
+
+      store.appendToQueue(item);
+      persistCurrentPlayerState();
+    },
+    removeFromQueue(itemId) {
+      const removed = store.removeFromQueue(itemId);
+      persistCurrentPlayerState();
+      return removed;
     },
     clearQueue() {
       currentLoadToken += 1;

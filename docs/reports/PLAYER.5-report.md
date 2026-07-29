@@ -2,79 +2,63 @@
 
 ## Executive Summary
 
-The player experience now exposes a lightweight queue surface that reuses the existing runtime store, queue ownership, and playback actions. Users can see the current item, review upcoming episodes, open the queue from the compact player bar, toggle playback modes, and clear the queue without changing underlying playback logic.
+The player queue now supports a lightweight MVP experience that preserves the existing player ownership model. Users can open the queue from the player bar, see the currently playing item and upcoming items, add a new item to the tail of the queue, remove upcoming items, and clear the queue while keeping the runtime state and persistence flow intact.
 
-## Queue Runtime Audit Findings
+## Scope Completed
 
-- Queue state lives in the existing Zustand player store in apps/web/src/features/player/store/playerStore.ts.
-- The runtime exposes queue data via currentItem, queue, currentIndex, repeatMode, and shuffleEnabled.
-- Playback actions remain owned by the existing player runtime controller in apps/web/src/features/player/runtime/playerRuntime.ts.
-- The current implementation already supports queue clearing, next/previous navigation, repeat, and shuffle through the runtime and store actions.
+- Added queue visibility in the existing player bar panel.
+- Added MVP queue mutations through the runtime and store layers.
+- Kept queue ownership inside the player feature and preserved playback behavior.
+- Added persistence-aware queue updates so queue changes survive reloads.
+- Added regression tests for runtime, persistence, and queue panel UI behavior.
 
-## Queue Architecture
+## Queue Architecture Changes
 
-The queue experience is implemented as a UI extension of the existing player bar rather than a new store or playback engine. It consumes the existing player state and routes queue actions through the existing runtime controller.
+- Extended the player store with queue mutation helpers in [apps/web/src/features/player/store/playerStore.ts](apps/web/src/features/player/store/playerStore.ts).
+- Extended the runtime controller with append/remove queue APIs in [apps/web/src/features/player/runtime/playerRuntime.ts](apps/web/src/features/player/runtime/playerRuntime.ts).
+- Kept queue state validation consistent so the current item and current index remain aligned after mutations.
 
-## Queue Panel Experience
+## Runtime Changes
 
-- Added a queue access button in the compact player bar.
-- Added a dedicated queue panel that shows the current playing item and the upcoming queue.
-- Added a premium empty state for when no upcoming items are available.
+- Added append-to-queue support via the runtime controller.
+- Added remove-from-queue support for upcoming items.
+- Kept current playback unchanged when appending or removing items.
+- Ensured queue mutations persist through the existing player snapshot flow.
 
-## Current Playing Improvements
+## UI/UX Changes
 
-- The queue panel highlights the active item in a distinct section.
-- The active item uses the same artwork fallback and metadata patterns as the existing player experience.
+- Expanded the queue panel in [apps/web/src/features/player/components/PlayerBar.tsx](apps/web/src/features/player/components/PlayerBar.tsx) to show the current item and ordered upcoming items.
+- Added queue actions for adding a fresh item, removing an upcoming item, and clearing the queue.
+- Improved the empty state copy for an empty or non-playing queue.
 
-## Up Next Experience
+## Persistence Impact
 
-- Upcoming items are displayed in order with a visible position indicator.
-- Each upcoming item provides a direct play action that reuses the runtime loadItem action.
+- Queue mutations now write through the existing persisted player snapshot.
+- Restoring the player snapshot continues to reconstruct a valid queue/current index/current item relationship.
 
-## Queue Actions
+## Tests Added
 
-- Added a clear queue action that uses the existing runtime clearQueue method.
-- Added a close action for the queue panel.
-- Added a direct play action for upcoming items without altering runtime behavior.
-
-## Shuffle/Repeat Integration
-
-- The queue panel surfaces the current repeat and shuffle states using the existing store values.
-- No playback behavior was changed.
-
-## Player Bar Improvements
-
-- The compact player bar now includes a queue button with a short hint about the queue state.
-- The queue button remains lightweight and does not add a separate navigation flow.
-
-## Empty/Error States
-
-- The queue drawer shows an empty state when no items are queued.
-- The existing player error message continues to surface through the player bar.
-
-## Accessibility Improvements
-
-- The queue button has an accessible label.
-- The queue panel and item actions use semantic button patterns.
-- Focus rings remain consistent with the existing button treatment.
-
-## Responsive Improvements
-
-- The queue panel is optimized for the existing card-based player layout and remains usable in the compact player experience.
-- The experience fits the current mobile-friendly shell without introducing a separate navigation model.
-
-## Files Modified
-
-- apps/web/src/features/player/components/PlayerBar.tsx
-- apps/web/src/features/player/utils/playerPresentation.ts
-- apps/web/src/features/player/utils/playerPresentation.test.ts
+- Runtime tests for append/remove/clear queue behavior in [apps/web/src/features/player/runtime/playerRuntime.test.ts](apps/web/src/features/player/runtime/playerRuntime.test.ts).
+- UI tests for queue visibility and remove action behavior in [apps/web/src/features/player/components/PlayerBar.test.tsx](apps/web/src/features/player/components/PlayerBar.test.tsx).
 
 ## Validation Results
 
-- Web tests: 62 passed
-- Web build: succeeded
+- Web tests: 88 passed.
+- Production build: succeeded.
 
-## Remaining Recommendations (Outside MVP)
+## Files Changed
 
-- Add drag-and-drop reordering if the runtime later exposes a supported reorder action.
-- Consider richer queue metadata such as remaining time or episode duration once the runtime provides a shared presentation utility.
+- [apps/web/src/features/player/components/PlayerBar.tsx](apps/web/src/features/player/components/PlayerBar.tsx)
+- [apps/web/src/features/player/components/PlayerBar.test.tsx](apps/web/src/features/player/components/PlayerBar.test.tsx)
+- [apps/web/src/features/player/runtime/playerRuntime.ts](apps/web/src/features/player/runtime/playerRuntime.ts)
+- [apps/web/src/features/player/runtime/playerRuntime.test.ts](apps/web/src/features/player/runtime/playerRuntime.test.ts)
+- [apps/web/src/features/player/store/playerStore.ts](apps/web/src/features/player/store/playerStore.ts)
+
+## Known Limitations
+
+- Queue reordering remains out of scope for this MVP.
+- The add-to-queue action in the UI uses a lightweight placeholder item derived from the current item, which is sufficient for MVP validation but not a full content-selection experience.
+
+## Next Recommended Phase
+
+- PLAYER.6: Queue interaction polish, including richer queue item actions and stronger queue item selection flows from episode and podcast surfaces.

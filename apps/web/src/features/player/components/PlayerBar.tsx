@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { ListMusic, Play, X } from 'lucide-react';
+import { ListMusic, Play, Plus, Trash2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PlayerControls } from './PlayerControls';
 import { PlayerInfo } from './PlayerInfo';
@@ -18,6 +18,16 @@ export function PlayerBar() {
 
   const queueDisplay = useMemo(() => getQueueDisplayItems(queue, currentIndex), [queue, currentIndex]);
   const queueCountLabel = queue.length > 1 ? `${queue.length - (currentIndex >= 0 ? 1 : 0)} مورد دیگر در صف` : 'صف خالی';
+  const handleQueueAction = () => {
+    if (currentItem) {
+      const appendedItem = {
+        ...currentItem,
+        id: `${currentItem.id}-queued`,
+        title: `${currentItem.title} (در صف)`
+      };
+      playerRuntime.appendToQueue(appendedItem);
+    }
+  };
 
   return (
     <div className="rounded-[1.5rem] border border-border/80 bg-gradient-to-br from-surface-secondary/95 to-surface-card/90 p-3 shadow-soft backdrop-blur sm:p-4">
@@ -115,6 +125,33 @@ export function PlayerBar() {
                   {queueDisplay.upNext.length > 0 ? `${queueDisplay.upNext.length} مورد` : 'هیچ موردی در صف بعدی نیست'}
                 </p>
               </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  className="rounded-full"
+                  onClick={handleQueueAction}
+                  disabled={!currentItem}
+                  aria-label="افزودن به صف پخش"
+                >
+                  <span className="flex items-center gap-2">
+                    <Plus size={14} />
+                    افزودن به صف
+                  </span>
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="rounded-full"
+                  onClick={() => playerRuntime.clearQueue()}
+                  disabled={queue.length === 0}
+                  aria-label="پاک کردن صف پخش"
+                >
+                  پاک کردن صف
+                </Button>
+              </div>
               {queueDisplay.upNext.length > 0 ? (
                 <ul className="mt-3 space-y-2" aria-label="Queue items">
                   {queueDisplay.upNext.map((item) => (
@@ -126,17 +163,31 @@ export function PlayerBar() {
                         <p className="truncate text-sm font-medium text-text-primary">{item.title}</p>
                         <p className="truncate text-xs text-text-secondary">{item.subtitle ?? 'اپیزود'}</p>
                       </div>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="rounded-full p-2"
-                        onClick={() => void playerRuntime.loadItem(item)}
-                        aria-label={`پخش ${item.title}`}
-                        title={`پخش ${item.title}`}
-                      >
-                        <Play size={14} />
-                      </Button>
+                      <div className="flex items-center gap-1">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="rounded-full p-2"
+                          onClick={() => void playerRuntime.loadItem(item)}
+                          aria-label={`پخش ${item.title}`}
+                          title={`پخش ${item.title}`}
+                        >
+                          <Play size={14} />
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="rounded-full p-2"
+                          onClick={() => playerRuntime.removeFromQueue(item.id)}
+                          aria-label={`حذف ${item.title}`}
+                          title={`حذف ${item.title}`}
+                          data-testid={`queue-remove-${item.id}`}
+                        >
+                          <Trash2 size={14} />
+                        </Button>
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -154,17 +205,6 @@ export function PlayerBar() {
               <div className="rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
                 {shuffleEnabled ? 'تصادفی: روشن' : 'تصادفی: خاموش'}
               </div>
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="rounded-full"
-                onClick={() => playerRuntime.clearQueue()}
-                disabled={queue.length === 0}
-                aria-label="پاک کردن صف پخش"
-              >
-                پاک کردن صف
-              </Button>
             </div>
           </div>
         </div>

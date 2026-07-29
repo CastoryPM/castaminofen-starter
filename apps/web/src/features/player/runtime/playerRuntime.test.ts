@@ -335,6 +335,58 @@ describe('PlayerRuntime controller', () => {
     expect(engine.stop).toHaveBeenCalled();
   });
 
+  test('appendToQueue adds an item to the end of the queue without changing current playback state', () => {
+    const store = usePlayerStore.getState();
+    const controller = createPlayerRuntimeController(store, createEngineMock());
+    const currentItem = createItem('a');
+    const nextItem = createItem('b');
+
+    usePlayerStore.setState({
+      ...store,
+      currentItem,
+      queue: [currentItem],
+      currentIndex: 0,
+      playbackStatus: 'playing',
+      error: null,
+      isPlaying: true,
+    });
+
+    controller.appendToQueue(nextItem);
+
+    const state = usePlayerStore.getState();
+    expect(state.queue.map((item) => item.id)).toEqual(['a', 'b']);
+    expect(state.currentItem?.id).toBe('a');
+    expect(state.currentIndex).toBe(0);
+    const persisted = window.localStorage.getItem('castaminofen-player-state');
+    expect(persisted).toContain('"queue"');
+  });
+
+  test('removeFromQueue removes upcoming items and preserves the current item', () => {
+    const store = usePlayerStore.getState();
+    const controller = createPlayerRuntimeController(store, createEngineMock());
+    const currentItem = createItem('a');
+    const upcomingItem = createItem('b');
+    const trailingItem = createItem('c');
+
+    usePlayerStore.setState({
+      ...store,
+      currentItem,
+      queue: [currentItem, upcomingItem, trailingItem],
+      currentIndex: 0,
+      playbackStatus: 'playing',
+      error: null,
+      isPlaying: true,
+    });
+
+    const removed = controller.removeFromQueue(upcomingItem.id);
+
+    const state = usePlayerStore.getState();
+    expect(removed).toBe(true);
+    expect(state.queue.map((item) => item.id)).toEqual(['a', 'c']);
+    expect(state.currentItem?.id).toBe('a');
+    expect(state.currentIndex).toBe(0);
+  });
+
   test('clearQueue resets playback state and stops audio engine', () => {
     const store = usePlayerStore.getState();
     const engine = createEngineMock();
