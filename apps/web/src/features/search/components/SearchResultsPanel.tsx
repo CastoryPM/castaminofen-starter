@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Play } from 'lucide-react';
+import { Play, Plus } from 'lucide-react';
 import { useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -60,6 +60,10 @@ export function SearchResultsPanel({ query, page }: SearchResultsPanelProps) {
     }
 
     await playerRuntime.loadItem(mapEpisodeToPlayableItem(episode));
+  };
+
+  const handleAddToQueue = (episode: Episode) => {
+    playerRuntime.appendToQueue(mapEpisodeToPlayableItem(episode));
   };
 
   if (result.isLoading) {
@@ -148,6 +152,12 @@ export function SearchResultsPanel({ query, page }: SearchResultsPanelProps) {
                     <span className="flex items-center gap-2">
                       <Play className="h-4 w-4" aria-hidden="true" />
                       {episode.audioUrl ? 'پخش' : 'در دسترس نیست'}
+                    </span>
+                  </Button>
+                  <Button type="button" variant="ghost" className="min-h-[2.75rem]" onClick={() => handleAddToQueue(episode)} aria-label={`افزودن اپیزود ${episode.title} به صف`}>
+                    <span className="flex items-center gap-2">
+                      <Plus className="h-4 w-4" aria-hidden="true" />
+                      افزودن به صف
                     </span>
                   </Button>
                   <Link href={`/episodes/${episode.id}`} className="button button-secondary min-h-[2.75rem] justify-center">

@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Check, Play, Sparkles } from 'lucide-react';
+import { Check, Play, Plus, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { SubscriptionActionButton } from '@/features/library/components/SubscriptionActionButton';
@@ -70,6 +70,10 @@ export function PodcastDetails({ podcast, canManage = false, isDeleting = false,
     }
 
     await playerRuntime.loadItem(mapEpisodeToPlayableItem(episode));
+  };
+
+  const handleAddToQueue = (episode: Episode) => {
+    playerRuntime.appendToQueue(mapEpisodeToPlayableItem(episode));
   };
 
   const latestEpisode = podcast.episodes?.[0];
@@ -245,6 +249,12 @@ export function PodcastDetails({ podcast, canManage = false, isDeleting = false,
                         aria-label={`پخش اپیزود ${episode.title}`}
                       >
                         {playbackLabel}
+                      </Button>
+                      <Button type="button" variant="ghost" className="min-h-[2.75rem]" onClick={() => handleAddToQueue(episode)} aria-label={`افزودن اپیزود ${episode.title} به صف`}>
+                        <span className="flex items-center gap-2">
+                          <Plus className="h-4 w-4" aria-hidden="true" />
+                          افزودن به صف
+                        </span>
                       </Button>
                       <Link href={`/episodes/${episode.id}`} className="button button-secondary min-h-[2.75rem] justify-center">
                         مشاهده اپیزود

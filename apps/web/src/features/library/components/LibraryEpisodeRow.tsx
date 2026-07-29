@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Clock3, PlayCircle } from 'lucide-react';
+import { Clock3, PlayCircle, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { Episode, Podcast } from '@/lib/types';
 import { getProgressMetadata } from '../utils/library-mappers';
@@ -13,6 +13,7 @@ export function LibraryEpisodeRow({
   durationSeconds,
   onResume,
   isPlaying,
+  onQueue,
 }: {
   episode: Episode;
   podcastTitle?: string;
@@ -20,6 +21,7 @@ export function LibraryEpisodeRow({
   durationSeconds?: number | null;
   onResume: () => void;
   isPlaying: boolean;
+  onQueue?: () => void;
 }) {
   const artworkInitial = episode.title.trim().charAt(0) || 'پ';
   const artworkUrl = (episode as Episode & { podcast?: Podcast | null }).podcast?.artworkUrl;
@@ -68,6 +70,14 @@ export function LibraryEpisodeRow({
         <Button variant="secondary" size="sm" className="min-h-[2.5rem]" onClick={onResume} aria-label={`ادامه پخش ${episode.title}`}>
           {isPlaying ? 'ادامه پخش' : 'ادامه'}
         </Button>
+        {onQueue ? (
+          <Button variant="ghost" size="sm" className="min-h-[2.5rem]" onClick={onQueue} aria-label={`افزودن ${episode.title} به صف`}>
+            <span className="flex items-center gap-2">
+              <Plus className="h-4 w-4" aria-hidden="true" />
+              افزودن به صف
+            </span>
+          </Button>
+        ) : null}
       </div>
     </div>
   );

@@ -20,12 +20,7 @@ export function PlayerBar() {
   const queueCountLabel = queue.length > 1 ? `${queue.length - (currentIndex >= 0 ? 1 : 0)} مورد دیگر در صف` : 'صف خالی';
   const handleQueueAction = () => {
     if (currentItem) {
-      const appendedItem = {
-        ...currentItem,
-        id: `${currentItem.id}-queued`,
-        title: `${currentItem.title} (در صف)`
-      };
-      playerRuntime.appendToQueue(appendedItem);
+      playerRuntime.appendToQueue(currentItem);
     }
   };
 

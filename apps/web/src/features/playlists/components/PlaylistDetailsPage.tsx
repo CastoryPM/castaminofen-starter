@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { usePlayerRuntime } from '@/features/player';
+import { mapEpisodeToPlayableItem } from '@/features/player/adapters/episodeToPlayable';
 import { PlaylistActionBar } from './PlaylistActionBar';
 import { PlaylistEpisodeList } from './PlaylistEpisodeList';
 import { PlaylistErrorState } from './PlaylistErrorState';
@@ -120,6 +121,9 @@ export function PlaylistDetailsPage() {
           items={playlist.items ?? []}
           onPlay={(item) => {
             void handlePlayFromEpisode(item.episodeId);
+          }}
+          onQueue={(item) => {
+            playerRuntime.appendToQueue(mapEpisodeToPlayableItem(item.episode));
           }}
           onRemove={(item) => {
             void handleRemoveEpisode(item.episodeId);

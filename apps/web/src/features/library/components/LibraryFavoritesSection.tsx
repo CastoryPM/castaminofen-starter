@@ -1,6 +1,6 @@
 'use client';
 
-import { Play } from 'lucide-react';
+import { Play, Plus } from 'lucide-react';
 import Image from 'next/image';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { usePlayerRuntime } from '@/features/player/hooks/usePlayerRuntime';
@@ -113,6 +113,16 @@ export function LibraryFavoritesSection() {
               >
                 <Play className="mr-2 h-4 w-4" aria-hidden="true" />
                 Play
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => playerRuntime.appendToQueue(mapEpisodeToPlayableItem(item.episode))}
+                aria-label={`Add ${item.episode.title} to queue`}
+              >
+                <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
+                افزودن به صف
               </Button>
               <FavoriteActionButton episodeId={item.episodeId} />
             </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import { Play, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { usePlayerRuntime } from '@/features/player';
@@ -33,6 +34,10 @@ export function EpisodeDetailView({
     await playerRuntime.loadItem(mapEpisodeToPlayableItem(episode));
   };
 
+  const handleAddToQueue = () => {
+    playerRuntime.appendToQueue(mapEpisodeToPlayableItem(episode));
+  };
+
   return (
     <main className="page-container">
       <section className="card">
@@ -55,9 +60,20 @@ export function EpisodeDetailView({
             </p>
             {episode.audioUrl ? (
               <>
-                <Button type="button" variant="secondary" className="mt-3" onClick={() => void handlePlay()}>
-                  Play Episode
-                </Button>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <Button type="button" variant="secondary" onClick={() => void handlePlay()}>
+                    <span className="flex items-center gap-2">
+                      <Play className="h-4 w-4" aria-hidden="true" />
+                      پخش اپیزود
+                    </span>
+                  </Button>
+                  <Button type="button" variant="ghost" onClick={handleAddToQueue}>
+                    <span className="flex items-center gap-2">
+                      <Plus className="h-4 w-4" aria-hidden="true" />
+                      افزودن به صف
+                    </span>
+                  </Button>
+                </div>
                 <p className="form-message mt-3">Audio is available and can be played from the player surface in the app shell.</p>
               </>
             ) : (

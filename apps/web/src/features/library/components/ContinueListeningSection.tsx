@@ -110,6 +110,18 @@ export function ContinueListeningSection({ items }: { items: LibraryListeningHis
                 { startTime },
               );
             }}
+            onQueue={() => {
+              playerRuntime.appendToQueue({
+                id: item.episode.id,
+                title: item.episode.title,
+                subtitle: item.episode.description,
+                audioUrl: item.episode.audioUrl,
+                artworkUrl: item.episode.podcast?.artworkUrl,
+                duration: undefined,
+                podcastId: item.episode.podcast?.id,
+                sourceType: 'library',
+              });
+            }}
           />
         ))}
       </div>
