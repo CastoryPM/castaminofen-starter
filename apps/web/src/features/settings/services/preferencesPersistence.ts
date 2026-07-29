@@ -1,4 +1,4 @@
-import { DEFAULT_SETTINGS_PREFERENCES, type SettingsPreferences, type SettingsThemePreference } from '../model/preferences';
+import { DEFAULT_SETTINGS_PREFERENCES, type SettingsNotificationPreferences, type SettingsPreferences, type SettingsThemePreference } from '../model/preferences';
 
 const SETTINGS_PREFERENCES_STORAGE_KEY = 'castaminofen-settings-preferences';
 
@@ -18,6 +18,16 @@ const normalizeDefaultVolume = (value: unknown): number => {
   }
 
   return Math.min(1, Math.max(0, value));
+};
+
+const normalizeNotificationPreferences = (value: unknown): SettingsNotificationPreferences => {
+  const source = typeof value === 'object' && value !== null ? (value as Record<string, unknown>) : {};
+
+  return {
+    enabled: typeof source.enabled === 'boolean' ? source.enabled : DEFAULT_SETTINGS_PREFERENCES.notifications.enabled,
+    newEpisodes: typeof source.newEpisodes === 'boolean' ? source.newEpisodes : DEFAULT_SETTINGS_PREFERENCES.notifications.newEpisodes,
+    productUpdates: typeof source.productUpdates === 'boolean' ? source.productUpdates : DEFAULT_SETTINGS_PREFERENCES.notifications.productUpdates,
+  };
 };
 
 export function readSettingsPreferences(): SettingsPreferences {
@@ -45,6 +55,7 @@ export function readSettingsPreferences(): SettingsPreferences {
       autoplay: typeof parsed.autoplay === 'boolean' ? parsed.autoplay : DEFAULT_SETTINGS_PREFERENCES.autoplay,
       defaultVolume: normalizeDefaultVolume(parsed.defaultVolume),
       resumePlayback: typeof parsed.resumePlayback === 'boolean' ? parsed.resumePlayback : DEFAULT_SETTINGS_PREFERENCES.resumePlayback,
+      notifications: normalizeNotificationPreferences(parsed.notifications),
     };
   } catch {
     return DEFAULT_SETTINGS_PREFERENCES;
@@ -63,6 +74,7 @@ export function writeSettingsPreferences(preferences: SettingsPreferences): Sett
     autoplay: typeof preferences.autoplay === 'boolean' ? preferences.autoplay : DEFAULT_SETTINGS_PREFERENCES.autoplay,
     defaultVolume: normalizeDefaultVolume(preferences.defaultVolume),
     resumePlayback: typeof preferences.resumePlayback === 'boolean' ? preferences.resumePlayback : DEFAULT_SETTINGS_PREFERENCES.resumePlayback,
+    notifications: normalizeNotificationPreferences(preferences.notifications),
   };
 
   try {

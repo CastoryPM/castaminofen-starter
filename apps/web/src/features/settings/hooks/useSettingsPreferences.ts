@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { DEFAULT_SETTINGS_PREFERENCES, type SettingsPreferences, type SettingsThemePreference } from '../model/preferences';
+import { DEFAULT_SETTINGS_PREFERENCES, type SettingsNotificationPreferences, type SettingsPreferences, type SettingsThemePreference } from '../model/preferences';
 import { readSettingsPreferences, writeSettingsPreferences } from '../services/preferencesPersistence';
 
 export function useSettingsPreferences() {
@@ -14,6 +14,10 @@ export function useSettingsPreferences() {
       const nextPreferences = {
         ...currentPreferences,
         ...updates,
+        notifications: {
+          ...currentPreferences.notifications,
+          ...(updates.notifications ?? {}),
+        },
       };
 
       writeSettingsPreferences(nextPreferences);
@@ -38,11 +42,21 @@ export function useSettingsPreferences() {
     updatePreference({ resumePlayback });
   };
 
+  const updateNotifications = (updates: Partial<SettingsNotificationPreferences>) => {
+    updatePreference({
+      notifications: {
+        ...preferences.notifications,
+        ...updates,
+      },
+    });
+  };
+
   return {
     preferences,
     updateTheme,
     updateAutoplay,
     updateDefaultVolume,
     updateResumePlayback,
+    updateNotifications,
   };
 }
