@@ -2,6 +2,7 @@
 
 | تاریخ | فاز | تغییرات | وضعیت |
 | --- | --- | --- | --- |
+| 2026-07-29 | Phase PODCAST.1 — Podcast Detail Experience MVP | Reworked the podcast detail experience into a premium, focused destination with a stronger hero, richer metadata, polished episode browsing, graceful empty/loading states, and existing Player/Library integration while preserving routes, APIs, and feature boundaries | انجام شده |
 | 2026-07-29 | Phase LIBRARY.2 — Library Experience & UX Consolidation MVP | Refined the Library experience with clearer hierarchy, more polished empty/loading/error states, more consistent card presentation, and stronger responsive spacing while preserving routes, APIs, player integration, and feature ownership boundaries | انجام شده |
 | 2026-07-29 | Phase PLAYER.4 — Player Experience & Runtime Polish MVP | Refined the compact player experience with improved header hierarchy, richer control feedback, clearer progress/buffering states, better queue awareness, and more polished loading/error messaging while preserving the existing Player runtime, queue ownership, and API surface | انجام شده |
 | 2026-07-29 | Phase UI.DESIGN.2 — Design Tokens & Component Specification System | Expanded the design-system documentation into a full implementation specification covering semantic design tokens, component standards, spacing/layout, typography, elevation, motion, responsive rules, iconography, component inventory, naming conventions, accessibility, and a formal report while preserving routes, APIs, and feature boundaries | انجام شده |

@@ -10,7 +10,7 @@
 
 ## فاز جاری
 
-- Phase PLAYER.4 — Player Experience & Runtime Polish MVP
+- Phase PODCAST.1 — Podcast Detail Experience MVP
 
 ## پیشرفت کلی
 
@@ -81,6 +81,7 @@
 
 ## تغییر اخیر — 2026-07-29
 
+- Phase PODCAST.1 — Podcast Detail Experience MVP تکمیل شد. تجربه‌ی جزئیات پادکست به یک مقصد متمرکز و حرفه‌ای تبدیل شد با hero قوی‌تر، نمایش metadata واضح‌تر، لیست اپیزودهای روان‌تر، stateهای خالی/بارگذاری/خطا، و اتصال به Player/Library فعلی بدون تغییر در روت‌ها، API‌ها یا مرزهای feature.
 - Phase UI.DESIGN.2 — Design Tokens & Component Specification System تکمیل شد. مجموعه‌ی مستندات سیستم طراحی با توکن‌های معنایی، مشخصات کامپوننت، مقیاس spacing/layout، تایپوگرافی، elevation، motion، responsive، accessibility، inventory و naming conventions به‌روزرسانی شد و به‌عنوان مرجع رسمی برای UI آینده ثبت گردید بدون تغییر در منطق کسب‌وکار، روت‌ها، API یا مالکیت featureها.
 - Phase PLAYER.4 — Player Experience & Runtime Polish MVP تکمیل شد. تجربه‌ی Player در سطح compact shell با بهبود hierarchy عنوان/پادکست/آرت‌ورک، بازخوردهای روشن‌تر برای کنترل‌ها، نمایش بهتر progress/buffering، هشدارهای queue-aware و polish loading/error در مرز Player به‌روزرسانی شد بدون تغییر در runtime، queue logic، API‌ها یا مالکیت feature.
 - Phase UI.DESIGN.1 — Brand Identity System تکمیل شد. سیستم طراحی وب با توکن‌های معنایی، سطح‌بندی سطوح، تایپوگرافی و قوانین استفاده از رنگ‌های برند به‌روزرسانی شد و مستندات طراحی به‌عنوان منبع مرجع رسمی ثبت شد بدون تغییر در منطق کسب‌وکار، روت‌ها، API یا مالکیت featureها.
