@@ -19,9 +19,13 @@ export function PlayerVolume() {
         step={0.05}
         value={Number.isFinite(volume) ? volume : 0.8}
         onChange={(event) => playerRuntime.setVolume(Number(event.target.value))}
-        className="h-2 w-20 cursor-pointer appearance-none rounded-full bg-surface-primary/80 accent-accent"
+        className="h-2 w-20 cursor-pointer appearance-none rounded-full bg-surface-primary/80 accent-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
         disabled={disabled}
         aria-label="Playback volume"
+        aria-valuemin={0}
+        aria-valuemax={1}
+        aria-valuenow={Math.round((Number.isFinite(volume) ? volume : 0.8) * 100) / 100}
+        aria-valuetext={`${Math.round((Number.isFinite(volume) ? volume : 0.8) * 100)}% volume`}
       />
     </div>
   );

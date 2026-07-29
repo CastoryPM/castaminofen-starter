@@ -6,6 +6,7 @@ import { Header } from '@/components/layout/header';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { MobileContainer } from '@/components/layout/mobile-container';
 import { PlayerBar } from '@/features/player/components/PlayerBar';
+import { InstallBanner } from '@/components/pwa/install-banner';
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -17,7 +18,10 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="app-shell min-h-screen bg-surface-primary text-text-primary">
         <main className="min-h-screen">
           <div className="mx-auto flex min-h-screen w-full max-w-5xl items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
-            {children}
+            <div className="w-full">
+              <InstallBanner />
+              {children}
+            </div>
           </div>
         </main>
       </div>
@@ -29,7 +33,10 @@ export function AppShell({ children }: { children: ReactNode }) {
       {!isLanding && <Header />}
       <main className="flex-1">
         <MobileContainer>
-          <div className="app-shell__content px-1 py-3 sm:px-0 sm:py-4">{children}</div>
+          <div className="app-shell__content px-1 py-3 sm:px-0 sm:py-4">
+            <InstallBanner />
+            {children}
+          </div>
         </MobileContainer>
       </main>
       {!isLanding && (

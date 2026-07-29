@@ -87,6 +87,34 @@ describe('PlayerRuntime controller', () => {
     controller.destroy();
   });
 
+  test('restores persisted playback by reloading the audio source and restoring the saved position', () => {
+    const persistedItem = createItem('resume-on-refresh');
+    window.localStorage.setItem(
+      'castaminofen-player-state',
+      JSON.stringify({
+        currentItem: persistedItem,
+        queue: [persistedItem],
+        currentIndex: 0,
+        playbackStatus: 'paused',
+        duration: 180,
+        currentPosition: 42,
+        volume: 0.5,
+        repeatMode: 'off',
+        shuffleEnabled: false,
+        error: null,
+      }),
+    );
+
+    const store = usePlayerStore.getState();
+    const engine = createEngineMock();
+    const controller = createPlayerRuntimeController(store, engine);
+
+    expect(engine.load).toHaveBeenCalledWith('https://example.com/resume-on-refresh.mp3');
+    expect(engine.setCurrentTime).toHaveBeenCalledWith(42);
+
+    controller.destroy();
+  });
+
   test('applies a persisted default volume preference on startup', () => {
     window.localStorage.setItem(
       'castaminofen-settings-preferences',
@@ -335,6 +363,58 @@ describe('PlayerRuntime controller', () => {
     expect(engine.stop).toHaveBeenCalled();
   });
 
+  test('appendToQueue adds an item to the end of the queue without changing current playback state', () => {
+    const store = usePlayerStore.getState();
+    const controller = createPlayerRuntimeController(store, createEngineMock());
+    const currentItem = createItem('a');
+    const nextItem = createItem('b');
+
+    usePlayerStore.setState({
+      ...store,
+      currentItem,
+      queue: [currentItem],
+      currentIndex: 0,
+      playbackStatus: 'playing',
+      error: null,
+      isPlaying: true,
+    });
+
+    controller.appendToQueue(nextItem);
+
+    const state = usePlayerStore.getState();
+    expect(state.queue.map((item) => item.id)).toEqual(['a', 'b']);
+    expect(state.currentItem?.id).toBe('a');
+    expect(state.currentIndex).toBe(0);
+    const persisted = window.localStorage.getItem('castaminofen-player-state');
+    expect(persisted).toContain('"queue"');
+  });
+
+  test('removeFromQueue removes upcoming items and preserves the current item', () => {
+    const store = usePlayerStore.getState();
+    const controller = createPlayerRuntimeController(store, createEngineMock());
+    const currentItem = createItem('a');
+    const upcomingItem = createItem('b');
+    const trailingItem = createItem('c');
+
+    usePlayerStore.setState({
+      ...store,
+      currentItem,
+      queue: [currentItem, upcomingItem, trailingItem],
+      currentIndex: 0,
+      playbackStatus: 'playing',
+      error: null,
+      isPlaying: true,
+    });
+
+    const removed = controller.removeFromQueue(upcomingItem.id);
+
+    const state = usePlayerStore.getState();
+    expect(removed).toBe(true);
+    expect(state.queue.map((item) => item.id)).toEqual(['a', 'c']);
+    expect(state.currentItem?.id).toBe('a');
+    expect(state.currentIndex).toBe(0);
+  });
+
   test('clearQueue resets playback state and stops audio engine', () => {
     const store = usePlayerStore.getState();
     const engine = createEngineMock();
@@ -497,7 +577,7 @@ describe('PlayerRuntime controller', () => {
 
     await expect(controller.play()).rejects.toThrow('Play failed');
     expect(usePlayerStore.getState().playbackStatus).toBe('paused');
-    expect(usePlayerStore.getState().error).toBe('Unable to start playback.');
+    expect(usePlayerStore.getState().error).toBe('Unable to play episode.');
   });
 
   test('multiple rapid next calls only preserve the latest transition', async () => {

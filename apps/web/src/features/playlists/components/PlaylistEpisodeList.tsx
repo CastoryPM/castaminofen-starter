@@ -1,7 +1,8 @@
+import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { PlaylistItem } from '../types';
 
-export function PlaylistEpisodeList({ items, onPlay, onRemove }: { items: PlaylistItem[]; onPlay: (item: PlaylistItem) => void; onRemove: (item: PlaylistItem) => void }) {
+export function PlaylistEpisodeList({ items, onPlay, onRemove, onQueue }: { items: PlaylistItem[]; onPlay: (item: PlaylistItem) => void; onRemove: (item: PlaylistItem) => void; onQueue: (item: PlaylistItem) => void }) {
   if (!items.length) {
     return <div className="rounded-2xl border border-dashed border-border bg-surface-primary/70 p-6 text-center text-text-secondary">این لیست هنوز اپیزودی ندارد. با افزودن اپیزودها، تجربه پخش بهتر می‌شود.</div>;
   }
@@ -17,6 +18,12 @@ export function PlaylistEpisodeList({ items, onPlay, onRemove }: { items: Playli
           <div className="flex gap-2 self-start sm:self-auto">
             <Button type="button" variant="secondary" size="sm" onClick={() => onPlay(item)}>
               پخش
+            </Button>
+            <Button type="button" variant="ghost" size="sm" onClick={() => onQueue(item)}>
+              <span className="flex items-center gap-2">
+                <Plus className="h-4 w-4" aria-hidden="true" />
+                افزودن به صف
+              </span>
             </Button>
             <Button type="button" variant="ghost" size="sm" onClick={() => onRemove(item)}>
               حذف

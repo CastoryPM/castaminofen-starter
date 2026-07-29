@@ -33,9 +33,18 @@
 - No scheduler, queue, worker, or API contract changes were introduced
 - ESLint errors: 5 pre-existing parsing errors in unrelated .spec.ts files (not new)
 
+## Frontend PWA Status
+
+- Phase PWA.1 — Web App Installation Support: completed
+- Added a minimal manifest and install metadata for the web app, exposed the manifest through the shared app layout, and registered a small service worker for supported browsers.
+- Added a lightweight install banner in the shared app shell that reacts to the browser install prompt without interrupting the existing experience.
+- Kept the change scoped to the app shell and configuration layer; Player, Podcast, Episode, Library, and Profile features remain unchanged.
+
 ## Frontend Player Runtime Status
 
 - Phase Player.1 — MVP Playback Runtime: completed
 - Player now restores the last selected episode and playback position from browser storage after refresh.
 - Episode metadata remains the only responsibility of the Episode feature; the Player runtime owns playback lifecycle and persistence.
+- Phase PLAYER.7 — UX & Accessibility Polish: completed
+- The current player experience now includes clearer resume hints, actionable retry flows for playback failures, improved accessibility labels/ARIA values, Escape-based queue dismissal, and stronger state messaging while preserving the existing runtime architecture.
 - Web test/lint/build verification: passed

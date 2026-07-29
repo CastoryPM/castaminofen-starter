@@ -5,3 +5,4 @@
 - **API build**: `apps/api` — `pnpm --filter @castaminofen/api build`
 - **API tests**: `apps/api` — `pnpm --filter @castaminofen/api test`
 - **Prisma validate**: `apps/api` — `pnpm --filter @castaminofen/api exec prisma validate`
+- **Web PWA build validation**: `apps/web` — `pnpm --filter @castaminofen/web build`

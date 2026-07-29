@@ -16,6 +16,7 @@ export function PlayerControls() {
   const canGoPrevious = currentIndex >= 0 && queue.length > 0 && Boolean(currentItem?.audioUrl) && (currentIndex > 0 || repeatMode === 'queue');
   const canGoNext = currentIndex >= 0 && queue.length > 0 && Boolean(currentItem?.audioUrl) && (repeatMode === 'queue' || shuffleEnabled || currentIndex < queue.length - 1);
   const isBusy = playbackStatus === 'loading';
+  const primaryLabel = isBusy ? 'در حال آماده‌سازی پخش' : isPlaying ? 'توقف پخش' : 'شروع پخش';
 
   const handleTogglePlayback = async () => {
     if (!currentItem?.audioUrl) {
@@ -64,10 +65,10 @@ export function PlayerControls() {
         className={clsx(controlButtonClassName, 'h-11 w-11', isBusy && 'animate-pulse')}
         onClick={() => void handleTogglePlayback()}
         disabled={!hasPlayableItem}
-        aria-label={isPlaying ? 'توقف پخش' : 'شروع پخش'}
+        aria-label={primaryLabel}
         aria-busy={isBusy}
         loading={isBusy}
-        title={isPlaying ? 'توقف پخش' : 'شروع پخش'}
+        title={primaryLabel}
       >
         {!isBusy && (isPlaying ? <Pause size={16} /> : <Play size={16} />)}
       </Button>

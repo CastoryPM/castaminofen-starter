@@ -92,4 +92,43 @@ describe('playerPersistence', () => {
     expect(state.repeatMode).toBe('one');
     expect(state.volume).toBeCloseTo(0.3, 5);
   });
+
+  it('preserves queue integrity after queue mutations and restore', () => {
+    const currentItem = { id: 'current', title: 'Current', subtitle: '', audioUrl: 'https://current', artworkUrl: '', duration: 40, podcastId: 'p4', sourceType: 'episode' as const };
+    const nextItem = { id: 'next', title: 'Next', subtitle: '', audioUrl: 'https://next', artworkUrl: '', duration: 45, podcastId: 'p4', sourceType: 'episode' as const };
+
+    usePlayerStore.setState({
+      currentItem,
+      queue: [currentItem, nextItem],
+      currentIndex: 0,
+      playbackStatus: 'playing',
+      duration: 40,
+      currentPosition: 12,
+      error: null,
+      volume: 0.8,
+      repeatMode: 'off',
+      shuffleEnabled: false,
+      isPlaying: true,
+    });
+
+    writePersistedPlayerSnapshot({
+      currentItem: usePlayerStore.getState().currentItem,
+      queue: usePlayerStore.getState().queue,
+      currentIndex: usePlayerStore.getState().currentIndex,
+      playbackStatus: usePlayerStore.getState().playbackStatus,
+      duration: usePlayerStore.getState().duration,
+      currentPosition: usePlayerStore.getState().currentPosition,
+      volume: usePlayerStore.getState().volume,
+      repeatMode: usePlayerStore.getState().repeatMode,
+      shuffleEnabled: usePlayerStore.getState().shuffleEnabled,
+      error: usePlayerStore.getState().error,
+    });
+
+    const restored = readPersistedPlayerSnapshot();
+    applyPersistedSnapshotToStore(restored!);
+
+    const state = usePlayerStore.getState();
+    expect(state.queue[state.currentIndex]?.id).toBe(state.currentItem?.id);
+    expect(state.queue.length).toBe(2);
+  });
 });

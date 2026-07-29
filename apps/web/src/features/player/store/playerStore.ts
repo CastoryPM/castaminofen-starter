@@ -16,6 +16,8 @@ export type PlayerState = {
   setCurrentItem: (item: PlayableItem) => void;
   setPlaybackState: (state: Partial<PlayerRuntimeState>) => void;
   replaceQueue: (items: PlayableItem[], startIndex?: number) => void;
+  appendToQueue: (item: PlayableItem) => void;
+  removeFromQueue: (itemId: string) => boolean;
   clearQueue: () => void;
   goToNext: () => PlayableItem | null;
   goToPrevious: () => PlayableItem | null;
@@ -83,6 +85,66 @@ export const usePlayerStore = create<PlayerState>((set) => ({
         currentItem: nextItem,
       };
     }),
+  appendToQueue: (item) =>
+    set((state) => {
+      if (!item) {
+        return state;
+      }
+
+      const nextQueue = [...state.queue, item];
+      const safeIndex = state.currentIndex >= 0 && state.currentItem ? state.currentIndex : 0;
+      const currentItem = state.currentItem ?? nextQueue[safeIndex] ?? null;
+
+      return {
+        ...state,
+        queue: nextQueue,
+        currentIndex: state.currentIndex >= 0 ? state.currentIndex : -1,
+        currentItem,
+      };
+    }),
+  removeFromQueue: (itemId) => {
+    let removed = false;
+
+    set((state) => {
+      const currentItemId = state.currentItem?.id;
+      const nextQueue = state.queue.filter((item) => item.id !== itemId);
+      const shouldPreserveCurrentItem = currentItemId === itemId;
+
+      if (nextQueue.length === state.queue.length) {
+        return state;
+      }
+
+      if (shouldPreserveCurrentItem) {
+        removed = true;
+        return {
+          ...state,
+          queue: nextQueue,
+          currentIndex: -1,
+          currentItem: null,
+          playbackStatus: 'idle',
+          isPlaying: false,
+          currentPosition: 0,
+          duration: 0,
+          error: null,
+        };
+      }
+
+      const removedIndex = state.queue.findIndex((item) => item.id === itemId);
+      const nextIndex = removedIndex >= 0 && removedIndex < state.currentIndex ? state.currentIndex - 1 : state.currentIndex;
+      const normalizedIndex = nextQueue.length === 0 ? -1 : Math.max(0, Math.min(nextIndex, nextQueue.length - 1));
+      const normalizedItem = normalizedIndex >= 0 ? nextQueue[normalizedIndex] ?? null : state.currentItem ?? null;
+
+      removed = true;
+      return {
+        ...state,
+        queue: nextQueue,
+        currentIndex: normalizedIndex,
+        currentItem: normalizedItem,
+      };
+    });
+
+    return removed;
+  },
   clearQueue: () =>
     set((state) => ({
       ...state,

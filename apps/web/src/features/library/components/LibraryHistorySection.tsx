@@ -94,6 +94,18 @@ export function LibraryHistorySection({ items }: { items: LibraryListeningHistor
                   { startTime },
                 );
               }}
+              onQueue={() => {
+                playerRuntime.appendToQueue({
+                  id: item.episode.id,
+                  title: item.episode.title,
+                  subtitle: item.episode.description,
+                  audioUrl: item.episode.audioUrl,
+                  artworkUrl: item.episode.podcast?.artworkUrl,
+                  duration: typeof item.episode.duration === 'number' ? item.episode.duration : undefined,
+                  podcastId: item.episode.podcast?.id,
+                  sourceType: 'library',
+                });
+              }}
             />
           </div>
         ))}
