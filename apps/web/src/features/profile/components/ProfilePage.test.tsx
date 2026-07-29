@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatAccountDate } from './ProfilePage';
+import { formatAccountDate, normalizeProfileName } from './ProfilePage';
 
 describe('formatAccountDate', () => {
   it('formats ISO dates in Persian locale', () => {
@@ -8,5 +8,15 @@ describe('formatAccountDate', () => {
 
   it('returns a placeholder for missing values', () => {
     expect(formatAccountDate()).toBe('—');
+  });
+});
+
+describe('normalizeProfileName', () => {
+  it('trims whitespace and preserves meaningful content', () => {
+    expect(normalizeProfileName('  علی محمد  ')).toBe('علی محمد');
+  });
+
+  it('returns an empty string for blank values', () => {
+    expect(normalizeProfileName('   ')).toBe('');
   });
 });

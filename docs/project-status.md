@@ -10,7 +10,7 @@
 
 ## فاز جاری
 
-- Phase Library.1 — MVP Stabilization
+- Phase PROFILE.3 — Edit Profile (MVP)
 
 ## پیشرفت کلی
 
@@ -78,6 +78,10 @@
 - Web build: blocked by an unrelated Search page suspense issue during prerender (`useSearchParams()` on `/search`)
 - RSS ingestion regression tests: added for persistence boundary, matching decisions, and the new idempotent synchronization engine; backend build passed; Prisma schema validation and direct TypeScript verification confirmed the RSS sync behavior
 - End-to-end RSS orchestration now coordinates fetch, parse, normalize, match, persist, and FeedSource state transitions for a single feed without introducing background execution or new business ownership
+
+## تغییر اخیر — 2026-07-29
+
+- Phase PROFILE.3 — Edit Profile (MVP) تکمیل شد. صفحه‌ی Profile اکنون امکان ورود به حالت ویرایش، ویرایش نام کاربری از طریق endpoint موجود `PUT /users/me`, ذخیره با حالت loading/disabled، و نمایش پیام موفقیت/خطا را فراهم می‌کند. این تغییر در مرز Feature Profile باقی مانده و از تغییر در Auth یا قرارداد API جلوگیری شده است.
 
 ## تغییر اخیر — 2026-07-27
 
