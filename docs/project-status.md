@@ -81,6 +81,7 @@
 
 ## تغییر اخیر — 2026-07-29
 
+- Phase SETTINGS.2 — Preferences Ownership & Local Persistence MVP تکمیل شد. مالکیت ترجیحات کاربر به Feature Settings منتقل شد، مدل و persistence ترجیحات درون این مرز تعریف شدند، و UI تنظیمات از طریق hook عمومی Settings به این state دسترسی پیدا می‌کند بدون تغییر در مسیرها یا رفتار runtime.
 - Phase PROFILE.3 — Edit Profile (MVP) تکمیل شد. صفحه‌ی Profile اکنون امکان ورود به حالت ویرایش، ویرایش نام کاربری از طریق endpoint موجود `PUT /users/me`, ذخیره با حالت loading/disabled، و نمایش پیام موفقیت/خطا را فراهم می‌کند. این تغییر در مرز Feature Profile باقی مانده و از تغییر در Auth یا قرارداد API جلوگیری شده است.
 
 ## تغییر اخیر — 2026-07-27

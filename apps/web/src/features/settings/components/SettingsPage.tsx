@@ -2,12 +2,14 @@
 
 import Link from 'next/link';
 import { ArrowLeft, Bell, Monitor, Settings as SettingsIcon, Sparkles, Volume2 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { getPublicEnv } from '@/shared/lib/env';
 import packageJson from '../../../../../../package.json';
 import { settingsSections, type SettingsItemContent } from '../constants/settingsContent';
+import { useSettingsPreferences } from '../hooks/useSettingsPreferences';
+import type { SettingsThemePreference } from '../model/preferences';
 
 const iconMap = {
   monitor: Monitor,
@@ -17,7 +19,7 @@ const iconMap = {
 };
 
 export function SettingsPage() {
-  const [selectedTheme, setSelectedTheme] = useState<'System' | 'Light' | 'Dark'>('System');
+  const { preferences, updateTheme } = useSettingsPreferences();
   const appEnvironment = getPublicEnv().NEXT_PUBLIC_APP_ENV;
   const appEnvironmentLabel =
     appEnvironment === 'production'
@@ -85,7 +87,7 @@ export function SettingsPage() {
                         <div className="min-w-0 flex-1">
                           <p className="text-caption">{item.label}</p>
                           <p className="text-body m-0 font-medium">
-                            {section.id === 'about' ? item.value : item.label === 'Theme' ? selectedTheme : item.value}
+                            {section.id === 'about' ? item.value : item.label === 'Theme' ? preferences.theme : item.value}
                           </p>
                           {item.description ? (
                             <p className="mt-1 text-sm text-text-secondary">{item.description}</p>
@@ -100,7 +102,7 @@ export function SettingsPage() {
                       {item.options?.length ? (
                         <div className="mt-3 flex flex-wrap gap-2">
                           {item.options.map((option: string) => {
-                            const isActive = item.label === 'Theme' && selectedTheme === option;
+                            const isActive = item.label === 'Theme' && preferences.theme === option;
 
                             return (
                               <Button
@@ -111,7 +113,7 @@ export function SettingsPage() {
                                 disabled={item.disabled}
                                 onClick={() => {
                                   if (item.label === 'Theme') {
-                                    setSelectedTheme(option as 'System' | 'Light' | 'Dark');
+                                    updateTheme(option as SettingsThemePreference);
                                   }
                                 }}
                                 className="min-w-[84px] justify-center"
