@@ -9,9 +9,15 @@ describe('SettingsPage', () => {
 
     expect(markup).toContain('تنظیمات');
     expect(markup).toContain('Appearance');
+    expect(markup).toContain('Theme');
+    expect(markup).toContain('System');
+    expect(markup).toContain('Light');
+    expect(markup).toContain('Dark');
     expect(markup).toContain('Playback');
+    expect(markup).toContain('Autoplay');
     expect(markup).toContain('Notifications');
     expect(markup).toContain('About');
+    expect(markup).toContain('Castaminofen');
     expect(markup).toContain('Coming Soon');
   });
 });

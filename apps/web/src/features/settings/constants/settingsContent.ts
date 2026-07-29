@@ -1,13 +1,18 @@
+export type SettingsItemContent = {
+  label: string;
+  value: string;
+  status?: string;
+  description?: string;
+  options?: string[];
+  disabled?: boolean;
+};
+
 export type SettingsSectionContent = {
   id: string;
   title: string;
   description: string;
   icon: 'monitor' | 'volume2' | 'bell' | 'sparkles';
-  items: Array<{
-    label: string;
-    value: string;
-    status?: string;
-  }>;
+  items: SettingsItemContent[];
 };
 
 export const settingsSections: SettingsSectionContent[] = [
@@ -21,11 +26,16 @@ export const settingsSections: SettingsSectionContent[] = [
         label: 'Theme',
         value: 'System',
         status: 'Coming Soon',
+        description: 'Theme switching remains unavailable in this MVP.',
+        options: ['System', 'Light', 'Dark'],
+        disabled: true,
       },
       {
         label: 'Language',
         value: 'English / فارسی',
         status: 'Coming Soon',
+        description: 'Localization remains unavailable in this MVP.',
+        disabled: true,
       },
     ],
   },
@@ -39,11 +49,15 @@ export const settingsSections: SettingsSectionContent[] = [
         label: 'Autoplay',
         value: 'Off',
         status: 'Coming Soon',
+        description: 'Playback defaults will be added in a future phase.',
+        disabled: true,
       },
       {
         label: 'Playback Speed',
         value: '1.0x',
         status: 'Coming Soon',
+        description: 'Speed controls will be added in a future phase.',
+        disabled: true,
       },
     ],
   },
@@ -57,6 +71,8 @@ export const settingsSections: SettingsSectionContent[] = [
         label: 'Notifications',
         value: 'Disabled',
         status: 'Coming Soon',
+        description: 'Push notifications and reminder controls are not available in this MVP.',
+        disabled: true,
       },
     ],
   },
