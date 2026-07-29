@@ -21,6 +21,7 @@ export type LibraryListeningHistoryItem = {
 export type LibraryOverviewResponse = {
   subscriptions: LibrarySubscription[];
   continueListening: LibraryListeningHistoryItem[];
+  history: LibraryListeningHistoryItem[];
 };
 
 export type LibrarySectionViewMode = 'list' | 'grid';

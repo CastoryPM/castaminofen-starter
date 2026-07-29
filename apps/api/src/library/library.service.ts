@@ -56,6 +56,17 @@ export class LibraryService {
     return items;
   }
 
+  async getHistory(userId: string) {
+    const items = await this.prisma.listeningHistory.findMany({
+      where: { userId },
+      orderBy: { lastPlayedAt: 'desc' },
+      include: { episode: { include: { podcast: true } } },
+      take: 20,
+    });
+
+    return items;
+  }
+
   async updateListeningProgress(userId: string, episodeId: string, dto: UpdateListeningHistoryDto) {
     const episode = await this.prisma.episode.findUnique({ where: { id: episodeId } });
     if (!episode) throw new NotFoundException('Episode not found');

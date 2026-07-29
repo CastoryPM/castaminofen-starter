@@ -17,7 +17,7 @@ export function useUnsubscribePodcast() {
 
       queryClient.setQueryData<LibraryOverviewResponse>(['library'], (current) => {
         if (!current) {
-          return { subscriptions: [], continueListening: [] };
+          return { subscriptions: [], continueListening: [], history: [] };
         }
 
         return {

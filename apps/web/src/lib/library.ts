@@ -22,10 +22,15 @@ export type LibraryContinueListeningResponse = {
 export type LibraryOverviewResponse = {
   subscriptions: LibrarySubscriptionResponse[];
   continueListening: LibraryContinueListeningResponse[];
+  history: LibraryContinueListeningResponse[];
 };
 
 export async function getLibraryOverview(): Promise<LibraryOverviewResponse> {
   return apiFetch<LibraryOverviewResponse>('library');
+}
+
+export async function getLibraryHistory(): Promise<LibraryContinueListeningResponse[]> {
+  return apiFetch<LibraryContinueListeningResponse[]>('library/history');
 }
 
 export async function getLibrarySubscriptions(): Promise<LibrarySubscriptionResponse[]> {

@@ -38,6 +38,7 @@ export interface Episode {
   title: string;
   description?: string;
   audioUrl?: string;
+  duration?: number | null;
   publishedAt?: string;
   createdAt: string;
   updatedAt: string;

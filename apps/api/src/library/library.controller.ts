@@ -22,7 +22,8 @@ export class LibraryController {
   async getOverview(@GetUser('id') userId: string) {
     const subscriptions = await this.libraryService.getSubscriptions(userId);
     const continueListening = await this.libraryService.getContinueListening(userId);
-    return { subscriptions, continueListening };
+    const history = await this.libraryService.getHistory(userId);
+    return { subscriptions, continueListening, history };
   }
 
   @Get('subscriptions')
@@ -43,6 +44,11 @@ export class LibraryController {
   @Get('continue-listening')
   async continueListening(@GetUser('id') userId: string) {
     return this.libraryService.getContinueListening(userId);
+  }
+
+  @Get('history')
+  async getHistory(@GetUser('id') userId: string) {
+    return this.libraryService.getHistory(userId);
   }
 
   @Patch('history/:episodeId')
