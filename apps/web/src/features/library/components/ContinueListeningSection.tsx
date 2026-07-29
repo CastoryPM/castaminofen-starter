@@ -1,5 +1,6 @@
 'use client';
 
+import { PlayCircle } from 'lucide-react';
 import { useCallback, useEffect, useRef } from 'react';
 import { usePlayerRuntime } from '@/features/player/hooks/usePlayerRuntime';
 import { usePlayerState } from '@/features/player/hooks/usePlayerState';
@@ -50,11 +51,29 @@ export function ContinueListeningSection({ items }: { items: LibraryListeningHis
   }, [items, playerState.currentItem, playerState.currentPosition, playerState.duration, playerState.playbackStatus, syncListeningHistory]);
 
   if (!items.length) {
-    return <LibraryEmptyState title="هنوز اپیزودی برای ادامه پخش ندارید" description="اپیزودهایی که در حال گوش دادن به آن‌ها هستید در این بخش نمایش داده می‌شوند." />;
+    return (
+      <section className="rounded-[1.75rem] border border-border/80 bg-surface-secondary/70 p-4 shadow-soft sm:p-5" aria-labelledby="continue-listening-heading">
+        <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div className="space-y-1">
+            <h2 id="continue-listening-heading" className="text-subheading">ادامه پخش</h2>
+            <p className="m-0 text-sm text-text-secondary">اپیزودهایی که اخیراً باز کرده‌اید در این بخش سریع دسترس‌پذیرند.</p>
+          </div>
+          <span className="inline-flex w-fit items-center rounded-full border border-border bg-surface-primary px-3 py-1.5 text-sm text-text-secondary">
+            آماده برای شروع
+          </span>
+        </div>
+        <LibraryEmptyState
+          title="هنوز اپیزودی برای ادامه پخش ندارید"
+          description="اپیزودهایی که در حال گوش دادن به آن‌ها هستید در این بخش نمایش داده می‌شوند."
+          eyebrow="از اولین گوش دادن شروع کنید"
+          icon={PlayCircle}
+        />
+      </section>
+    );
   }
 
   return (
-    <section className="rounded-2xl border border-border bg-surface-secondary/70 p-4 sm:p-5" aria-labelledby="continue-listening-heading">
+    <section className="rounded-[1.75rem] border border-border/80 bg-surface-secondary/70 p-4 shadow-soft sm:p-5" aria-labelledby="continue-listening-heading">
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
           <h2 id="continue-listening-heading" className="text-subheading">ادامه پخش</h2>

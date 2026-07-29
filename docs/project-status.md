@@ -10,7 +10,7 @@
 
 ## فاز جاری
 
-- Phase UI.DESIGN.2 — Design Tokens & Component Specification System
+- Phase LIBRARY.2 — Library Experience & UX Consolidation MVP
 
 ## پیشرفت کلی
 
