@@ -19,7 +19,7 @@ export function Header() {
           <Link href="/search" className="icon-button" aria-label="جستجو در پادکست‌ها">
             <Search className="h-5 w-5" aria-hidden="true" />
           </Link>
-          <Link href="/profile" className="icon-button" aria-label="تنظیمات کاربری">
+          <Link href="/settings" className="icon-button" aria-label="تنظیمات برنامه">
             <Settings className="h-5 w-5" aria-hidden="true" />
           </Link>
         </div>
