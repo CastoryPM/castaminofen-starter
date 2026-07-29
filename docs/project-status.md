@@ -81,6 +81,7 @@
 
 ## تغییر اخیر — 2026-07-29
 
+- Phase QA.2 — Full Test Suite Stabilization (Profile & Settings) تکمیل شد. تست‌های باقی‌مانده‌ی Frontend در محدوده‌ی Profile و Settings با رفع مشکل transform TSX در Vitest و راه‌اندازی محیط jsdom بازسازی شدند و کل تست‌های وب دوباره سبز شدند بدون تغییر در runtime یا رفتار محصول.
 - Phase SETTINGS.2 — Preferences Ownership & Local Persistence MVP تکمیل شد. مالکیت ترجیحات کاربر به Feature Settings منتقل شد، مدل و persistence ترجیحات درون این مرز تعریف شدند، و UI تنظیمات از طریق hook عمومی Settings به این state دسترسی پیدا می‌کند بدون تغییر در مسیرها یا رفتار runtime.
 - Phase SETTINGS.3 — Playback Preferences MVP تکمیل شد. ترجیحات پخش MVP شامل Autoplay، Default Volume و Resume Playback در Feature Settings تعریف، از طریق persistence محلی فعلی ذخیره، از طریق hook Settings در UI در دسترس و در runtime Player برای اعمال رفتارهای موجود استفاده شدند بدون تغییر در مسیرها، قرارداد API یا مالکیت Player.
 - Phase SETTINGS.4 — Notification Preferences MVP تکمیل شد. ترجیحات اعلان MVP شامل Enable Notifications، New Episode Notifications و Product Updates به Feature Settings اضافه، از طریق persistence محلی فعلی ذخیره، از طریق hook Settings در UI در دسترس و در صفحه‌ی تنظیمات به‌صورت باکس‌های انتخابی MVP نمایش داده شدند؛ هیچ runtime اعلان، API یا مسیر جدیدی اضافه نشد.

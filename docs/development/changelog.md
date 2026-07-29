@@ -2,6 +2,7 @@
 
 | تاریخ | فاز | تغییرات | وضعیت |
 | --- | --- | --- | --- |
+| 2026-07-29 | Phase QA.2 — Full Test Suite Stabilization (Profile & Settings) | Restored the remaining frontend test suite stability for Profile and Settings by fixing the Vitest/TSX transform path and adding the required jsdom test environment, keeping runtime behavior unchanged and returning the web suite to a fully green state | انجام شده |
 | 2026-07-29 | Phase SETTINGS.2 — Preferences Ownership & Local Persistence MVP | Established Settings as the owner of basic preference state and local persistence, introduced a feature-owned preferences model and persistence service, exposed the boundary through the Settings public API, and preserved the existing Settings UI and routes | انجام شده |
 | 2026-07-29 | Phase SETTINGS.3 — Playback Preferences MVP | Extended the Settings feature with MVP playback preferences for autoplay, default volume, and resume playback; persisted them locally through the existing Settings persistence service; exposed them through the Settings hook; and consumed them in the existing Player runtime without changing routes, API contracts, or Player ownership | انجام شده |
 | 2026-07-29 | Phase SETTINGS.4 — Notification Preferences MVP | Added MVP notification preferences to the Settings feature, persisted them through the existing local Settings persistence service, exposed them through the existing Settings preferences hook, and integrated them into the existing Settings page without introducing any notification delivery runtime or backend integration | انجام شده |
