@@ -2,6 +2,7 @@
 
 | تاریخ | فاز | تغییرات | وضعیت |
 | --- | --- | --- | --- |
+| 2026-07-29 | Phase PWA.1 — Web App Installation Support | Added a minimal PWA manifest, app metadata, install prompt handling, and a lightweight service worker registration path for browser installability while preserving existing routes, APIs, player behavior, and feature ownership boundaries | انجام شده |
 | 2026-07-29 | Phase PLAYER.4.1 — Runtime Persistence Stabilization | Persist full player snapshot (queue, index, repeat, shuffle, volume), restore/normalize queue on startup, ensure queue[currentIndex] matches currentItem, add persistence unit tests and restore volume after refresh | انجام شده |
 | 2026-07-29 | fix(favorites): stabilize prisma relations and restore full validation | Added inverse relations for `FavoriteEpisode`, regenerated Prisma Client, created and applied the `add-favorite-episode` migration, and verified API/web build and tests | انجام شده |
 | 2026-07-29 | Phase PODCAST.1 — Podcast Detail Experience MVP | Reworked the podcast detail experience into a premium, focused destination with a stronger hero, richer metadata, polished episode browsing, graceful empty/loading states, and existing Player/Library integration while preserving routes, APIs, and feature boundaries | انجام شده |

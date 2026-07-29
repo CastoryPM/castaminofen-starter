@@ -1,0 +1,23 @@
+{
+  "name": "Castaminofen",
+  "short_name": "Castaminofen",
+  "description": "پلتفرم پادکست با تجربه پخش و کشف صوتی",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#111827",
+  "background_color": "#111827",
+  "id": "/",
+  "icons": [
+    {
+      "src": "/branding/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/branding/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

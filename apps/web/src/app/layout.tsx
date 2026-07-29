@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Vazirmatn } from 'next/font/google';
 import './globals.css';
 import { AppProviders } from '@/providers/app-providers';
@@ -11,11 +11,26 @@ const vazirmatn = Vazirmatn({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://castaminofen.local'),
   title: 'Castaminofen',
   description: 'Castaminofen frontend foundation',
+  applicationName: 'Castaminofen',
+  manifest: '/site.webmanifest',
   icons: {
     icon: '/branding/favicon.ico',
+    shortcut: '/branding/favicon.ico',
+    apple: '/branding/icon.png',
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Castaminofen',
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#111827',
+  colorScheme: 'dark',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
