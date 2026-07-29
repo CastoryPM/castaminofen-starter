@@ -245,7 +245,7 @@ After that, the status of the phase becomes:
 - Completed
 
 
-## Release Branch Policy
+## 18. Release Branch Policy
 
 Every major feature MUST be developed under a dedicated Release Branch.
 
@@ -269,3 +269,33 @@ Rules:
 - Hotfixes are the only exception and may branch directly from `main` when necessary.
 
 
+## 19. Merge & Release Quality Gate
+
+**Rule**
+
+A Phase **MUST NOT** be merged into the main branch or tagged as a release unless all mandatory quality gates pass successfully.
+
+### Required Quality Gates
+
+Before merging or creating a tag, the following conditions are mandatory:
+
+- ✅ Project build completes successfully.
+- ✅ TypeScript compilation finishes with zero errors.
+- ✅ The entire test suite passes successfully.
+
+If **any** of these checks fail, the Phase is considered **not ready** and **must not** be merged or tagged.
+
+### Rationale
+
+This rule exists to:
+
+- Prevent the accumulation of technical issues and broken code.
+- Detect regressions as early as possible.
+- Keep code reviews smaller, cleaner, and easier to validate.
+- Ensure the main branch always remains stable, deployable, and trustworthy.
+
+### Enforcement
+
+This is a **non-negotiable repository rule**.
+
+Copilot must never recommend merging, tagging, or considering a Phase complete while any required quality gate is failing.
