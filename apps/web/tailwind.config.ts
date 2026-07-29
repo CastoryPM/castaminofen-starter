@@ -5,10 +5,12 @@ export default {
   theme: {
     extend: {
       colors: {
+        primary: 'var(--accent)',
         surface: {
           primary: 'var(--bg-primary)',
           secondary: 'var(--bg-secondary)',
           tertiary: 'var(--bg-tertiary)',
+          hover: 'var(--bg-hover)',
           elevated: 'var(--surface-elevated)',
           overlay: 'var(--surface-overlay)',
         },
@@ -25,6 +27,8 @@ export default {
           DEFAULT: 'var(--accent)',
           foreground: 'var(--accent-foreground)',
         },
+        'accent-purple': 'var(--accent-purple)',
+        'secondary-olive': 'var(--secondary-olive)',
         success: 'var(--success)',
         error: 'var(--error)',
         warning: 'var(--warning)',

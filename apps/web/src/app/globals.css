@@ -104,15 +104,23 @@
   }
 
   .button-primary {
-    @apply bg-accent text-accent-foreground hover:brightness-110;
+    @apply bg-accent text-accent-foreground;
+  }
+
+  .button-primary:hover {
+    background-color: var(--accent-purple);
   }
 
   .button-secondary {
-    @apply border-border bg-surface-secondary text-text-primary hover:bg-surface-tertiary;
+    @apply border-border bg-surface-secondary text-text-primary hover:bg-surface-hover;
+  }
+
+  .button-secondary:hover {
+    border-color: var(--accent-purple);
   }
 
   .button-ghost {
-    @apply bg-transparent text-text-secondary hover:bg-surface-secondary hover:text-text-primary;
+    @apply bg-transparent text-text-secondary hover:bg-surface-hover hover:text-text-primary;
   }
 
   .input,
