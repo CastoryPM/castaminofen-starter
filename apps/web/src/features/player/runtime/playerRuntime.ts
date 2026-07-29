@@ -2,6 +2,7 @@ import { createBrowserAudioEngine, type AudioEngine } from './audioEngine';
 import { usePlayerStore } from '../store/playerStore';
 import type { PlayableItem, PlayerPlaybackStatus } from '../types';
 import type { PlayerState } from '../store/playerStore';
+import { readSettingsPreferences } from '../../settings/services/preferencesPersistence';
 import { clearPersistedPlayerSnapshot, persistCurrentPlayerState, readPersistedPlayerSnapshot } from './playerPersistence';
 
 export type PlayerRuntimeController = {
@@ -28,7 +29,22 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
 
   const normalizeTime = (value: number) => (Number.isFinite(value) && value >= 0 ? value : 0);
 
+  const applyDefaultVolumePreference = () => {
+    const preferences = readSettingsPreferences();
+    const safeVolume = Math.min(1, Math.max(0, preferences.defaultVolume));
+
+    engine.setVolume(safeVolume);
+    store.setVolume(safeVolume);
+  };
+
   const restorePersistedSnapshot = () => {
+    const preferences = readSettingsPreferences();
+
+    if (!preferences.resumePlayback) {
+      clearPersistedPlayerSnapshot();
+      return;
+    }
+
     const snapshot = readPersistedPlayerSnapshot();
 
     if (!snapshot) {
@@ -74,6 +90,7 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
   };
 
   const playItem = async (item: PlayableItem, options?: { startTime?: number }) => {
+    applyDefaultVolumePreference();
     const loadToken = ++currentLoadToken;
     activeItemId = item.id;
     const startTime = normalizeTime(options?.startTime ?? 0);
@@ -177,7 +194,9 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
       return;
     }
 
-    if (snapshot.playbackStatus === 'idle' && snapshot.currentPosition > 0 && currentStore.currentItem && currentStore.isPlaying) {
+    const preferences = readSettingsPreferences();
+
+    if (snapshot.playbackStatus === 'idle' && snapshot.currentPosition > 0 && currentStore.currentItem && currentStore.isPlaying && preferences.autoplay) {
       void moveToNextQueueItem();
       return;
     }
@@ -196,6 +215,7 @@ export function createPlayerRuntimeController(store: PlayerState, engine: AudioE
     syncState(snapshot);
   });
 
+  applyDefaultVolumePreference();
   restorePersistedSnapshot();
 
   return {

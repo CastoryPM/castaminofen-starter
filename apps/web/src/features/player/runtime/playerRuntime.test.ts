@@ -87,6 +87,27 @@ describe('PlayerRuntime controller', () => {
     controller.destroy();
   });
 
+  test('applies a persisted default volume preference on startup', () => {
+    window.localStorage.setItem(
+      'castaminofen-settings-preferences',
+      JSON.stringify({
+        theme: 'System',
+        autoplay: true,
+        defaultVolume: 0.25,
+        resumePlayback: true,
+      }),
+    );
+
+    const store = usePlayerStore.getState();
+    const engine = createEngineMock();
+    const controller = createPlayerRuntimeController(store, engine);
+
+    expect(usePlayerStore.getState().volume).toBe(0.25);
+    expect(engine.setVolume).toHaveBeenCalledWith(0.25);
+
+    controller.destroy();
+  });
+
   test('repeat queue wraps to the first item when advancing from the end of the queue', () => {
     const store = usePlayerStore.getState();
     const items = [createItem('a'), createItem('b'), createItem('c')];
