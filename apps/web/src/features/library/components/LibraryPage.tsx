@@ -35,8 +35,8 @@ export function LibraryPage() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="space-y-2">
               <p className="m-0 text-sm font-medium text-accent">کتابخانه‌ی شخصی</p>
-              <h1 className="text-heading">همه‌ی چیزهایی که دنبال می‌کنید</h1>
-              <p className="text-body m-0 max-w-2xl">پادکست‌های دنبال‌شده و اپیزودهای در حال ادامه پخش خود را در یک نمای مرتب مدیریت کنید.</p>
+              <h1 className="text-heading">سلام، اینجا خانه‌ی پادکست‌های شماست</h1>
+              <p className="text-body m-0 max-w-2xl">از ادامه پخش گرفته تا اشتراک‌های فعال، همه‌ی چیزهایی که به آن‌ها نیاز دارید در یک تجربه‌ی آرام و منظم کنار هم جمع شده‌اند.</p>
             </div>
             <div className="flex flex-wrap items-center gap-2 text-sm text-text-secondary">
               <span className="inline-flex items-center rounded-full border border-border bg-surface-primary px-3 py-1.5">در انتظار شروع</span>
@@ -45,7 +45,7 @@ export function LibraryPage() {
         </section>
         <LibraryEmptyState
           title="کتابخانه شما هنوز خالی است"
-          description="پادکست‌ها و اپیزودهای در حال دنبال کردن شما در اینجا نمایش داده می‌شوند."
+          description="همین امروز چند پادکست را پیدا کنید و این فضا به‌تدریج به یک خانه‌ی شخصی برای گوش دادن تبدیل شود."
           eyebrow="از اینجا به مسیر پادکست‌ها بروید"
         />
       </div>
@@ -58,8 +58,8 @@ export function LibraryPage() {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div className="space-y-2">
             <p className="m-0 text-sm font-medium text-accent">کتابخانه‌ی شخصی</p>
-            <h1 className="text-heading">همه‌ی چیزهایی که دنبال می‌کنید</h1>
-            <p className="text-body m-0 max-w-2xl">پادکست‌های دنبال‌شده و اپیزودهای در حال ادامه پخش خود را در یک نمای مرتب مدیریت کنید.</p>
+            <h1 className="text-heading">سلام، اینجا خانه‌ی پادکست‌های شماست</h1>
+            <p className="text-body m-0 max-w-2xl">از ادامه پخش گرفته تا اشتراک‌های فعال، همه‌ی چیزهایی که به آن‌ها نیاز دارید در یک تجربه‌ی آرام و منظم کنار هم جمع شده‌اند.</p>
           </div>
           <div className="flex flex-wrap items-center gap-2 text-sm text-text-secondary">
             {collectionSummary.continueListeningCount > 0 ? (

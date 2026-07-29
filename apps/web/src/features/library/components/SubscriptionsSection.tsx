@@ -1,5 +1,6 @@
 'use client';
 
+import { Library as LibraryIcon } from 'lucide-react';
 import { useSubscribePodcast } from '../hooks/useSubscribePodcast';
 import { useUnsubscribePodcast } from '../hooks/useUnsubscribePodcast';
 import type { LibrarySubscription } from '../types';
@@ -26,6 +27,7 @@ export function SubscriptionsSection({ items }: { items: LibrarySubscription[] }
           title="هنوز پادکستی را دنبال نمی‌کنید"
           description="پادکست‌هایی که در کتابخانه خود دارید در این بخش نمایش داده می‌شوند."
           eyebrow="جستجو و شروع به دنبال کردن"
+          icon={LibraryIcon}
         />
       </section>
     );

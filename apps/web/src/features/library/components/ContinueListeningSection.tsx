@@ -1,5 +1,6 @@
 'use client';
 
+import { PlayCircle } from 'lucide-react';
 import { useCallback, useEffect, useRef } from 'react';
 import { usePlayerRuntime } from '@/features/player/hooks/usePlayerRuntime';
 import { usePlayerState } from '@/features/player/hooks/usePlayerState';
@@ -65,6 +66,7 @@ export function ContinueListeningSection({ items }: { items: LibraryListeningHis
           title="هنوز اپیزودی برای ادامه پخش ندارید"
           description="اپیزودهایی که در حال گوش دادن به آن‌ها هستید در این بخش نمایش داده می‌شوند."
           eyebrow="از اولین گوش دادن شروع کنید"
+          icon={PlayCircle}
         />
       </section>
     );

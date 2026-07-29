@@ -16,18 +16,28 @@ export function formatDurationLabel(seconds?: number | null) {
   return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
 }
 
-export function formatProgressSummary(positionSeconds?: number | null, durationSeconds?: number | null) {
-  const elapsedLabel = formatDurationLabel(positionSeconds);
-
+export function getProgressMetadata(positionSeconds?: number | null, durationSeconds?: number | null) {
   if (typeof durationSeconds !== 'number' || !Number.isFinite(durationSeconds) || durationSeconds <= 0) {
-    return elapsedLabel;
+    return null;
   }
 
   const safeDurationSeconds = Math.max(0, Math.floor(durationSeconds));
   const safePositionSeconds = typeof positionSeconds === 'number' && Number.isFinite(positionSeconds)
     ? Math.max(0, Math.floor(positionSeconds))
     : 0;
-  const remainingLabel = formatDurationLabel(Math.max(0, safeDurationSeconds - safePositionSeconds));
+  const safeRemainingSeconds = Math.max(0, safeDurationSeconds - safePositionSeconds);
+  const percent = safeDurationSeconds > 0
+    ? Math.min(100, Math.max(0, Math.round((safePositionSeconds / safeDurationSeconds) * 100)))
+    : 0;
+  const remainingLabel = formatDurationLabel(safeRemainingSeconds);
 
-  return `${elapsedLabel} / ${formatDurationLabel(safeDurationSeconds)} · ${remainingLabel} باقی مانده`;
+  return {
+    percent,
+    remainingLabel,
+    summary: `${percent}% · ${remainingLabel} باقی مانده`,
+  };
+}
+
+export function formatProgressSummary(positionSeconds?: number | null, durationSeconds?: number | null) {
+  return getProgressMetadata(positionSeconds, durationSeconds)?.summary ?? null;
 }

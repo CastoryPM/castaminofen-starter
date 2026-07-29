@@ -8,19 +8,28 @@ export type LibraryCollectionsSummary = {
   savedEpisodesComingSoon: boolean;
   historyComingSoon: boolean;
   downloadsComingSoon: boolean;
+  collectionsCount: number;
+  episodesCount: number;
+  followingCount: number;
 };
 
 export function buildLibraryCollectionsSummary(data: {
   subscriptions: LibrarySubscription[];
   continueListening: LibraryListeningHistoryItem[];
 }): LibraryCollectionsSummary {
+  const continueListeningCount = data.continueListening.length;
+  const subscriptionsCount = data.subscriptions.length;
+
   return {
-    continueListeningCount: data.continueListening.length,
-    subscriptionsCount: data.subscriptions.length,
-    recentlyPlayedCount: data.continueListening.length,
+    continueListeningCount,
+    subscriptionsCount,
+    recentlyPlayedCount: continueListeningCount,
     favoritesComingSoon: true,
     savedEpisodesComingSoon: true,
     historyComingSoon: true,
     downloadsComingSoon: true,
+    collectionsCount: 4,
+    episodesCount: continueListeningCount,
+    followingCount: subscriptionsCount,
   };
 }
