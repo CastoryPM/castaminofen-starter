@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ListMusic, Play, Plus, Trash2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { MiniPlayer } from '@/components/design-system/player/mini-player';
+import { Tag } from '@/components/design-system/common/tag';
 import { PlayerControls } from './PlayerControls';
 import { PlayerInfo } from './PlayerInfo';
 import { PlayerProgress } from './PlayerProgress';
@@ -145,22 +147,12 @@ export function PlayerBar() {
 
           <div className="mt-4 space-y-3">
             {queueDisplay.currentItem ? (
-              <div className="rounded-[1rem] border border-accent/20 bg-accent/10 p-3">
-                <div className="flex items-start gap-3">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[0.9rem] border border-border/60 bg-surface-tertiary">
-                    {queueDisplay.currentItem.artworkUrl ? (
-                      <img src={queueDisplay.currentItem.artworkUrl} alt={queueDisplay.currentItem.title} className="h-full w-full object-cover" />
-                    ) : (
-                      <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-text-secondary">{getArtworkFallback(queueDisplay.currentItem)}</span>
-                    )}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">در حال پخش</p>
-                    <p className="mt-1 truncate text-sm font-semibold text-text-primary">{queueDisplay.currentItem.title}</p>
-                    <p className="truncate text-xs text-text-secondary">{queueDisplay.currentItem.subtitle ?? 'اپیزود'}</p>
-                  </div>
-                </div>
-              </div>
+              <MiniPlayer
+                title={queueDisplay.currentItem.title}
+                subtitle={queueDisplay.currentItem.subtitle ?? 'اپیزود'}
+                className="border-accent/20 bg-accent/10"
+                actions={<Tag className="border-accent/20 bg-accent/10 text-accent">در حال پخش</Tag>}
+              />
             ) : (
               <div className="rounded-[1rem] border border-dashed border-border/70 bg-surface-secondary/60 p-4 text-sm text-text-secondary">
                 هیچ اپیزودی در حال پخش نیست.
@@ -248,12 +240,12 @@ export function PlayerBar() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              <div className="rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
+              <Tag className="border-accent/20 bg-accent/10 text-accent">
                 {repeatMode === 'one' ? 'تکرار: یک مورد' : repeatMode === 'queue' ? 'تکرار: صف' : 'تکرار: خاموش'}
-              </div>
-              <div className="rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
+              </Tag>
+              <Tag className="border-accent/20 bg-accent/10 text-accent">
                 {shuffleEnabled ? 'تصادفی: روشن' : 'تصادفی: خاموش'}
-              </div>
+              </Tag>
             </div>
           </div>
         </div>

@@ -3,6 +3,8 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { LoadingState } from '@/components/ui/loading-state';
 import { ErrorState } from '@/components/ui/error-state';
+import { MediaCard } from '@/components/design-system/media/media-card';
+import { SectionHeader } from '@/components/design-system/layout/section-header';
 import type { FieldErrors, UseFormRegister } from 'react-hook-form';
 import type { PaginatedResponse, Podcast } from '@/lib/types';
 import type { EpisodeFormValues } from '@/features/episodes/validators/episodeSchema';
@@ -27,8 +29,7 @@ export type EpisodeCreateFormProps = {
 
 export function EpisodeCreateForm({ form, onSubmit, podcastsQuery, error }: EpisodeCreateFormProps) {
   return (
-    <section className="card">
-      <h1>New Episode</h1>
+    <MediaCard title={<SectionHeader eyebrow="Create" title="New Episode" description="Publish a new episode with the shared form rhythm." />} className="space-y-4">
       <Form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField>
           <FormLabel htmlFor="podcastId">Podcast</FormLabel>
@@ -68,6 +69,6 @@ export function EpisodeCreateForm({ form, onSubmit, podcastsQuery, error }: Epis
         {error && <p className="error-text">{error}</p>}
         <Button type="submit">Create Episode</Button>
       </Form>
-    </section>
+    </MediaCard>
   );
 }

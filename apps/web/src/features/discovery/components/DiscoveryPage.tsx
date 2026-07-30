@@ -12,8 +12,10 @@ import { useAuthStore } from '@/stores/authStore';
 import { buildDiscoverySections } from '../utils/discovery-content';
 import { DiscoverySection } from './DiscoverySection';
 import { ContinueListeningSection } from '@/features/library/components/ContinueListeningSection';
-import { PageContainer } from '@/components/layout/page-container';
-import { MediaCard } from '@/components/layout/media-card';
+import { PageContainer } from '@/components/design-system/layout/page-container';
+import { MediaCard } from '@/components/design-system/media/media-card';
+import { Tag } from '@/components/design-system/common/tag';
+import { Button } from '@/components/design-system/common/button';
 
 export function DiscoveryPage() {
   const { data: sessionData } = useSession();
@@ -74,20 +76,24 @@ export function DiscoveryPage() {
         <section className="rounded-[2rem] border border-border/80 bg-surface-secondary/70 p-4 shadow-soft sm:p-6 lg:p-8">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl space-y-3">
-              <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3 py-1.5 text-sm font-medium text-accent">
+              <Tag className="w-fit border-accent/20 bg-accent/10 text-accent">
                 <Compass className="h-4 w-4" aria-hidden="true" />
                 Discovery
-              </div>
+              </Tag>
               <h1 id="discovery-heading" className="text-heading">Discover your next favorite show</h1>
               <p className="m-0 text-body">A calm, editorial-first entrance into the podcast catalog that stays lightweight and presentation-focused.</p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <Link href="/podcasts" className="button button-secondary min-h-[2.75rem]">
-                Browse podcasts
+              <Link href="/podcasts" className="inline-flex">
+                <Button variant="secondary" size="md" className="min-h-[2.75rem]">
+                  Browse podcasts
+                </Button>
               </Link>
-              <Link href="/library" className="button button-primary min-h-[2.75rem]">
-                Open library
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              <Link href="/library" className="inline-flex">
+                <Button variant="primary" size="md" className="min-h-[2.75rem] gap-2">
+                  Open library
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Button>
               </Link>
             </div>
           </div>
@@ -100,10 +106,10 @@ export function DiscoveryPage() {
                   <h2 className="text-xl font-semibold text-text-primary">Build a listening ritual around the stories already in the catalog.</h2>
                   <p className="m-0 max-w-xl text-sm text-text-secondary">This hero stays graceful when featured metadata is missing and uses editorial messaging instead of fabricated content.</p>
                 </div>
-                <div className="flex items-center gap-2 rounded-full border border-border bg-surface-secondary/80 px-3 py-2 text-sm text-text-secondary">
+                <Tag className="w-fit border-border bg-surface-secondary/80 text-text-secondary">
                   <Sparkles className="h-4 w-4 text-accent" aria-hidden="true" />
                   Premium editorial layout
-                </div>
+                </Tag>
               </div>
             </div>
 

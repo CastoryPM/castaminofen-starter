@@ -85,6 +85,7 @@
 ## تغییر اخیر — 2026-07-30
 
 - Phase UI.CONSOLIDATION.1 — Full Product UI Consolidation تکمیل شد. تجربه‌ی Home، Library، Search، Profile و Create در یک زبان بصری مشترک و یکپارچه گردآوری شدند؛ App Shell، Header، Bottom Navigation، کارت‌های رسانه‌ای و rhythm صفحه‌ها با استفاده از توکن‌های موجود Castaminofen بازطراحی شدند و بدون تغییر route، API، store یا مالکیت featureها در برنامه ادغام شدند.
+- Phase UI.SYSTEM.2 — Design System Adoption Migration تکمیل شد. سطوح اصلی Home/Discovery، Library، Search، Profile، Create، Player و Community به لایه‌ی رسمی Design System مهاجرت شدند و presentation آنها از primitives مشترک استفاده می‌کند بدون تغییر در منطق کسب‌وکار، API‌ها یا مالکیت featureها.
 
 ## تغییر اخیر — 2026-07-29
 

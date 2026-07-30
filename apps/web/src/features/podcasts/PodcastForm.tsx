@@ -1,5 +1,7 @@
 import { Form, FormMessage } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
+import { MediaCard } from '@/components/design-system/media/media-card';
+import { SectionHeader } from '@/components/design-system/layout/section-header';
 import type { ReactNode, FormHTMLAttributes } from 'react';
 
 export type PodcastFormProps = {
@@ -12,8 +14,7 @@ export type PodcastFormProps = {
 
 export function PodcastForm({ title, submitLabel, error, isLoading, children, className, ...props }: PodcastFormProps) {
   return (
-    <section className={['card', className].filter(Boolean).join(' ')}>
-      <h1>{title}</h1>
+    <MediaCard title={<SectionHeader eyebrow="Create" title={title} description="Fill the metadata with the shared Castaminofen form surface." />} className={['space-y-4', className].filter(Boolean).join(' ')}>
       <Form {...props} className="form-root">
         {children}
         {error && <FormMessage>{error}</FormMessage>}
@@ -21,6 +22,6 @@ export function PodcastForm({ title, submitLabel, error, isLoading, children, cl
           {isLoading ? 'Saving...' : submitLabel}
         </Button>
       </Form>
-    </section>
+    </MediaCard>
   );
 }
