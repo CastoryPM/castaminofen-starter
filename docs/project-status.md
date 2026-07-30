@@ -16,6 +16,7 @@
 - Phase UI.SYSTEM.1 — Complete Design System Expansion & Type Stabilization
 - Phase PLAYER.6 — Advanced Immersive Player Experience
 - Phase PLAYER.7 — Player Data Integration & Social Memory Layer
+- Phase SOCIAL.1 — Shared Social Interaction Infrastructure
 
 ## پیشرفت کلی
 

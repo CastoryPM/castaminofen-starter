@@ -48,3 +48,19 @@ pnpm --filter @castaminofen/api test -- --test-name-pattern='orchestrator|synchr
 Related Phase:
 
 Phase RSS.6.4 - End-to-End Synchronization Orchestrator
+
+## pnpm --filter @castaminofen/web test -- src/features/social/components/SocialInfrastructure.test.tsx
+
+Location:
+apps/web/package.json
+
+Purpose:
+Run the shared social infrastructure regression tests for comments, reactions, follows, and notifications.
+
+Usage:
+
+pnpm --filter @castaminofen/web test -- src/features/social/components/SocialInfrastructure.test.tsx
+
+Related Phase:
+
+Phase SOCIAL.1 - Shared Social Interaction Infrastructure

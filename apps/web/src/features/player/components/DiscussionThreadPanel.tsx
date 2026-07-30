@@ -1,7 +1,8 @@
 import { MessageCircleMore, ThumbsUp } from 'lucide-react';
-import { CommentPreview } from '@/components/design-system/social/comment-preview';
 import { DiscussionCard } from '@/components/design-system/social/discussion-card';
-import { Reaction } from '@/components/design-system/social/reaction';
+import { CommentThread } from '@/features/social/components/CommentThread';
+import { ReactionBar } from '@/features/social/components/ReactionBar';
+import { mockComments, mockReactionOptions } from '@/features/social/data/mockSocialData';
 import { getPlayerExperienceViewModel } from '../data/mockPlayerExperience';
 
 type DiscussionThreadProps = {
@@ -23,21 +24,11 @@ export function DiscussionThreadPanel({ currentTimestamp = 320 }: DiscussionThre
             <span className="rounded-full bg-accent/10 px-2 py-1 text-[11px] font-semibold text-accent">{thread.likes} پسند</span>
           </div>
           <p className="mt-2 text-sm text-text-secondary">{thread.body}</p>
-          <div className="mt-2 flex flex-wrap gap-2">
-            <Reaction active>👍 مفید</Reaction>
-            <Reaction>🔁 دوباره گوش می‌کنم</Reaction>
-            <Reaction>🎧 گوش دادن هم‌زمان</Reaction>
+          <div className="mt-2">
+            <ReactionBar reactions={mockReactionOptions} />
           </div>
-          <div className="mt-3 space-y-2">
-            {thread.replies.map((reply) => (
-              <div key={reply.id} className="rounded-[0.9rem] border border-border/60 bg-surface-card/70 p-2.5 text-sm text-text-secondary">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-semibold text-text-primary">{reply.author}</span>
-                  <span className="text-[11px] text-text-secondary">{reply.timestampLabel}</span>
-                </div>
-                <p className="mt-1">{reply.body}</p>
-              </div>
-            ))}
+          <div className="mt-3">
+            <CommentThread comments={mockComments} className="space-y-2" />
           </div>
         </div>
       ))}
