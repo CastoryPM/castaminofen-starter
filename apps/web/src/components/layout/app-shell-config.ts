@@ -1,4 +1,4 @@
-import { Home, Layers, Plus, Search, User, Users } from 'lucide-react';
+import { Home, Layers, Plus, Search, Sparkles, User, Users } from 'lucide-react';
 import type { ComponentType } from 'react';
 
 export type AppShellNavigationItem = {
@@ -26,6 +26,7 @@ const navigationDefinitions = [
   { id: 'create', label: 'ایجاد', href: '/create', icon: Plus, isPrimary: true },
   { id: 'search', label: 'جستجو', href: '/search', icon: Search },
   { id: 'community', label: 'اجتماع', href: '/community', icon: Users },
+  { id: 'creator', label: 'سازنده', href: '/creator', icon: Sparkles },
   { id: 'profile', label: 'پروفایل', href: '/profile', icon: User },
 ] as const;
 
@@ -52,6 +53,16 @@ export function getMobileHeaderConfig(pathname: string): AppShellHeaderConfig {
     return {
       title: 'جستجو',
       tagline: 'پادکست‌ها و اپیزودها',
+      showSearchAction: true,
+      showProfileAction: true,
+      titleTone: 'feature',
+    };
+  }
+
+  if (pathname.startsWith('/creator')) {
+    return {
+      title: 'سازنده',
+      tagline: 'هویت عمومی، محتوا و جامعه برای creators',
       showSearchAction: true,
       showProfileAction: true,
       titleTone: 'feature',
