@@ -1,2 +1,9 @@
 export { CreatorProfilePage } from './components/CreatorProfilePage';
+export { CreatorContentManager } from './components/CreatorContentManager';
+export { ContentStatusFilter } from './components/ContentStatusFilter';
+export { DraftWorkspace } from './components/DraftWorkspace';
+export { PublishingWorkflow } from './components/PublishingWorkflow';
+export { ScheduledContentPanel } from './components/ScheduledContentPanel';
+export { ContentVersionHistory } from './components/ContentVersionHistory';
 export type { CreatorActivityItem, CreatorCollectionItem, CreatorCommunityItem, CreatorContentItem, CreatorProfileData, CreatorMode, CreatorContentType, CreatorReputationLevel } from './types/creatorProfile.types';
+export type { CreatorContentTab, CreatorContentStatus, CreatorVisibility, CreatorContentItem as CreatorPublishingContentItem, CreatorDraftItem, CreatorVersionItem } from './types/publishing.types';

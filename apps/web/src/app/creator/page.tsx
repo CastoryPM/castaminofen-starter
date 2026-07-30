@@ -1,5 +1,5 @@
-import { CreatorProfilePage } from '@/features/creator';
+import { CreatorContentManager } from '@/features/creator';
 
 export default function CreatorRoutePage() {
-  return <CreatorProfilePage mode="viewer" />;
+  return <CreatorContentManager />;
 }
