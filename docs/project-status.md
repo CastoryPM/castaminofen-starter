@@ -24,6 +24,7 @@
 - Phase SOCIAL.1 — Shared Social Interaction Infrastructure
 - Phase PROFILE.2 — Social Identity & Personal Knowledge Hub
 - Phase ADMIN.1 — Platform Control Center & Admin Experience
+- Phase ADMIN.2 — Platform Governance, Moderation & Operations System
 
 ## پیشرفت کلی
 
@@ -101,6 +102,7 @@
 - Phase UI.SYSTEM.2 — Design System Adoption Migration تکمیل شد. سطوح اصلی Home/Discovery، Library، Search، Profile، Create، Player و Community به لایه‌ی رسمی Design System مهاجرت شدند و presentation آنها از primitives مشترک استفاده می‌کند بدون تغییر در منطق کسب‌وکار، API‌ها یا مالکیت featureها.
 - Phase PLAYER.6 — Advanced Immersive Player Experience تکمیل شد. تجربه‌ی Player با پنل تعاملی Immersive، تب‌های discussion/memory/queue، timeline markers، controls پیشرفته و stateهای richer UI به سمت تجربه‌ی Premium ارتقا یافت و در عین حال runtime، queue، persistence و API contracts بدون تغییر باقی ماندند.
 - Phase PLAYER.7 — Player Data Integration & Social Memory Layer تکمیل شد. تجربه‌ی Player حالا از داده‌های mock-backed برای نشانک‌ها، هایلایت‌ها، یادداشت‌های شخصی، بحث‌های لحظه‌ای، رونویس، creator context و پیشنهادهای مرتبط استفاده می‌کند و در عین حال مرزهای runtime و design-system بدون تغییر باقی مانده‌اند.
+- Phase ADMIN.2 — Platform Governance, Moderation & Operations System تکمیل شد. داشبورد Admin از یک نمای کلی ساده به یک فضای عملیاتی حرفه‌ای برای governance، moderation queue، content review، creator review، user trust، audit timeline، platform alerts، trust/safety overview، roles preview و operations dashboard تبدیل شد. همه‌ی بخش‌ها با داده‌های mock-backed و بدون تغییر در auth، API، DB، permission engine یا runtime Player پیاده‌سازی شدند.
 
 ## تغییر اخیر — 2026-07-29
 

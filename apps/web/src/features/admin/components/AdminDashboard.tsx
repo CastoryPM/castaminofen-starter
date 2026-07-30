@@ -10,10 +10,30 @@ import { Tag } from '@/components/design-system/common/tag';
 import { Button } from '@/components/ui/button';
 import { PageState } from '@/components/ui/page-state';
 import { adminContent, adminCreators, adminDiscussions, adminOverviewMetrics, adminReports, adminSectionConfig, adminUsers } from '../data/mockAdminData';
+import { AdminGovernanceDashboard } from './AdminGovernanceDashboard';
+import { AdminRolesPreview } from './AdminRolesPreview';
+import { AuditActivityTimeline } from './AuditActivityTimeline';
+import { ContentReviewPanel } from './ContentReviewPanel';
+import { CreatorReviewPanel } from './CreatorReviewPanel';
+import { ModerationQueue } from './ModerationQueue';
+import { OperationsDashboard } from './OperationsDashboard';
+import { PlatformAlerts } from './PlatformAlerts';
+import { TrustSafetyOverview } from './TrustSafetyOverview';
+import { UserTrustPanel } from './UserTrustPanel';
 import type { AdminSectionKey } from '../types/admin.types';
 
 const sectionComponents: Record<AdminSectionKey, { title: string; description: string }> = {
   overview: { title: 'نمای کلی پلتفرم', description: 'حس کلی از سلامت، رشد و وضعیت اکوسیستم' },
+  governance: { title: 'Governance Workspace', description: 'مرکز عملیاتی برای اعتماد، نظارت و سلامت اکوسیستم' },
+  moderation: { title: 'Moderation Queue', description: 'فضای بررسی محتوا، جامعه و گزارش‌ها' },
+  'content-review': { title: 'Content Review System', description: 'مرکز تصمیم‌گیری برای محتوا و دیده‌شدن' },
+  'creator-review': { title: 'Creator Governance', description: 'بررسی درخواست‌ها و وضعیت اعتبار سازندگان' },
+  trust: { title: 'User Trust Management', description: 'نظارت بر رفتار کاربران و سطح اعتماد' },
+  audit: { title: 'Audit Timeline', description: 'رویدادهای مدیریتی و فعالیت‌های ثبت‌شده' },
+  alerts: { title: 'Platform Alerts', description: 'هشدارهای رشد، رویداد و گزارش' },
+  safety: { title: 'Trust & Safety Overview', description: 'خلاصه‌ی سلامت و اعتماد اکوسیستم' },
+  roles: { title: 'Admin Roles Preview', description: 'پیش‌نمایش نقش‌های مدیریتی و دامنه‌ی آنها' },
+  operations: { title: 'Operations Dashboard', description: 'فضای کاری روزانه برای مدیران و تیم' },
   users: { title: 'مدیریت کاربران', description: 'مرکز کنترل برای وضعیت حساب‌ها و مشارکت' },
   creators: { title: 'مدیریت سازندگان', description: 'تجربه‌ای برای نظارت روی اعتبار و رشد' },
   content: { title: 'مدیریت محتوا', description: 'کنترل انتشار، بررسی و محدودسازی' },
@@ -26,6 +46,16 @@ const sectionComponents: Record<AdminSectionKey, { title: string; description: s
 
 const iconMap = {
   overview: Compass,
+  governance: ShieldCheck,
+  moderation: AlertTriangle,
+  'content-review': Layers3,
+  'creator-review': Sparkles,
+  trust: Users2,
+  audit: BarChart3,
+  alerts: BellRing,
+  safety: ShieldCheck,
+  roles: Blocks,
+  operations: Compass,
   users: Users2,
   creators: Sparkles,
   content: Layers3,
@@ -43,6 +73,26 @@ export function AdminDashboard() {
 
   const sectionContent = useMemo(() => {
     switch (activeSection) {
+      case 'governance':
+        return <AdminGovernanceDashboard />;
+      case 'moderation':
+        return <ModerationQueue />;
+      case 'content-review':
+        return <ContentReviewPanel />;
+      case 'creator-review':
+        return <CreatorReviewPanel />;
+      case 'trust':
+        return <UserTrustPanel />;
+      case 'audit':
+        return <AuditActivityTimeline />;
+      case 'alerts':
+        return <PlatformAlerts />;
+      case 'safety':
+        return <TrustSafetyOverview />;
+      case 'roles':
+        return <AdminRolesPreview />;
+      case 'operations':
+        return <OperationsDashboard />;
       case 'users':
         return (
           <div className="space-y-4">
@@ -219,7 +269,7 @@ export function AdminDashboard() {
       <SectionHeader
         title="Platform Control Center"
         description="فضای مدیریتی برای کنترل، نظارت و رشد پلتفرم"
-        actions={<Tag className="border-accent/20 bg-accent/10 text-accent">Admin Mission Control</Tag>}
+        actions={<Tag className="border-accent/20 bg-accent/10 text-accent">Governance Mission Control</Tag>}
       />
 
       <div className="grid gap-4 lg:grid-cols-[260px_minmax(0,1fr)]">
@@ -272,10 +322,10 @@ export function AdminDashboard() {
           {activeSection === 'overview' ? (
             <div className="grid gap-4 lg:grid-cols-2">
               <MediaCard title="Empty states" subtitle="برای بخش‌های خالی و اسکریپت‌های آینده" meta="Ready" className="space-y-3">
-                <PageState variant="empty" title="No creators yet" description="این بخش برای نمایش وضعیت خالی و ساختار آینده آماده است." />
+                <PageState variant="empty" title="No pending reviews" description="این بخش برای نمایش وضعیت خالی و ساختار آینده آماده است." />
               </MediaCard>
               <MediaCard title="Loading states" subtitle="برای اتصال به داده‌های واقعی" meta="Ready" className="space-y-3">
-                <PageState variant="loading" title="Loading platform data" description="در حال آماده‌سازی داده‌های مدیریتی" />
+                <PageState variant="loading" title="Loading operational data" description="در حال آماده‌سازی داده‌های مدیریتی" />
               </MediaCard>
             </div>
           ) : null}

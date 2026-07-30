@@ -2,6 +2,16 @@ import type { AdminContentItem, AdminCreator, AdminDiscussion, AdminMetric, Admi
 
 export const adminSectionConfig = [
   { key: 'overview', title: 'داشبورد', description: 'نمای کلی فعالیت و سلامت پلتفرم', shortLabel: 'Overview' },
+  { key: 'governance', title: 'Governance', description: 'نمایه‌ی عملیاتی برای سلامت و اعتماد', shortLabel: 'Governance' },
+  { key: 'moderation', title: 'Moderation', description: 'صفحه‌ی نظارت روی بررسی محتوا و گزارش‌ها', shortLabel: 'Moderation' },
+  { key: 'content-review', title: 'Content Review', description: 'مدیریت بررسی محتوایی و وضعیت دیده‌شدن', shortLabel: 'Content Review' },
+  { key: 'creator-review', title: 'Creator Review', description: 'نظارت بر درخواست‌ها و اعتبار سازندگان', shortLabel: 'Creator Review' },
+  { key: 'trust', title: 'Trust', description: 'ناظر بر رفتار کاربر و سلامت جامعه', shortLabel: 'Trust' },
+  { key: 'audit', title: 'Audit', description: 'تاریخچه‌ی تصمیم‌ها و فعالیت‌های مدیریتی', shortLabel: 'Audit' },
+  { key: 'alerts', title: 'Alerts', description: 'هشدارهای مرتبط با رشد و گزارش‌ها', shortLabel: 'Alerts' },
+  { key: 'safety', title: 'Safety', description: 'خلاصه‌ی سلامت و اعتماد اکوسیستم', shortLabel: 'Safety' },
+  { key: 'roles', title: 'Roles', description: 'پیش‌نمایش نقش‌های مدیریتی آینده', shortLabel: 'Roles' },
+  { key: 'operations', title: 'Operations', description: 'فضای کاری روزمره‌ی مدیرعامل و تیم', shortLabel: 'Operations' },
   { key: 'users', title: 'کاربران', description: 'مدیریت کاربران و وضعیت حساب‌ها', shortLabel: 'Users' },
   { key: 'creators', title: 'سازندگان', description: 'نظارت بر رشد و اعتبار سازندگان', shortLabel: 'Creators' },
   { key: 'content', title: 'محتوا', description: 'کنترل انتشار و وضعیت محتوایی', shortLabel: 'Content' },
