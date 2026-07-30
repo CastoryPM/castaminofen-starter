@@ -18,6 +18,7 @@
 - Phase PLAYER.6 — Advanced Immersive Player Experience
 - Phase PLAYER.7 — Player Data Integration & Social Memory Layer
 - Phase SOCIAL.1 — Shared Social Interaction Infrastructure
+- Phase PROFILE.2 — Social Identity & Personal Knowledge Hub
 
 ## پیشرفت کلی
 
