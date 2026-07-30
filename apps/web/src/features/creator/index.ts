@@ -1,6 +1,7 @@
 export { CreatorProfilePage } from './components/CreatorProfilePage';
 export { CreatorContentManager } from './components/CreatorContentManager';
 export { CreatorAnalyticsDashboard } from './components/CreatorAnalyticsDashboard';
+export { CreatorEconomyFoundation } from './components/CreatorEconomyFoundation';
 export { ContentStatusFilter } from './components/ContentStatusFilter';
 export { DraftWorkspace } from './components/DraftWorkspace';
 export { PublishingWorkflow } from './components/PublishingWorkflow';

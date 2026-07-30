@@ -7,6 +7,7 @@ import { DraftWorkspace } from './DraftWorkspace';
 import { PublishingWorkflow } from './PublishingWorkflow';
 import { ScheduledContentPanel } from './ScheduledContentPanel';
 import { ContentVersionHistory } from './ContentVersionHistory';
+import { CreatorEconomyFoundation } from './CreatorEconomyFoundation';
 
 function mount(ui: React.ReactElement) {
   const container = document.createElement('div');
@@ -89,5 +90,15 @@ describe('creator content lifecycle experience', () => {
 
     expect(rendered.container.textContent).toContain('تاریخچه نسخه‌ها');
     expect(rendered.container.textContent).toContain('بهبود کیفیت صدا');
+  });
+
+  it('renders the creator economy foundation experience', () => {
+    const rendered = mount(<CreatorEconomyFoundation />);
+    container = rendered.container;
+    root = rendered.root;
+
+    expect(rendered.container.textContent).toContain('داشبورد درآمد سازنده');
+    expect(rendered.container.textContent).toContain('حمایت از سازنده');
+    expect(rendered.container.textContent).toContain('عضویت ویژه سازنده');
   });
 });

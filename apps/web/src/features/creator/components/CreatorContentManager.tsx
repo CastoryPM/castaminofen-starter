@@ -10,6 +10,7 @@ import { PublishingWorkflow } from './PublishingWorkflow';
 import { ScheduledContentPanel } from './ScheduledContentPanel';
 import { ContentVersionHistory } from './ContentVersionHistory';
 import { CreatorAnalyticsDashboard } from './CreatorAnalyticsDashboard';
+import { CreatorEconomyFoundation } from './CreatorEconomyFoundation';
 import { mockCreatorContentItems } from '../data/mockCreatorContentData';
 import { mockCreatorAnalyticsData } from '../data/mockCreatorAnalyticsData';
 
@@ -59,6 +60,7 @@ export function CreatorContentManager() {
           </div>
 
           <CreatorAnalyticsDashboard data={mockCreatorAnalyticsData} />
+          <CreatorEconomyFoundation />
 
           <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
             <div className="space-y-6">
