@@ -38,3 +38,35 @@
 
 ## قدم بعدی پیشنهادی
 - ادامه‌ی پاک‌سازی remaining duplicated UI patterns در سطوح جزئی‌تر و بهبود consistency در ویژگی‌های آینده.
+
+# Phase PLAYER.6 — Advanced Immersive Player Experience Report
+
+## هدف
+ارتقا‌ی تجربه‌ی Player از یک رابط پخش ساده به یک تجربه‌ی تعاملی، Premium و Immersive بدون تغییر در runtime پخش، مالکیت queue، persistence، API‌ها، schema دیتابیس، احراز هویت یا معماری routing.
+
+## محدوده
+- افزودن تجربه‌ی full-screen/expanded player با حالت‌های مختلف تجربه‌ی صوتی/ویدیویی/آموزشی
+- گسترش UI برای timeline markers، discussion layer، memory actions، queue experience و stateهای loading/error/empty
+- حفظ تمام منطق runtime و state management در مرز Player
+
+## کارهای انجام‌شده
+- افزودن پنل Immersive Player در داخل PlayerBar با تب‌های Experience/Discussion/Memory/Queue
+- پیاده‌سازی UI برای timeline markers، transcript-like interaction، creator info، related content، queue preview و stateهای آماده/بارگذاری/خطا
+- افزودن کنترل‌های پیشرفته‌ی پخش (previous/next، skip ۳۰ ثانیه، repeat، shuffle، speed) در پنل تعاملی
+- اضافه‌کردن تست رگرسیونی برای باز شدن تجربه‌ی تعاملی از PlayerBar
+
+## فایل‌های تغییر داده‌شده
+- apps/web/src/features/player/components/PlayerBar.tsx
+- apps/web/src/features/player/components/ImmersivePlayerPanel.tsx
+- apps/web/src/features/player/components/PlayerBar.test.tsx
+
+## اعتبارسنجی
+- TypeScript check: موفق
+- Web tests: 33 فایل تست، 109 تست موفق
+- Production build: موفق
+
+## محدودیت‌ها و یادداشت‌ها
+- این فاز روی سطح presentation و interaction UI تمرکز دارد و هیچ منطق runtime یا backend جدیدی اضافه نکرده است.
+
+## قدم بعدی پیشنهادی
+- در فازهای بعدی، می‌توان با اتصال UI به داده‌های واقعی discussion/transcript/bookmarks، تجربه‌ی Immersive را به‌صورت کامل‌تر و data-driven کرد.

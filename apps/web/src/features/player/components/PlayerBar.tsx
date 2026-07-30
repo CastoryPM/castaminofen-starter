@@ -9,14 +9,16 @@ import { PlayerControls } from './PlayerControls';
 import { PlayerInfo } from './PlayerInfo';
 import { PlayerProgress } from './PlayerProgress';
 import { PlayerVolume } from './PlayerVolume';
+import { ImmersivePlayerPanel } from './ImmersivePlayerPanel';
 import { usePlayerRuntime } from '../hooks/usePlayerRuntime';
 import { usePlayerState } from '../hooks/usePlayerState';
-import { formatTime, getArtworkFallback, getQueueDisplayItems } from '../utils/playerPresentation';
+import { formatTime, getQueueDisplayItems } from '../utils/playerPresentation';
 
 export function PlayerBar() {
   const playerRuntime = usePlayerRuntime();
   const { currentItem, playbackStatus, error, queue, currentIndex, repeatMode, shuffleEnabled, currentPosition } = usePlayerState();
   const [isQueueOpen, setIsQueueOpen] = useState(false);
+  const [isImmersiveOpen, setIsImmersiveOpen] = useState(false);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   const queueDisplay = useMemo(() => getQueueDisplayItems(queue, currentIndex), [queue, currentIndex]);
@@ -109,6 +111,17 @@ export function PlayerBar() {
                 <ListMusic size={14} />
                 <span>{queue.length > 0 ? queueCountLabel : 'صف پخش'}</span>
               </Button>
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                className="rounded-full px-3 py-2 text-[11px]"
+                onClick={() => setIsImmersiveOpen((open) => !open)}
+                aria-label="گسترش پخش‌کننده"
+                title="گسترش پخش‌کننده"
+              >
+                پخش تعاملی
+              </Button>
               <div className="hidden sm:block">
                 <PlayerVolume />
               </div>
@@ -122,6 +135,8 @@ export function PlayerBar() {
       <div className="mt-3 md:hidden">
         <PlayerProgress />
       </div>
+
+      {isImmersiveOpen ? <ImmersivePlayerPanel onClose={() => setIsImmersiveOpen(false)} /> : null}
 
       {isQueueOpen ? (
         <div id={queueDialogId} role="dialog" aria-modal="true" aria-labelledby="player-queue-title" className="mt-4 rounded-[1.25rem] border border-border/70 bg-surface-card/90 p-4 shadow-soft">

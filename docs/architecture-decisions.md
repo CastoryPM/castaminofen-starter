@@ -40,3 +40,9 @@
 - تصمیم: لایه Design System در وب، کامپوننت‌های قابل استفاده‌ی مجدد برای layout، states و media را به‌عنوان مالکیت مشترک UI نگهداری می‌کند و featureها فقط منطق کسب‌وکار و composition خاص خود را مدیریت می‌کنند.
 - دلیل: این تغییر از تکرار UI در Home/Library/Search/Profile/Create/Player/Community جلوگیری می‌کند و بنیاد ثابت برای تجربه‌های آینده فراهم می‌کند.
 - پیامد: PageContainer، SectionHeader، EmptyState، LoadingState و MediaCard اکنون از یک لایه‌ی رسمی طراحی استفاده می‌کنند و featureها بدون تکرار این الگوها می‌توانند از آنها بهره ببرند.
+
+## ADR-023 — Player UI can expand into immersive presentation surfaces without changing runtime ownership
+
+- تصمیم: تجربه‌ی UI Player می‌تواند با افزودن surface‌های تعاملی و presentation-rich در مرز Player، به یک تجربه‌ی Immersive تبدیل شود اما مالکیت runtime، queue، persistence و API‌ها در همان feature Player باقی بماند.
+- دلیل: نیاز تجربه‌ی کاربری جدید باید در لایه‌ی presentation انجام شود و نباید منطق پخش یا state ownership را به کامپوننت‌ها یا featureهای دیگر منتقل کند.
+- پیامد: PlayerBar اکنون یک تجربه‌ی compact + expanded دارد و پنل Immersive Player از همین state و runtime فعلی استفاده می‌کند بدون ایجاد تغییر در engine، persistence یا API.
