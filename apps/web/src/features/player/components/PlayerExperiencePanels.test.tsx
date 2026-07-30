@@ -22,8 +22,9 @@ describe('player experience panels', () => {
 
   afterEach(() => {
     if (root) {
+      const currentRoot = root;
       act(() => {
-        root.unmount();
+        currentRoot.unmount();
       });
     }
     container?.remove();

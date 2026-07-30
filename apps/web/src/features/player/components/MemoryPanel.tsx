@@ -1,29 +1,33 @@
-import { BookMarked, Clock3, MessageSquareText, Sparkles, Star } from 'lucide-react';
+import { BookMarked, Clock3, MessageSquareText, Sparkles, Star, StickyNote } from 'lucide-react';
 import { MediaCard } from '@/components/design-system/media/media-card';
+import { getPlayerMemoryCollections } from '../data/mockPlayerExperience';
 
-const memoryItems = [
-  { title: 'نشانک‌های ذخیره‌شده', subtitle: '۳ لحظه‌ی ارزشمند برای بازگشت', icon: BookMarked },
-  { title: 'هایلایت‌های شخصی', subtitle: '۲ نقل‌قول مهم', icon: Star },
-  { title: 'بحث‌های اخیر', subtitle: '۴ گفت‌وگوی لحظه‌ای', icon: MessageSquareText },
-  { title: 'ادامه‌ی پخش', subtitle: 'از ۱۸:۴۰ ادامه بده', icon: Clock3 },
-];
+const iconMap = {
+  bookmark: BookMarked,
+  highlight: Star,
+  note: StickyNote,
+  resume: Clock3,
+} as const;
 
 export function MemoryPanel() {
+  const collections = getPlayerMemoryCollections();
+
   return (
     <div className="space-y-3">
       <MediaCard title="فضای حافظه" subtitle="یک آرشیو شخصی از لحظه‌ها و یادداشت‌ها" className="h-full">
         <div className="space-y-2">
-          {memoryItems.map((item) => {
-            const Icon = item.icon;
+          {collections.map((item) => {
+            const Icon = iconMap[item.accent];
             return (
               <div key={item.title} className="flex items-center gap-3 rounded-[1rem] border border-border/70 bg-surface-secondary/70 p-3">
                 <div className="flex h-9 w-9 items-center justify-center rounded-full bg-accent/10 text-accent">
                   <Icon size={16} />
                 </div>
-                <div>
+                <div className="flex-1">
                   <p className="text-sm font-semibold text-text-primary">{item.title}</p>
                   <p className="text-sm text-text-secondary">{item.subtitle}</p>
                 </div>
+                <span className="rounded-full bg-surface-card px-2.5 py-1 text-xs font-semibold text-text-secondary">{item.count}</span>
               </div>
             );
           })}
@@ -34,7 +38,7 @@ export function MemoryPanel() {
           <Sparkles size={16} className="text-accent" />
           <span>ذخیره‌ی هوشمند لحظه‌ها</span>
         </div>
-        <p className="mt-2">این بخش در آینده با همگام‌سازی و فیلترهای هوشمند تکمیل می‌شود اما حالا از داده‌های داخلی و mock برای تجربه‌ی کامل استفاده می‌کند.</p>
+        <p className="mt-2">این بخش از داده‌ی داخلی و mock برای جمع‌آوری نشانک‌ها، هایلایت‌ها، یادداشت‌ها و بازگشت‌های سریع استفاده می‌کند.</p>
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ import { TranscriptPanel } from './TranscriptPanel';
 import { QueuePanel } from './QueuePanel';
 import { CreatorPanel } from './CreatorPanel';
 import { RelatedContentPanel } from './RelatedContentPanel';
+import { getPlayerExperienceViewModel } from '../data/mockPlayerExperience';
 
 type PanelTab = 'experience' | 'discussion' | 'memory' | 'queue';
 
@@ -41,11 +42,7 @@ export function ImmersivePlayerPanel({ onClose }: { onClose: () => void }) {
 
   const [selectedMarkerId, setSelectedMarkerId] = useState('idea');
 
-  const markers = useMemo<MarkerItem[]>(() => [
-    { id: 'intro', label: 'معرفی', timestamp: 0, type: 'chapter', colorToken: 'accent' },
-    { id: 'idea', label: 'ایده اصلی', timestamp: 320, type: 'discussion', colorToken: 'sky', selected: true },
-    { id: 'bookmark', label: 'نکته کلیدی', timestamp: 1120, type: 'bookmark', colorToken: 'violet' },
-  ], []);
+  const markers = useMemo<MarkerItem[]>(() => getPlayerExperienceViewModel(currentPosition).markers, [currentPosition]);
 
   const handleSkip = (deltaSeconds: number) => {
     const nextPosition = Math.max(0, (currentPosition || 0) + deltaSeconds);
