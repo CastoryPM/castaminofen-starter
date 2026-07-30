@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
-import { Header } from '@/components/layout/header';
+import { MobileHeader } from '@/components/layout/mobile-header';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { MobileContainer } from '@/components/layout/mobile-container';
 import { PlayerBar } from '@/features/player/components/PlayerBar';
@@ -30,7 +30,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="app-shell min-h-screen flex flex-col bg-surface-primary text-text-primary">
-      {!isLanding && <Header />}
+      {!isLanding && <MobileHeader pathname={pathname} />}
       <main className="flex-1">
         <MobileContainer>
           <div className="app-shell__content px-1 py-3 sm:px-0 sm:py-4">
@@ -44,7 +44,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <PlayerBar />
         </div>
       )}
-      {!isLanding && <BottomNavigation />}
+      {!isLanding && <BottomNavigation pathname={pathname} />}
     </div>
   );
 }

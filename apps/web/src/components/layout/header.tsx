@@ -6,11 +6,11 @@ import { Search, Settings } from 'lucide-react';
 
 export function Header() {
   return (
-    <header className="app-header sticky top-0 z-30 border-b border-border bg-surface-secondary/95 backdrop-blur-xl">
-      <div className="mobile-container mx-auto flex w-full max-w-app items-center justify-between gap-3 px-3 py-4 sm:px-6 lg:px-8">
+    <header className="app-header sticky top-0 z-30 border-b border-border/70 bg-surface-secondary/80 backdrop-blur-2xl">
+      <div className="mobile-container mx-auto flex w-full max-w-app items-center justify-between gap-3 px-3 py-3 sm:px-6 lg:px-8">
         <div className="flex min-w-0 items-center gap-3">
-          <Image src="/branding/logo.png" alt="Castaminofen" width={220} height={56} className="h-auto w-auto max-w-[220px] sm:max-w-[240px]" />
-          <div>
+          <Image src="/branding/logo.png" alt="Castaminofen" width={220} height={56} className="h-auto w-auto max-w-[180px] sm:max-w-[220px]" />
+          <div className="hidden sm:block">
             <p className="text-caption uppercase tracking-[0.24em] text-text-secondary">Castaminofen</p>
             <h1 className="text-heading">پخش و کشف صوتی</h1>
           </div>

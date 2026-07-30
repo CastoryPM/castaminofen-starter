@@ -10,7 +10,7 @@
 
 ## فاز جاری
 
-- Phase FAVORITES.1.2 — Prisma Schema Stabilization
+- Phase MOBILE.SHELL.1 — Mobile App Shell Consolidation
 
 ## پیشرفت کلی
 
@@ -78,6 +78,10 @@
 - Web build: blocked by an unrelated Search page suspense issue during prerender (`useSearchParams()` on `/search`)
 - RSS ingestion regression tests: added for persistence boundary, matching decisions, and the new idempotent synchronization engine; backend build passed; Prisma schema validation and direct TypeScript verification confirmed the RSS sync behavior
 - End-to-end RSS orchestration now coordinates fetch, parse, normalize, match, persist, and FeedSource state transitions for a single feed without introducing background execution or new business ownership
+
+## تغییر اخیر — 2026-07-30
+
+- Phase MOBILE.SHELL.1 — Mobile App Shell Consolidation تکمیل شد. Header موبایل، Bottom Navigation و تجربه‌ی کلی شل اپلیکیشن بر اساس الگوی Home یکپارچه شدند و صفحه Library با همان شل مشترک در کل اپ اجرا شد. این تغییر بدون تغییر route، API، store یا منطق کسب‌وکار انجام شد.
 
 ## تغییر اخیر — 2026-07-29
 

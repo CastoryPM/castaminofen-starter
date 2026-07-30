@@ -2,6 +2,7 @@
 
 | تاریخ | فاز | تغییرات | وضعیت |
 | --- | --- | --- | --- |
+| 2026-07-30 | Phase MOBILE.SHELL.1 — Mobile App Shell Consolidation | Unified the mobile app shell across the web app by introducing shared header/navigation components, aligning the Library experience with the Home-based shell, preserving routes and feature ownership, and strengthening spacing/motion consistency with the existing Castaminofen design tokens | انجام شده |
 | 2026-07-29 | Phase PWA.1 — Web App Installation Support | Added a minimal PWA manifest, app metadata, install prompt handling, and a lightweight service worker registration path for browser installability while preserving existing routes, APIs, player behavior, and feature ownership boundaries | انجام شده |
 | 2026-07-29 | Phase PLAYER.4.1 — Runtime Persistence Stabilization | Persist full player snapshot (queue, index, repeat, shuffle, volume), restore/normalize queue on startup, ensure queue[currentIndex] matches currentItem, add persistence unit tests and restore volume after refresh | انجام شده |
 | 2026-07-29 | fix(favorites): stabilize prisma relations and restore full validation | Added inverse relations for `FavoriteEpisode`, regenerated Prisma Client, created and applied the `add-favorite-episode` migration, and verified API/web build and tests | انجام شده |

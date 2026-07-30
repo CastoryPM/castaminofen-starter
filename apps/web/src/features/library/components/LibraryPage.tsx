@@ -41,16 +41,16 @@ export function LibraryPage() {
         : 'شب آرامی برای گوش دادن داشته باش.';
 
   if (isLoading) {
-    return <LibraryLoadingState />;
+    return <div className="space-y-4"><LibraryLoadingState /></div>;
   }
 
   if (isError && !hasAnyContent) {
-    return <LibraryErrorState onRetry={() => { void overviewQuery.refetch(); }} />;
+    return <div className="space-y-4"><LibraryErrorState onRetry={() => { void overviewQuery.refetch(); }} /></div>;
   }
 
   if (!hasAnyContent) {
     return (
-      <div className="space-y-6 sm:space-y-8">
+      <div className="space-y-5 sm:space-y-6">
         <section className="rounded-[1.75rem] border border-border/80 bg-surface-secondary/70 p-4 shadow-soft sm:p-6">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div className="space-y-3">
@@ -73,7 +73,7 @@ export function LibraryPage() {
   }
 
   return (
-    <div className="space-y-6 sm:space-y-8">
+    <div className="space-y-5 sm:space-y-6">
       <section className="rounded-[1.75rem] border border-border/80 bg-surface-secondary/70 p-4 shadow-soft sm:p-6">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-3">
