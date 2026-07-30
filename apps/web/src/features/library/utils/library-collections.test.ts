@@ -31,12 +31,11 @@ describe('buildLibraryCollectionsSummary', () => {
       episode: {
         ...episode,
         podcast: {
-          id: podcast.id,
-          title: podcast.title,
+          ...podcast,
           artworkUrl: null,
         },
       },
-    } as LibraryListeningHistoryItem;
+    } as unknown as LibraryListeningHistoryItem;
 
     const subscription = {
       id: 'sub-1',

@@ -1,6 +1,8 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 
+import type { Mock } from 'vitest';
+
 vi.mock('../hooks/useFavorites', () => ({
   useFavorites: vi.fn(),
   useSaveFavorite: vi.fn(),
@@ -15,13 +17,18 @@ const { useFavorites, useSaveFavorite, useRemoveFavorite } = await vi.importMock
 const { usePlayerRuntime } = await vi.importMock('@/features/player/hooks/usePlayerRuntime');
 const { LibraryFavoritesSection } = await import('./LibraryFavoritesSection');
 
+const mockUseFavorites = useFavorites as Mock;
+const mockUsePlayerRuntime = usePlayerRuntime as Mock;
+const mockUseSaveFavorite = useSaveFavorite as Mock;
+const mockUseRemoveFavorite = useRemoveFavorite as Mock;
+
 describe('LibraryFavoritesSection', () => {
   it('renders loading skeleton when favorites are loading', () => {
-    useFavorites.mockReturnValue({ isLoading: true });
-    usePlayerRuntime.mockReturnValue({ loadItem: async () => {} });
+    mockUseFavorites.mockReturnValue({ isLoading: true });
+    mockUsePlayerRuntime.mockReturnValue({ loadItem: async () => {} });
     // Provide mutation mocks for nested FavoriteActionButton
-    useSaveFavorite.mockReturnValue({ mutateAsync: vi.fn(), isPending: false, error: null });
-    useRemoveFavorite.mockReturnValue({ mutateAsync: vi.fn(), isPending: false, error: null });
+    mockUseSaveFavorite.mockReturnValue({ mutateAsync: vi.fn(), isPending: false, error: null });
+    mockUseRemoveFavorite.mockReturnValue({ mutateAsync: vi.fn(), isPending: false, error: null });
 
     const html = renderToStaticMarkup(<LibraryFavoritesSection />);
 
@@ -29,10 +36,10 @@ describe('LibraryFavoritesSection', () => {
   });
 
   it('renders error state when favorites query fails', () => {
-    useFavorites.mockReturnValue({ isLoading: false, isError: true, refetch: vi.fn() });
-    usePlayerRuntime.mockReturnValue({ loadItem: async () => {} });
-    useSaveFavorite.mockReturnValue({ mutateAsync: vi.fn(), isPending: false, error: null });
-    useRemoveFavorite.mockReturnValue({ mutateAsync: vi.fn(), isPending: false, error: null });
+    mockUseFavorites.mockReturnValue({ isLoading: false, isError: true, refetch: vi.fn() });
+    mockUsePlayerRuntime.mockReturnValue({ loadItem: async () => {} });
+    mockUseSaveFavorite.mockReturnValue({ mutateAsync: vi.fn(), isPending: false, error: null });
+    mockUseRemoveFavorite.mockReturnValue({ mutateAsync: vi.fn(), isPending: false, error: null });
 
     const html = renderToStaticMarkup(<LibraryFavoritesSection />);
 
@@ -41,10 +48,10 @@ describe('LibraryFavoritesSection', () => {
   });
 
   it('renders empty state when there are no saved favorites', () => {
-    useFavorites.mockReturnValue({ isLoading: false, isError: false, data: [] });
-    usePlayerRuntime.mockReturnValue({ loadItem: async () => {} });
-    useSaveFavorite.mockReturnValue({ mutateAsync: vi.fn(), isPending: false, error: null });
-    useRemoveFavorite.mockReturnValue({ mutateAsync: vi.fn(), isPending: false, error: null });
+    mockUseFavorites.mockReturnValue({ isLoading: false, isError: false, data: [] });
+    mockUsePlayerRuntime.mockReturnValue({ loadItem: async () => {} });
+    mockUseSaveFavorite.mockReturnValue({ mutateAsync: vi.fn(), isPending: false, error: null });
+    mockUseRemoveFavorite.mockReturnValue({ mutateAsync: vi.fn(), isPending: false, error: null });
 
     const html = renderToStaticMarkup(<LibraryFavoritesSection />);
 
@@ -53,7 +60,7 @@ describe('LibraryFavoritesSection', () => {
   });
 
   it('renders favorites with play and remove actions', () => {
-    useFavorites.mockReturnValue({
+    mockUseFavorites.mockReturnValue({
       isLoading: false,
       isError: false,
       data: [
@@ -73,9 +80,9 @@ describe('LibraryFavoritesSection', () => {
         },
       ],
     });
-    usePlayerRuntime.mockReturnValue({ loadItem: async () => {} });
-    useSaveFavorite.mockReturnValue({ mutateAsync: vi.fn(), isPending: false, error: null });
-    useRemoveFavorite.mockReturnValue({ mutateAsync: vi.fn(), isPending: false, error: null });
+    mockUsePlayerRuntime.mockReturnValue({ loadItem: async () => {} });
+    mockUseSaveFavorite.mockReturnValue({ mutateAsync: vi.fn(), isPending: false, error: null });
+    mockUseRemoveFavorite.mockReturnValue({ mutateAsync: vi.fn(), isPending: false, error: null });
 
     const html = renderToStaticMarkup(<LibraryFavoritesSection />);
 
