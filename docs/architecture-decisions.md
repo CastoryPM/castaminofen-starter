@@ -35,6 +35,8 @@
 - دلیل: نصب‌پذیری مرورگر یک نیاز runtime/پلتفرم است و باید در لایه shell نگهداری شود بدون تأثیر بر مالکیت featureها.
 - پیامد: manifest، metadata، service worker ثبت‌ساز و دکمه نصب در shell مدیریت می‌شوند و Player/Podcast/Episode/Library/Profile بدون تغییر باقی می‌مانند.
 
-- تصمیم: منطق مربوط به ترجیحات کاربر در مرز feature Settings نگهداری می‌شود و سایر featureها فقط از API عمومی Settings برای دسترسی به آن استفاده می‌کنند.
-- دلیل: این تغییر از پراکندگی state و دسترسی مستقیم به storage در کامپوننت‌ها جلوگیری می‌کند و مرز مالکیت را برای ترجیحات روشن می‌سازد.
-- پیامد: مدل ترجیحات، persistence و hook دسترسی در Feature Settings مستقر شده‌اند و رفتار runtime بدون تغییر باقی می‌ماند.
+## ADR-022 — Design system owns shared presentation primitives
+
+- تصمیم: لایه Design System در وب، کامپوننت‌های قابل استفاده‌ی مجدد برای layout، states و media را به‌عنوان مالکیت مشترک UI نگهداری می‌کند و featureها فقط منطق کسب‌وکار و composition خاص خود را مدیریت می‌کنند.
+- دلیل: این تغییر از تکرار UI در Home/Library/Search/Profile/Create/Player/Community جلوگیری می‌کند و بنیاد ثابت برای تجربه‌های آینده فراهم می‌کند.
+- پیامد: PageContainer، SectionHeader، EmptyState، LoadingState و MediaCard اکنون از یک لایه‌ی رسمی طراحی استفاده می‌کنند و featureها بدون تکرار این الگوها می‌توانند از آنها بهره ببرند.

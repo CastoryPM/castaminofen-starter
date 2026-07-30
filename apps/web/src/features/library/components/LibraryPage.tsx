@@ -11,6 +11,10 @@ import { SubscriptionsSection } from './SubscriptionsSection';
 import { LibraryCollectionsSection } from './LibraryCollectionsSection';
 import { LibraryFavoritesSection } from './LibraryFavoritesSection';
 import { getLastActivityLabel, getLibraryGreeting, getListeningStreakFromHistory } from '../utils/library-personalization';
+import { PageContainer } from '@/components/layout/page-container';
+import { SectionHeader } from '@/components/layout/section-header';
+import { ContentCarousel } from '@/components/layout/content-carousel';
+import { MediaCard } from '@/components/layout/media-card';
 
 export function LibraryPage() {
   const overviewQuery = useLibraryOverview();
@@ -41,17 +45,17 @@ export function LibraryPage() {
         : 'شب آرامی برای گوش دادن داشته باش.';
 
   if (isLoading) {
-    return <LibraryLoadingState />;
+    return <div className="space-y-4"><LibraryLoadingState /></div>;
   }
 
   if (isError && !hasAnyContent) {
-    return <LibraryErrorState onRetry={() => { void overviewQuery.refetch(); }} />;
+    return <div className="space-y-4"><LibraryErrorState onRetry={() => { void overviewQuery.refetch(); }} /></div>;
   }
 
   if (!hasAnyContent) {
     return (
-      <div className="space-y-6 sm:space-y-8">
-        <section className="rounded-[1.75rem] border border-border/80 bg-surface-secondary/70 p-4 shadow-soft sm:p-6">
+      <PageContainer>
+        <section className="rounded-[1.75rem] border border-border/80 bg-gradient-to-br from-accent/10 via-surface-secondary to-surface-card/90 p-4 shadow-soft sm:p-6">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div className="space-y-3">
               <p className="m-0 text-sm font-medium text-accent">کتابخانه‌ی شما</p>
@@ -68,12 +72,12 @@ export function LibraryPage() {
           description="همین امروز چند پادکست را پیدا کنید و این فضا به‌تدریج به یک خانه‌ی شخصی برای گوش دادن تبدیل شود."
           eyebrow="از اینجا به مسیر پادکست‌ها بروید"
         />
-      </div>
+      </PageContainer>
     );
   }
 
   return (
-    <div className="space-y-6 sm:space-y-8">
+    <PageContainer>
       <section className="rounded-[1.75rem] border border-border/80 bg-surface-secondary/70 p-4 shadow-soft sm:p-6">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-3">
@@ -113,12 +117,18 @@ export function LibraryPage() {
       ) : null}
 
       <div className="space-y-4 sm:space-y-6">
+        <SectionHeader eyebrow="پلتفرم" title="مرکز شخصی شما" description="این بخش‌ها در یک ساختار مشترک و قابل تشخیص قرار گرفته‌اند." />
+        <ContentCarousel className="gap-3">
+          <MediaCard title="اشتراک‌ها" subtitle="پادکست‌های دنبال‌شده" meta={`${subscriptions.length}`} className="min-w-[11rem]" />
+          <MediaCard title="ادامه پخش" subtitle="در حال گوش دادن" meta={`${continueListening.length}`} className="min-w-[11rem]" />
+          <MediaCard title="تاریخچه" subtitle="آخرین بازدیدها" meta={`${history.length}`} className="min-w-[11rem]" />
+        </ContentCarousel>
         <LibraryCollectionsSection summary={collectionSummary} />
         <LibraryFavoritesSection />
         <ContinueListeningSection items={continueListening} />
         <LibraryHistorySection items={historyItems} />
         <SubscriptionsSection items={subscriptions} />
       </div>
-    </div>
+    </PageContainer>
   );
 }

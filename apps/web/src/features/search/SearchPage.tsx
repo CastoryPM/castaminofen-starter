@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import SearchInput from './components/SearchInput';
 import { SearchResultsPanel } from './components/SearchResultsPanel';
+import { PageContainer } from '@/components/layout/page-container';
+import { SectionHeader } from '@/components/layout/section-header';
 
 const DEFAULT_PAGE = 1;
 
@@ -57,23 +59,26 @@ export default function SearchPage() {
 
   return (
     <main className="page-container">
-      <section className="card space-y-6">
-        <div className="space-y-2">
-          <h1 className="text-heading">جستجو</h1>
-          <p className="text-body m-0">به‌سرعت پادکست‌ها و اپیزودهای موجود را در پلتفرم پیدا کنید.</p>
-        </div>
+      <PageContainer>
+        <section className="rounded-[2rem] border border-border/80 bg-surface-secondary/70 p-4 shadow-soft sm:p-6 lg:p-8 space-y-6">
+          <SectionHeader
+            eyebrow="جستجو"
+            title="پادکست‌ها و اپیزودهای موجود"
+            description="به‌سرعت محتوای مورد نظر را در پلتفرم پیدا کنید."
+          />
 
-        <SearchInput
-          defaultQuery={query}
-          onNavigate={handleNavigate}
-        />
+          <SearchInput
+            defaultQuery={query}
+            onNavigate={handleNavigate}
+          />
 
-        <div className="rounded-2xl border border-border/80 bg-surface-secondary/70 px-4 py-3 text-sm text-text-secondary">
-          {searchSummary}
-        </div>
+          <div className="rounded-2xl border border-border/80 bg-surface-secondary/70 px-4 py-3 text-sm text-text-secondary">
+            {searchSummary}
+          </div>
 
-        <SearchResultsPanel query={debouncedQuery} page={page} />
-      </section>
+          <SearchResultsPanel query={debouncedQuery} page={page} />
+        </section>
+      </PageContainer>
     </main>
   );
 }

@@ -252,23 +252,27 @@
   }
 
   .app-header {
-    @apply sticky top-0 z-30 border-b border-border backdrop-blur-xl;
-    background: var(--surface-overlay);
+    @apply sticky top-0 z-30 border-b backdrop-blur-2xl;
+    border-color: var(--border);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
     box-shadow: var(--shadow-xs);
   }
 
   .bottom-navigation {
-    @apply fixed inset-x-0 bottom-0 z-20 border-t border-border backdrop-blur-xl;
-    background: var(--surface-overlay);
-    box-shadow: var(--shadow-sm);
+    @apply fixed inset-x-0 bottom-0 z-20 border-t backdrop-blur-2xl;
+    border-color: var(--border);
+    background: linear-gradient(180deg, rgba(10, 12, 20, 0.75) 0%, rgba(10, 12, 20, 0.9) 100%);
+    box-shadow: 0 -12px 30px rgba(2, 6, 20, 0.28);
   }
 
   .bottom-navigation__item {
-    @apply flex min-h-[3.25rem] flex-1 flex-col items-center justify-center gap-2 rounded-[var(--radius-16)] border border-transparent bg-transparent px-2 py-2 text-center text-xs font-medium text-text-secondary transition hover:border-border hover:bg-surface-hover hover:text-text-primary;
+    @apply flex min-h-[3.25rem] flex-1 flex-col items-center justify-center gap-2 rounded-[var(--radius-16)] border border-transparent bg-transparent px-2 py-2 text-center text-xs font-medium text-text-secondary transition-all duration-200 hover:border-border hover:bg-surface-hover hover:text-text-primary;
   }
 
   .icon-button {
-    @apply inline-flex h-11 w-11 items-center justify-center rounded-[var(--radius-16)] border border-border bg-surface-card text-text-primary shadow-xs transition hover:bg-surface-hover;
+    @apply inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius-16)] text-text-primary shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-surface-hover;
+    border: 1px solid var(--border);
+    background: var(--surface-card);
   }
 
   .surface-card {
