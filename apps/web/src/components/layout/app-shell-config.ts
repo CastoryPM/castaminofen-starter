@@ -71,7 +71,7 @@ export function getMobileHeaderConfig(pathname: string): AppShellHeaderConfig {
   if (pathname.startsWith('/community')) {
     return {
       title: 'اجتماع',
-      tagline: 'بحث و تعامل با سایر شنوندگان',
+      tagline: 'بحث و تعامل با سایر شنوندگان در یک جریان یکپارچه',
       showSearchAction: true,
       showProfileAction: true,
       titleTone: 'feature',

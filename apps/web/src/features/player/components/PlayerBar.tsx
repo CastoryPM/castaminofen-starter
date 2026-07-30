@@ -59,7 +59,7 @@ export function PlayerBar() {
   };
 
   return (
-    <div className="rounded-[1.5rem] border border-border/80 bg-gradient-to-br from-surface-secondary/95 to-surface-card/90 p-3 shadow-soft backdrop-blur sm:p-4">
+    <div className="rounded-[1.75rem] border border-border/80 bg-gradient-to-br from-surface-secondary/95 to-surface-card/90 p-3 shadow-soft backdrop-blur sm:p-4 lg:p-5">
       <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
         <div className="min-w-0 flex-1">
           <PlayerInfo />

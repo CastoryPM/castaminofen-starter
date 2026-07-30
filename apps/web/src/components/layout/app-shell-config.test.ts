@@ -20,7 +20,7 @@ describe('app shell config', () => {
     const config = getMobileHeaderConfig('/community');
 
     expect(config.title).toBe('اجتماع');
-    expect(config.tagline).toBe('بحث و تعامل با سایر شنوندگان');
+    expect(config.tagline).toBe('بحث و تعامل با سایر شنوندگان در یک جریان یکپارچه');
   });
 
   it('maps the create experience to the shared premium header pattern', () => {

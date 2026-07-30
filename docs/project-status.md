@@ -11,6 +11,7 @@
 ## فاز جاری
 
 - Phase UI.CONSOLIDATION.1 — Full Product UI Consolidation
+- Phase UI.CONSOLIDATION.2 — Player & Community Experience Integration
 
 ## پیشرفت کلی
 
