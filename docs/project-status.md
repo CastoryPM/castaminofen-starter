@@ -11,6 +11,7 @@
 ## فاز جاری
 
 - Phase COMMUNITY.2 — Community Ecosystem Experience
+- Phase CREATE.2 — Creator Studio & Content Creation Ecosystem
 - Phase UI.CONSOLIDATION.1 — Full Product UI Consolidation
 - Phase UI.CONSOLIDATION.2 — Player & Community Experience Integration
 - Phase UI.CONSOLIDATION.3 — Final Design System Extraction
