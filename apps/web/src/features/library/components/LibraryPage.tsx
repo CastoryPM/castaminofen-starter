@@ -11,10 +11,11 @@ import { SubscriptionsSection } from './SubscriptionsSection';
 import { LibraryCollectionsSection } from './LibraryCollectionsSection';
 import { LibraryFavoritesSection } from './LibraryFavoritesSection';
 import { getLastActivityLabel, getLibraryGreeting, getListeningStreakFromHistory } from '../utils/library-personalization';
-import { PageContainer } from '@/components/layout/page-container';
-import { SectionHeader } from '@/components/layout/section-header';
-import { ContentCarousel } from '@/components/layout/content-carousel';
-import { MediaCard } from '@/components/layout/media-card';
+import { PageContainer } from '@/components/design-system/layout/page-container';
+import { SectionHeader } from '@/components/design-system/layout/section-header';
+import { MediaCarousel } from '@/components/design-system/media/media-carousel';
+import { MediaCard } from '@/components/design-system/media/media-card';
+import { Tag } from '@/components/design-system/common/tag';
 
 export function LibraryPage() {
   const overviewQuery = useLibraryOverview();
@@ -118,11 +119,11 @@ export function LibraryPage() {
 
       <div className="space-y-4 sm:space-y-6">
         <SectionHeader eyebrow="پلتفرم" title="مرکز شخصی شما" description="این بخش‌ها در یک ساختار مشترک و قابل تشخیص قرار گرفته‌اند." />
-        <ContentCarousel className="gap-3">
+        <MediaCarousel className="gap-3">
           <MediaCard title="اشتراک‌ها" subtitle="پادکست‌های دنبال‌شده" meta={`${subscriptions.length}`} className="min-w-[11rem]" />
           <MediaCard title="ادامه پخش" subtitle="در حال گوش دادن" meta={`${continueListening.length}`} className="min-w-[11rem]" />
           <MediaCard title="تاریخچه" subtitle="آخرین بازدیدها" meta={`${history.length}`} className="min-w-[11rem]" />
-        </ContentCarousel>
+        </MediaCarousel>
         <LibraryCollectionsSection summary={collectionSummary} />
         <LibraryFavoritesSection />
         <ContinueListeningSection items={continueListening} />

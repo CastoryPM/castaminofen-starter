@@ -19,10 +19,10 @@ beforeEach(() => {
 describe('playerPersistence', () => {
   it('writes and reads full snapshot', () => {
     const snapshot: PersistedPlayerSnapshot = {
-      currentItem: { id: 'a', title: 'A', subtitle: '', audioUrl: 'https://a', artworkUrl: '', duration: 10, podcastId: 'p1', sourceType: 'rss' },
+      currentItem: { id: 'a', title: 'A', subtitle: '', audioUrl: 'https://a', artworkUrl: '', duration: 10, podcastId: 'p1', sourceType: 'unknown' },
       queue: [
-        { id: 'a', title: 'A', subtitle: '', audioUrl: 'https://a', artworkUrl: '', duration: 10, podcastId: 'p1', sourceType: 'rss' },
-        { id: 'b', title: 'B', subtitle: '', audioUrl: 'https://b', artworkUrl: '', duration: 20, podcastId: 'p1', sourceType: 'rss' },
+        { id: 'a', title: 'A', subtitle: '', audioUrl: 'https://a', artworkUrl: '', duration: 10, podcastId: 'p1', sourceType: 'unknown' },
+        { id: 'b', title: 'B', subtitle: '', audioUrl: 'https://b', artworkUrl: '', duration: 20, podcastId: 'p1', sourceType: 'unknown' },
       ],
       currentIndex: 1,
       playbackStatus: 'paused',
@@ -48,7 +48,7 @@ describe('playerPersistence', () => {
 
   it('reconstructs queue when missing but currentItem exists', () => {
     const snapshot: PersistedPlayerSnapshot = {
-      currentItem: { id: 'x', title: 'X', subtitle: '', audioUrl: 'https://x', artworkUrl: '', duration: 30, podcastId: 'p2', sourceType: 'rss' },
+      currentItem: { id: 'x', title: 'X', subtitle: '', audioUrl: 'https://x', artworkUrl: '', duration: 30, podcastId: 'p2', sourceType: 'unknown' },
       queue: [],
       currentIndex: -1,
       playbackStatus: 'paused',
@@ -70,9 +70,9 @@ describe('playerPersistence', () => {
 
   it('ensures queue[currentIndex] equals currentItem when mismatch', () => {
     const snapshot: PersistedPlayerSnapshot = {
-      currentItem: { id: 'z', title: 'Z', subtitle: '', audioUrl: 'https://z', artworkUrl: '', duration: 15, podcastId: 'p3', sourceType: 'rss' },
+      currentItem: { id: 'z', title: 'Z', subtitle: '', audioUrl: 'https://z', artworkUrl: '', duration: 15, podcastId: 'p3', sourceType: 'unknown' },
       queue: [
-        { id: 'a', title: 'A', subtitle: '', audioUrl: 'https://a', artworkUrl: '', duration: 10, podcastId: 'p3', sourceType: 'rss' },
+        { id: 'a', title: 'A', subtitle: '', audioUrl: 'https://a', artworkUrl: '', duration: 10, podcastId: 'p3', sourceType: 'unknown' },
       ],
       currentIndex: 0,
       playbackStatus: 'paused',

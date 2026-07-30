@@ -156,4 +156,20 @@ describe('PlayerBar', () => {
 
     expect(container.querySelector('[role="dialog"]')).toBeNull();
   });
+
+  it('opens the immersive player experience from the compact bar', () => {
+    act(() => {
+      root.render(<PlayerBar />);
+    });
+
+    const expandButton = container.querySelector('button[aria-label="گسترش پخش‌کننده"]') as HTMLButtonElement | null;
+    expect(expandButton).not.toBeNull();
+
+    act(() => {
+      expandButton?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+
+    expect(container.textContent).toContain('پخش تعاملی');
+    expect(container.textContent).toContain('بحث لحظه‌ای');
+  });
 });

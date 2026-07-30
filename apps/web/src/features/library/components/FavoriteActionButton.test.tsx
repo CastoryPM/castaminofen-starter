@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi, type Mock } from 'vitest';
 
 vi.mock('../hooks/useFavorites', () => ({
   useFavorites: vi.fn(),
@@ -10,14 +10,18 @@ vi.mock('../hooks/useFavorites', () => ({
 const { useFavorites, useSaveFavorite, useRemoveFavorite } = await vi.importMock('../hooks/useFavorites');
 const { FavoriteActionButton } = await import('./FavoriteActionButton');
 
-const createSaveMock = (overrides: any = {}) => ({
+const mockUseFavorites = useFavorites as Mock;
+const mockUseSaveFavorite = useSaveFavorite as Mock;
+const mockUseRemoveFavorite = useRemoveFavorite as Mock;
+
+const createSaveMock = (overrides: Record<string, unknown> = {}) => ({
   mutateAsync: vi.fn().mockResolvedValue(undefined),
   isPending: false,
   error: null,
   ...overrides,
 });
 
-const createRemoveMock = (overrides: any = {}) => ({
+const createRemoveMock = (overrides: Record<string, unknown> = {}) => ({
   mutateAsync: vi.fn().mockResolvedValue(undefined),
   isPending: false,
   error: null,
@@ -26,9 +30,9 @@ const createRemoveMock = (overrides: any = {}) => ({
 
 describe('FavoriteActionButton', () => {
   it('renders unsaved state', () => {
-    useFavorites.mockReturnValue({ data: [] });
-    useSaveFavorite.mockReturnValue(createSaveMock());
-    useRemoveFavorite.mockReturnValue(createRemoveMock());
+    mockUseFavorites.mockReturnValue({ data: [] });
+    mockUseSaveFavorite.mockReturnValue(createSaveMock());
+    mockUseRemoveFavorite.mockReturnValue(createRemoveMock());
 
     const html = renderToStaticMarkup(<FavoriteActionButton episodeId="ep-1" />);
 
@@ -37,9 +41,9 @@ describe('FavoriteActionButton', () => {
   });
 
   it('renders saved state', () => {
-    useFavorites.mockReturnValue({ data: [{ episodeId: 'ep-1' }] });
-    useSaveFavorite.mockReturnValue(createSaveMock());
-    useRemoveFavorite.mockReturnValue(createRemoveMock());
+    mockUseFavorites.mockReturnValue({ data: [{ episodeId: 'ep-1' }] });
+    mockUseSaveFavorite.mockReturnValue(createSaveMock());
+    mockUseRemoveFavorite.mockReturnValue(createRemoveMock());
 
     const html = renderToStaticMarkup(<FavoriteActionButton episodeId="ep-1" />);
 
@@ -48,9 +52,9 @@ describe('FavoriteActionButton', () => {
   });
 
   it('renders loading state when mutation is pending', () => {
-    useFavorites.mockReturnValue({ data: [] });
-    useSaveFavorite.mockReturnValue(createSaveMock({ isPending: true }));
-    useRemoveFavorite.mockReturnValue(createRemoveMock());
+    mockUseFavorites.mockReturnValue({ data: [] });
+    mockUseSaveFavorite.mockReturnValue(createSaveMock({ isPending: true }));
+    mockUseRemoveFavorite.mockReturnValue(createRemoveMock());
 
     const html = renderToStaticMarkup(<FavoriteActionButton episodeId="ep-1" />);
 
@@ -59,9 +63,9 @@ describe('FavoriteActionButton', () => {
   });
 
   it('renders error state when mutation error occurs', () => {
-    useFavorites.mockReturnValue({ data: [] });
-    useSaveFavorite.mockReturnValue(createSaveMock({ error: { message: 'Server error' } }));
-    useRemoveFavorite.mockReturnValue(createRemoveMock());
+    mockUseFavorites.mockReturnValue({ data: [] });
+    mockUseSaveFavorite.mockReturnValue(createSaveMock({ error: { message: 'Server error' } }));
+    mockUseRemoveFavorite.mockReturnValue(createRemoveMock());
 
     const html = renderToStaticMarkup(<FavoriteActionButton episodeId="ep-1" />);
 

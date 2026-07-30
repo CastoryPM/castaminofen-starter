@@ -1,13 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { Play, Plus } from 'lucide-react';
 import { useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
 import { ErrorState } from '@/components/ui/error-state';
 import { LoadingState } from '@/components/ui/loading-state';
+import { MediaCard } from '@/components/design-system/media/media-card';
+import { ContentArtwork } from '@/components/design-system/media/content-artwork';
+import { Tag } from '@/components/design-system/common/tag';
 import { usePlayerRuntime } from '@/features/player';
 import { mapEpisodeToPlayableItem } from '@/features/player/adapters/episodeToPlayable';
 import { getPodcastOwnerLabel } from '@/features/podcasts/utils/podcastPresentation';
@@ -102,23 +104,21 @@ export function SearchResultsPanel({ query, page }: SearchResultsPanelProps) {
         {rankedPodcasts.length ? (
           <div className="grid gap-4 md:grid-cols-2">
             {rankedPodcasts.map((podcast: Podcast) => (
-              <article key={podcast.id} className="rounded-[1.5rem] border border-border/80 bg-surface-primary p-4 shadow-sm">
+              <MediaCard key={podcast.id} title={podcast.title} subtitle={getPodcastOwnerLabel(podcast)} meta={<Tag>پادکست</Tag>} className="min-h-full">
                 <div className="flex items-start gap-3">
-                  {podcast.artworkUrl ? (
-                    <Image src={podcast.artworkUrl} alt={`${podcast.title} artwork`} width={80} height={80} className="h-16 w-16 rounded-xl object-cover" unoptimized />
-                  ) : null}
+                  <ContentArtwork src={podcast.artworkUrl} alt={`${podcast.title} artwork`} fallback="پ" className="h-16 w-16 shrink-0 rounded-xl" />
                   <div className="flex-1 space-y-2">
-                    <h3 className="text-base font-semibold text-text-primary">{podcast.title}</h3>
-                    <p className="text-sm text-text-secondary">{getPodcastOwnerLabel(podcast)}</p>
                     <p className="line-clamp-2 text-sm text-text-secondary">{podcast.description || 'توضیحی برای این پادکست ثبت نشده است.'}</p>
                   </div>
                 </div>
                 <div className="mt-4">
-                  <Link href={`/podcasts/${podcast.id}`} className="button button-secondary w-full justify-center">
-                    مشاهده پادکست
+                  <Link href={`/podcasts/${podcast.id}`} className="inline-flex w-full">
+                    <Button type="button" variant="secondary" className="w-full justify-center">
+                      مشاهده پادکست
+                    </Button>
                   </Link>
                 </div>
-              </article>
+              </MediaCard>
             ))}
           </div>
         ) : (
@@ -134,10 +134,8 @@ export function SearchResultsPanel({ query, page }: SearchResultsPanelProps) {
         {rankedEpisodes.length ? (
           <div className="space-y-3">
             {rankedEpisodes.map((episode: Episode) => (
-              <article key={episode.id} className="flex flex-col gap-3 rounded-[1.5rem] border border-border/80 bg-surface-primary px-4 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+              <MediaCard key={episode.id} title={episode.title} subtitle={episode.podcast?.title ?? 'پادکست'} meta={<Tag>{episode.publishedAt ? 'منتشر شده' : 'پخش مستقیم'}</Tag>} className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="min-w-0 space-y-2">
-                  <h3 className="truncate font-semibold text-text-primary">{episode.title}</h3>
-                  <p className="truncate text-sm text-text-secondary">{episode.podcast?.title ?? 'پادکست'}</p>
                   <p className="text-sm text-text-secondary">{episode.publishedAt ? `منتشر شده ${new Date(episode.publishedAt).toLocaleDateString('fa-IR')}` : 'پخش مستقیم'}</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2 sm:justify-end">
@@ -160,11 +158,13 @@ export function SearchResultsPanel({ query, page }: SearchResultsPanelProps) {
                       افزودن به صف
                     </span>
                   </Button>
-                  <Link href={`/episodes/${episode.id}`} className="button button-secondary min-h-[2.75rem] justify-center">
-                    مشاهده اپیزود
+                  <Link href={`/episodes/${episode.id}`} className="inline-flex">
+                    <Button type="button" variant="secondary" className="min-h-[2.75rem] justify-center">
+                      مشاهده اپیزود
+                    </Button>
                   </Link>
                 </div>
-              </article>
+              </MediaCard>
             ))}
           </div>
         ) : (

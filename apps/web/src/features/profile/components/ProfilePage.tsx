@@ -4,16 +4,16 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { Avatar } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { UserBadge } from '@/components/design-system/identity/user-badge';
+import { MediaCard } from '@/components/design-system/media/media-card';
 import { logoutUser } from '@/lib/auth';
 import { apiFetch } from '@/lib/api';
 import type { UserProfile } from '@/lib/types';
 import { useAuthStore } from '@/stores/authStore';
-import { PageContainer } from '@/components/layout/page-container';
-import { SectionHeader } from '@/components/layout/section-header';
+import { PageContainer } from '@/components/design-system/layout/page-container';
+import { SectionHeader } from '@/components/design-system/layout/section-header';
 
 export function formatAccountDate(value?: string) {
   if (!value) {
@@ -167,9 +167,9 @@ export function ProfilePage() {
                 <div className="space-y-2">
                   <div className="flex flex-wrap items-center gap-2">
                     <h1 className="text-heading">پروفایل کاربر</h1>
-                    <Badge variant={isAuthenticated ? 'success' : 'default'}>
+                    <UserBadge tone={isAuthenticated ? 'success' : 'default'}>
                       {isAuthenticated ? 'ورود شده' : 'در انتظار ورود'}
-                    </Badge>
+                    </UserBadge>
                   </div>
                   <p className="text-body m-0">
                     به حساب کاربری خود در کستامینوفن خوش آمدید.
@@ -196,7 +196,7 @@ export function ProfilePage() {
           <SectionHeader eyebrow="پروفایل" title="فضای شخصی و دسترسی سریع" description="رفتار و زبان این صفحه با بقیه تجربه یکپارچه شده است." />
 
           <div className="grid gap-4 xl:grid-cols-[1.6fr_1fr]">
-            <Card className="space-y-4 p-4 sm:p-6">
+            <MediaCard title="دسترسی سریع" subtitle="عملیات MVP" className="space-y-4 p-4 sm:p-6">
               <div className="space-y-1">
                 <p className="text-caption">دسترسی سریع</p>
                 <h2 className="text-heading text-lg">عملیات MVP</h2>
@@ -229,10 +229,10 @@ export function ProfilePage() {
                   </Button>
                 ))}
               </div>
-            </Card>
+            </MediaCard>
 
             <div className="space-y-4">
-              <Card className="space-y-4 p-4 sm:p-6">
+              <MediaCard title="اطلاعات حساب" subtitle="جزئیات کاربری" className="space-y-4 p-4 sm:p-6">
                 <div className="space-y-1">
                   <p className="text-caption">اطلاعات حساب</p>
                   <h2 className="text-heading text-lg">جزئیات کاربری</h2>
@@ -309,9 +309,9 @@ export function ProfilePage() {
                     </p>
                   </div>
                 </div>
-              </Card>
+              </MediaCard>
 
-              <Card className="space-y-4 p-4 sm:p-6">
+              <MediaCard title="حساب کاربری" subtitle="وضعیت و خروج" className="space-y-4 p-4 sm:p-6">
                 <div className="space-y-1">
                   <p className="text-caption">حساب کاربری</p>
                   <h2 className="text-heading text-lg">وضعیت و خروج</h2>
@@ -333,7 +333,7 @@ export function ProfilePage() {
                     خروج
                   </Button>
                 </div>
-              </Card>
+              </MediaCard>
             </div>
           </div>
         </section>

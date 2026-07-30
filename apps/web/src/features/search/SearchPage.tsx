@@ -4,8 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import SearchInput from './components/SearchInput';
 import { SearchResultsPanel } from './components/SearchResultsPanel';
-import { PageContainer } from '@/components/layout/page-container';
-import { SectionHeader } from '@/components/layout/section-header';
+import { PageContainer } from '@/components/design-system/layout/page-container';
+import { SectionHeader } from '@/components/design-system/layout/section-header';
 
 const DEFAULT_PAGE = 1;
 

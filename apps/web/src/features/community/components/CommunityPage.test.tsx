@@ -40,5 +40,7 @@ describe('CommunityPage', () => {
     expect(container.textContent).toContain('اجتماع');
     expect(container.textContent).toContain('The Quiet Hour');
     expect(container.textContent).toContain('نظرات');
+    expect(container.textContent).toContain('در حال گوش دادن');
+    expect(container.querySelector('article')).not.toBeNull();
   });
 });
