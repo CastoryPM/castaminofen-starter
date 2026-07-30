@@ -4,24 +4,23 @@ import { useMemo, useState } from 'react';
 import { BookOpen, Circle, Clock3, Layers3, MessageCircleMore, Pause, Play, Repeat1, Repeat2, Shuffle, SkipBack, SkipForward, Sparkles, Volume2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ContentArtwork } from '@/components/design-system/media/content-artwork';
-import { DiscussionCard } from '@/components/design-system/social/discussion-card';
-import { CommentPreview } from '@/components/design-system/social/comment-preview';
-import { Reaction } from '@/components/design-system/social/reaction';
 import { MediaCard } from '@/components/design-system/media/media-card';
-import { MiniPlayer } from '@/components/design-system/player/mini-player';
-import { TimelineMarker } from '@/components/design-system/player/timeline-marker';
 import { Tag } from '@/components/design-system/common/tag';
 import { usePlayerRuntime } from '../hooks/usePlayerRuntime';
 import { usePlayerState } from '../hooks/usePlayerState';
 import { formatTime, getArtworkFallback, getQueueSummary } from '../utils/playerPresentation';
+import { TimelineMarkers, type TimelineMarkerItem } from './TimelineMarkers';
+import { DiscussionThreadPanel } from './DiscussionThreadPanel';
+import { BookmarkPanel } from './BookmarkPanel';
+import { MemoryPanel } from './MemoryPanel';
+import { TranscriptPanel } from './TranscriptPanel';
+import { QueuePanel } from './QueuePanel';
+import { CreatorPanel } from './CreatorPanel';
+import { RelatedContentPanel } from './RelatedContentPanel';
 
 type PanelTab = 'experience' | 'discussion' | 'memory' | 'queue';
 
-type MarkerItem = {
-  label: string;
-  time: string;
-  type: 'chapter' | 'comment' | 'bookmark';
-};
+type MarkerItem = TimelineMarkerItem;
 
 const tabs: Array<{ id: PanelTab; label: string }> = [
   { id: 'experience', label: 'پخش تعاملی' },
@@ -40,10 +39,12 @@ export function ImmersivePlayerPanel({ onClose }: { onClose: () => void }) {
   const progressPercent = duration > 0 ? Math.min(100, Math.max(0, (currentPosition / duration) * 100)) : 0;
   const isBusy = playbackStatus === 'loading';
 
+  const [selectedMarkerId, setSelectedMarkerId] = useState('idea');
+
   const markers = useMemo<MarkerItem[]>(() => [
-    { label: 'معرفی', time: '00:00', type: 'chapter' },
-    { label: 'ایده اصلی', time: '05:20', type: 'comment' },
-    { label: 'نکته کلیدی', time: '18:40', type: 'bookmark' },
+    { id: 'intro', label: 'معرفی', timestamp: 0, type: 'chapter', colorToken: 'accent' },
+    { id: 'idea', label: 'ایده اصلی', timestamp: 320, type: 'discussion', colorToken: 'sky', selected: true },
+    { id: 'bookmark', label: 'نکته کلیدی', timestamp: 1120, type: 'bookmark', colorToken: 'violet' },
   ], []);
 
   const handleSkip = (deltaSeconds: number) => {
@@ -166,18 +167,7 @@ export function ImmersivePlayerPanel({ onClose }: { onClose: () => void }) {
                   <p className="flex items-center gap-2"><Layers3 size={14} className="text-accent" /> پشتیبانی از حالت صوتی، ویدیویی و آموزش</p>
                 </div>
               </MediaCard>
-              <MediaCard title="Creator" subtitle="سارا رضایی" meta="دنبال می‌کنید">
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-surface-secondary text-sm font-semibold text-text-primary">SR</div>
-                    <div>
-                      <p className="text-sm font-semibold text-text-primary">سارا رضایی</p>
-                      <p className="text-xs text-text-secondary">پادکست و آموزش</p>
-                    </div>
-                  </div>
-                  <Button type="button" variant="secondary" size="sm" className="rounded-full">دنبال کردن</Button>
-                </div>
-              </MediaCard>
+              <CreatorPanel />
             </div>
           </div>
 
@@ -205,83 +195,42 @@ export function ImmersivePlayerPanel({ onClose }: { onClose: () => void }) {
                       <p className="text-sm font-semibold text-text-primary">نقشه‌ی زمان</p>
                       <Tag className="bg-surface-card text-text-secondary">{formatTime(currentPosition)}</Tag>
                     </div>
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {markers.map((marker, index) => (
-                        <TimelineMarker key={marker.label} label={`${marker.time} · ${marker.label}`} active={index === 1} />
-                      ))}
+                    <div className="mt-3">
+                      <TimelineMarkers markers={markers} selectedMarkerId={selectedMarkerId} onSelectMarker={(marker) => setSelectedMarkerId(marker.id)} />
                     </div>
                   </div>
-                  <div className="rounded-[1.4rem] border border-border/70 bg-surface-secondary/70 p-4">
-                    <p className="text-sm font-semibold text-text-primary">رونویس</p>
-                    <p className="mt-2 text-sm text-text-secondary">در این لحظه، معادل متن همزمان با پخش ارائه می‌شود و با کلیک روی سطرها، کاربر به زمان‌های مرتبط منتقل می‌شود.</p>
-                    <div className="mt-3 space-y-2">
-                      <button type="button" className="w-full rounded-[0.9rem] border border-border/70 bg-surface-card/80 px-3 py-2 text-right text-sm text-text-primary" onClick={() => handleSkip(320)}>
-                        00:00 — معرفی و زمینه‌ی کلی
-                      </button>
-                      <button type="button" className="w-full rounded-[0.9rem] border border-border/70 bg-surface-card/80 px-3 py-2 text-right text-sm text-text-primary" onClick={() => handleSkip(320)}>
-                        05:20 — توضیح ایده‌ی اصلی
-                      </button>
-                    </div>
-                  </div>
+                  <TranscriptPanel currentTimestamp={currentPosition} onSeek={handleSkip} />
                 </div>
                 <div className="space-y-3">
-                  <DiscussionCard title="لحظه‌ی تعاملی" body="در این بخش، کاربران می‌توانند با موضوعات مهم در لحظه، تعامل داشته باشند." className="h-full">
-                    <div className="flex flex-wrap gap-2">
-                      <Reaction active>⚡ الهام‌گرفته</Reaction>
-                      <Reaction>💡 ارزشمند</Reaction>
-                      <Reaction>📝 یادداشت</Reaction>
-                    </div>
-                  </DiscussionCard>
-                  <MediaCard title="پیشنهاد بعدی" subtitle="محتوای مرتبط با همین موضوع">
-                    <div className="space-y-2">
-                      <MiniPlayer title="آموزش تجربه‌محور" subtitle="سری جدید آموزش" actions={<Tag className="bg-surface-secondary text-text-secondary">مرتبط</Tag>} />
-                      <MiniPlayer title="جلسه‌ی بحث و گفتگو" subtitle="برای دنبال کردن موضوع" actions={<Tag className="bg-surface-secondary text-text-secondary">Community</Tag>} />
-                    </div>
-                  </MediaCard>
+                  <DiscussionThreadPanel currentTimestamp={currentPosition} />
+                  <RelatedContentPanel />
                 </div>
               </>
             ) : null}
 
             {activeTab === 'discussion' ? (
               <div className="space-y-3">
-                <DiscussionCard title="بحث لحظه‌ای" body="23 نفر در این لحظه بحث کرده‌اند.">
-                  <CommentPreview title="نظریه‌ی جذاب" body="این بخش واقعا نقطه‌ی عطفی برای درک موضوع بود." meta="24:35 • 8 دقیقه قبل" />
-                  <CommentPreview title="یادداشت شخصی" body="به نظرم این مثال برای کارهای آینده خیلی کمک‌کننده است." meta="Chapter 3 • 2 دقیقه قبل" />
-                </DiscussionCard>
-                <div className="flex flex-wrap gap-2">
-                  <Reaction active>👍 مفید</Reaction>
-                  <Reaction>🔁 دوباره گوش می‌کنم</Reaction>
-                  <Reaction>🎧 گوش دادن هم‌زمان</Reaction>
-                </div>
+                <DiscussionThreadPanel currentTimestamp={currentPosition} />
+                <BookmarkPanel />
               </div>
             ) : null}
 
             {activeTab === 'memory' ? (
               <div className="space-y-3">
-                <MediaCard title="نکات مهم" subtitle="ذخیره‌ی لحظه‌ها برای بازگشت بعدی">
-                  <div className="space-y-2">
-                    <div className="rounded-[1rem] border border-border/70 bg-surface-secondary/70 p-3 text-sm text-text-secondary">• نشانک برای لحظه‌ی 24:35</div>
-                    <div className="rounded-[1rem] border border-border/70 bg-surface-secondary/70 p-3 text-sm text-text-secondary">• هایلایت از جمله‌ی کلیدی</div>
-                    <div className="rounded-[1rem] border border-border/70 bg-surface-secondary/70 p-3 text-sm text-text-secondary">• یادداشت شخصی برای مرور بعدی</div>
-                  </div>
-                </MediaCard>
-                <div className="flex flex-wrap gap-2">
-                  <Button type="button" variant="secondary" size="sm" className="rounded-full">نشانک</Button>
-                  <Button type="button" variant="secondary" size="sm" className="rounded-full">هایلایت</Button>
-                  <Button type="button" variant="ghost" size="sm" className="rounded-full">یادداشت</Button>
-                </div>
+                <MemoryPanel />
+                <BookmarkPanel />
               </div>
             ) : null}
 
             {activeTab === 'queue' ? (
               <div className="space-y-3">
-                <MediaCard title="صف بعدی" subtitle="آیتم‌های پخشِ بعدی">
-                  <div className="space-y-2">
-                    {queue.length > 0 ? queue.slice(currentIndex + 1).map((item, index) => (
-                      <MiniPlayer key={item.id} title={item.title} subtitle={item.subtitle ?? 'اپیزود'} actions={<Tag className="bg-surface-secondary text-text-secondary">{index + 1}</Tag>} />
-                    )) : <p className="rounded-[1rem] border border-dashed border-border/70 bg-surface-secondary/60 p-3 text-sm text-text-secondary">هیچ موردی در صف بعدی وجود ندارد.</p>}
-                  </div>
-                </MediaCard>
+                <QueuePanel
+                  queue={queue}
+                  currentItem={currentItem}
+                  currentIndex={currentIndex}
+                  onPlay={(item) => void playerRuntime.loadItem(item)}
+                  onRemove={(itemId) => playerRuntime.removeFromQueue(itemId)}
+                />
                 {error ? <div className="rounded-[1rem] border border-accent/20 bg-accent/10 p-3 text-sm text-accent">{error}</div> : null}
               </div>
             ) : null}
@@ -301,12 +250,7 @@ export function ImmersivePlayerPanel({ onClose }: { onClose: () => void }) {
               تلاش مجدد برای پخش
             </Button>
           ) : null}
-          <MediaCard title="محتوای مرتبط" subtitle="پیشنهاد برای ادامه‌ی تجربه">
-            <div className="space-y-2">
-              <MiniPlayer title="جلسه‌ی آموزشی" subtitle="دنباله‌ی همین موضوع" actions={<Tag className="bg-surface-secondary text-text-secondary">پیشنهاد</Tag>} />
-              <MiniPlayer title="بحث جامعه" subtitle="گفت‌وگوی لحظه‌ای" actions={<Tag className="bg-surface-secondary text-text-secondary">Community</Tag>} />
-            </div>
-          </MediaCard>
+          <RelatedContentPanel />
         </aside>
       </div>
     </div>
