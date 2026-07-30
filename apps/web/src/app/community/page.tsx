@@ -1,5 +1,5 @@
-import { CommunityPage } from '@/features/community/components/CommunityPage';
+import { CommunityHome } from '@/features/community/components/CommunityHome';
 
 export default function CommunityRoutePage() {
-  return <CommunityPage />;
+  return <CommunityHome />;
 }
