@@ -9,7 +9,9 @@ import { DraftWorkspace } from './DraftWorkspace';
 import { PublishingWorkflow } from './PublishingWorkflow';
 import { ScheduledContentPanel } from './ScheduledContentPanel';
 import { ContentVersionHistory } from './ContentVersionHistory';
+import { CreatorAnalyticsDashboard } from './CreatorAnalyticsDashboard';
 import { mockCreatorContentItems } from '../data/mockCreatorContentData';
+import { mockCreatorAnalyticsData } from '../data/mockCreatorAnalyticsData';
 
 export function CreatorContentManager() {
   const summary = [
@@ -55,6 +57,8 @@ export function CreatorContentManager() {
               })}
             </div>
           </div>
+
+          <CreatorAnalyticsDashboard data={mockCreatorAnalyticsData} />
 
           <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
             <div className="space-y-6">
