@@ -1,14 +1,11 @@
 import { MiniPlayer } from '@/components/design-system/player/mini-player';
 import { Tag } from '@/components/design-system/common/tag';
 import { MediaCard } from '@/components/design-system/media/media-card';
-
-const relatedItems = [
-  { title: 'جلسه‌ی آموزشی', subtitle: 'دنباله‌ی همین موضوع', badge: 'پیشنهاد' },
-  { title: 'بحث جامعه', subtitle: 'گفت‌وگوی لحظه‌ای', badge: 'Community' },
-  { title: 'مجموعه‌ی سازنده', subtitle: 'انتشارهای مرتبط', badge: 'Creator' },
-];
+import { getPlayerExperienceViewModel } from '../data/mockPlayerExperience';
 
 export function RelatedContentPanel() {
+  const { relatedItems } = getPlayerExperienceViewModel();
+
   return (
     <MediaCard title="محتوای مرتبط" subtitle="پیشنهاد برای ادامه‌ی تجربه" className="h-full">
       <div className="space-y-2">

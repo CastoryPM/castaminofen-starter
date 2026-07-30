@@ -1,4 +1,4 @@
-import { ListMusic, Play, Trash2 } from 'lucide-react';
+import { Play, Sparkles, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tag } from '@/components/design-system/common/tag';
 import type { PlayableItem } from '../types';
@@ -27,6 +27,13 @@ export function QueuePanel({ queue, currentItem, currentIndex, onPlay, onRemove 
             <p className="mt-1 text-sm text-text-secondary">{currentItem.title}</p>
           </div>
         ) : null}
+        <div className="rounded-[0.95rem] border border-border/70 bg-surface-card/70 p-3 text-sm text-text-secondary">
+          <div className="flex items-center gap-2 font-semibold text-text-primary">
+            <Sparkles size={14} className="text-accent" />
+            <span>پخش بعدی</span>
+          </div>
+          <p className="mt-1">برای حفظ جریان، موارد بعدی را می‌توان به‌صورت مستقیم پخش، حذف، یا به تأخیر انداخت.</p>
+        </div>
         {upcoming.length > 0 ? upcoming.map((item, index) => (
           <div key={item.id} className="flex items-center gap-3 rounded-[0.95rem] border border-border/70 bg-surface-card/80 p-3">
             <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-surface-secondary text-[11px] font-semibold text-text-secondary">
@@ -46,6 +53,12 @@ export function QueuePanel({ queue, currentItem, currentIndex, onPlay, onRemove 
             </div>
           </div>
         )) : <p className="rounded-[0.95rem] border border-dashed border-border/70 bg-surface-card/60 p-3 text-sm text-text-secondary">هیچ موردی در صف بعدی وجود ندارد.</p>}
+        <div className="rounded-[0.95rem] border border-border/70 bg-surface-secondary/70 p-3 text-sm text-text-secondary">
+          <div className="flex items-center justify-between gap-2">
+            <span>بعداً</span>
+            <Tag className="bg-surface-card text-text-secondary">ذخیره در پلی‌لیست</Tag>
+          </div>
+        </div>
       </div>
     </div>
   );

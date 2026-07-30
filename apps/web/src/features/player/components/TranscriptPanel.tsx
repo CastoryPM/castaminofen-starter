@@ -1,12 +1,7 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { MessageSquareText, Search, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
-const transcriptSegments = [
-  { id: 's1', time: 0, text: 'معرفی و زمینه‌ی کلی این بخش برای بازسازی تجربه‌ی کاربر.' },
-  { id: 's2', time: 320, text: 'در این لحظه، ایده‌ی اصلی درباره‌ی مشارکت و یادگیری لحظه‌ای مطرح می‌شود.' },
-  { id: 's3', time: 1120, text: 'نکته‌ی پایانی برای حفظ و پیگیری بعدی در حافظه‌ی شخصی.' },
-];
+import { getPlayerExperienceViewModel } from '../data/mockPlayerExperience';
 
 type TranscriptPanelProps = {
   currentTimestamp?: number;
@@ -16,6 +11,7 @@ type TranscriptPanelProps = {
 export function TranscriptPanel({ currentTimestamp = 320, onSeek }: TranscriptPanelProps) {
   const [expanded, setExpanded] = useState(true);
   const [query, setQuery] = useState('');
+  const { transcriptSegments } = useMemo(() => getPlayerExperienceViewModel(currentTimestamp), [currentTimestamp]);
 
   const filteredSegments = transcriptSegments.filter((segment) => segment.text.includes(query));
 

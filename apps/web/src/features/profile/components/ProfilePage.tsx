@@ -3,17 +3,22 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
-import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { UserBadge } from '@/components/design-system/identity/user-badge';
-import { MediaCard } from '@/components/design-system/media/media-card';
 import { logoutUser } from '@/lib/auth';
 import { apiFetch } from '@/lib/api';
 import type { UserProfile } from '@/lib/types';
 import { useAuthStore } from '@/stores/authStore';
 import { PageContainer } from '@/components/design-system/layout/page-container';
 import { SectionHeader } from '@/components/design-system/layout/section-header';
+import { ProfileActivityTimeline } from './ProfileActivityTimeline';
+import { ProfileContributionSection } from './ProfileContributionSection';
+import { ProfileContentCollection } from './ProfileContentCollection';
+import { ProfileHero } from './ProfileHero';
+import { ProfileKnowledgeSection } from './ProfileKnowledgeSection';
+import { ProfileSocialIdentity } from './ProfileSocialIdentity';
+import { ProfileStats } from './ProfileStats';
+import { mockProfileExperience } from '../data/mockProfileExperience';
 
 export function formatAccountDate(value?: string) {
   if (!value) {
@@ -52,7 +57,6 @@ export function ProfilePage() {
     () => user?.name?.trim() || user?.email?.split('@')[0] || 'کاربر',
     [user],
   );
-  const initials = displayName.charAt(0).toUpperCase();
   const isAuthenticated = Boolean(user);
 
   const updateProfileMutation = useMutation({
@@ -115,225 +119,56 @@ export function ProfilePage() {
     updateProfileMutation.mutate(normalizedName);
   }
 
-  const quickActions = [
-    {
-      label: 'Edit profile',
-      description: 'به‌روزرسانی اطلاعات حساب',
-      variant: 'primary' as const,
-      disabled: true,
-    },
-    {
-      label: 'کتابخانه',
-      description: 'مشاهده پادکست‌های ذخیره‌شده',
-      variant: 'secondary' as const,
-      disabled: false,
-      href: '/library',
-    },
-    {
-      label: 'علاقه‌مندی‌ها',
-      description: 'به‌زودی در دسترس',
-      variant: 'ghost' as const,
-      disabled: true,
-    },
-    {
-      label: 'ادامه listening',
-      description: 'به‌زودی در دسترس',
-      variant: 'ghost' as const,
-      disabled: true,
-    },
-    {
-      label: 'دانلودها',
-      description: 'به‌زودی در دسترس',
-      variant: 'ghost' as const,
-      disabled: true,
-    },
-    {
-      label: 'تنظیمات',
-      description: 'تنظیمات ترجیحات برنامه',
-      variant: 'ghost' as const,
-      disabled: false,
-      href: '/settings',
-    },
-  ];
-
   return (
     <main className="page-container">
       <PageContainer>
         <section className="space-y-6">
-          <div className="rounded-[2rem] border border-border/80 bg-gradient-to-br from-accent/10 via-surface-secondary to-surface-card/90 p-4 shadow-soft sm:p-6">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-              <div className="flex items-center gap-4">
-                <Avatar alt={displayName} fallback={initials} size="lg" />
-                <div className="space-y-2">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h1 className="text-heading">پروفایل کاربر</h1>
-                    <UserBadge tone={isAuthenticated ? 'success' : 'default'}>
-                      {isAuthenticated ? 'ورود شده' : 'در انتظار ورود'}
-                    </UserBadge>
-                  </div>
-                  <p className="text-body m-0">
-                    به حساب کاربری خود در کستامینوفن خوش آمدید.
-                  </p>
-                  <div className="flex flex-wrap gap-3 text-sm text-text-secondary">
-                    <span>{user?.email ?? '—'}</span>
-                    <span>•</span>
-                    <span>{formatAccountDate(user?.createdAt)}</span>
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={() => router.push('/')}
-                >
-                  بازگشت به خانه
-                </Button>
-              </div>
+          <ProfileHero profile={{
+            ...mockProfileExperience.profile,
+            displayName,
+            username: user?.email ? `@${user.email.split('@')[0]}` : mockProfileExperience.profile.username,
+            bio: user?.name ? `این پروفایل برای ${user.name} در Castaminofen ساخته شده است.` : mockProfileExperience.profile.bio,
+            followers: mockProfileExperience.profile.followers,
+            following: mockProfileExperience.profile.following,
+          }} mode={isAuthenticated ? 'owner' : 'viewer'} />
+
+          <SectionHeader
+            eyebrow="پروفایل"
+            title="هویت شخصی، دانش و مشارکت"
+            description="از لحظه‌های پخش، یادداشت‌ها و تعاملات برای ساختن تصویری انسانی از خودت استفاده کن."
+          />
+
+          <ProfileStats stats={mockProfileExperience.stats} />
+
+          <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
+            <div className="space-y-4">
+              <ProfileKnowledgeSection memories={mockProfileExperience.memories} collections={mockProfileExperience.collections} />
+              <ProfileActivityTimeline activities={mockProfileExperience.activities} />
+            </div>
+            <div className="space-y-4">
+              <ProfileContributionSection contributions={mockProfileExperience.contributions} />
+              <ProfileSocialIdentity groups={mockProfileExperience.socialGroups} />
+              <ProfileContentCollection items={mockProfileExperience.content} />
             </div>
           </div>
 
-          <SectionHeader eyebrow="پروفایل" title="فضای شخصی و دسترسی سریع" description="رفتار و زبان این صفحه با بقیه تجربه یکپارچه شده است." />
-
-          <div className="grid gap-4 xl:grid-cols-[1.6fr_1fr]">
-            <MediaCard title="دسترسی سریع" subtitle="عملیات MVP" className="space-y-4 p-4 sm:p-6">
-              <div className="space-y-1">
-                <p className="text-caption">دسترسی سریع</p>
-                <h2 className="text-heading text-lg">عملیات MVP</h2>
+          <div className="rounded-[2rem] border border-border/80 bg-surface-secondary/70 p-4 shadow-soft sm:p-6">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-caption">کنترل‌های حساب</p>
+                <h2 className="text-heading text-lg">موجودی برای ورود و مدیریت</h2>
               </div>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {quickActions.map((action) => (
-                  <Button
-                    key={action.label}
-                    type="button"
-                    variant={action.variant}
-                    disabled={action.disabled}
-                    onClick={() => {
-                      if (action.href) {
-                        router.push(action.href);
-                      }
-                    }}
-                    className="min-h-24 flex-col items-start justify-start text-right"
-                  >
-                    <span className="mb-1 block w-full font-medium">
-                      {action.label}
-                    </span>
-                    <span className="text-xs opacity-80">
-                      {action.description}
-                    </span>
-                    {action.disabled ? (
-                      <span className="mt-2 text-[11px] text-text-secondary">
-                        Coming Soon
-                      </span>
-                    ) : null}
-                  </Button>
-                ))}
+              <div className="flex flex-wrap gap-2">
+                <Button type="button" variant="secondary" onClick={() => router.push('/settings')}>
+                  تنظیمات
+                </Button>
+                <Button type="button" variant="ghost" onClick={() => router.push('/library')}>
+                  کتابخانه
+                </Button>
+                <Button type="button" variant="secondary" onClick={handleLogout} disabled={!isAuthenticated}>
+                  خروج
+                </Button>
               </div>
-            </MediaCard>
-
-            <div className="space-y-4">
-              <MediaCard title="اطلاعات حساب" subtitle="جزئیات کاربری" className="space-y-4 p-4 sm:p-6">
-                <div className="space-y-1">
-                  <p className="text-caption">اطلاعات حساب</p>
-                  <h2 className="text-heading text-lg">جزئیات کاربری</h2>
-                </div>
-                <div className="space-y-3">
-                  <div className="rounded-2xl border border-border bg-surface-secondary/70 p-3">
-                    <div className="mb-2 flex items-center justify-between gap-2">
-                      <p className="text-caption">نام</p>
-                      {!isEditing ? (
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          onClick={handleEditStart}
-                        >
-                          ویرایش
-                        </Button>
-                      ) : null}
-                    </div>
-                    {isEditing ? (
-                      <div className="space-y-3">
-                        <Input
-                          value={nameInput}
-                          onChange={(event) => setNameInput(event.target.value)}
-                          placeholder="نام کامل"
-                          aria-label="نام کامل"
-                        />
-                        <div className="flex flex-wrap gap-2">
-                          <Button
-                            type="button"
-                            variant="primary"
-                            onClick={handleSave}
-                            disabled={updateProfileMutation.isPending}
-                          >
-                            {updateProfileMutation.isPending
-                              ? 'در حال ذخیره...'
-                              : 'ذخیره'}
-                          </Button>
-                          <Button
-                            type="button"
-                            variant="secondary"
-                            onClick={resetEditState}
-                            disabled={updateProfileMutation.isPending}
-                          >
-                            انصراف
-                          </Button>
-                        </div>
-                      </div>
-                    ) : (
-                      <p className="text-body m-0 font-medium">{displayName}</p>
-                    )}
-                  </div>
-                  {feedback ? (
-                    <div
-                      className={`rounded-2xl border p-3 text-sm ${feedback.type === 'success' ? 'border-success/30 bg-success/10 text-success' : 'border-error/30 bg-error/10 text-error'}`}
-                    >
-                      {feedback.message}
-                    </div>
-                  ) : null}
-                  <div className="rounded-2xl border border-border bg-surface-secondary/70 p-3">
-                    <p className="text-caption">ایمیل</p>
-                    <p className="text-body m-0 font-medium">
-                      {user?.email ?? '—'}
-                    </p>
-                  </div>
-                  <div className="rounded-2xl border border-border bg-surface-secondary/70 p-3">
-                    <p className="text-caption">شناسه کاربری</p>
-                    <p className="text-body m-0 font-medium">{user?.id ?? '—'}</p>
-                  </div>
-                  <div className="rounded-2xl border border-border bg-surface-secondary/70 p-3">
-                    <p className="text-caption">تاریخ عضویت</p>
-                    <p className="text-body m-0 font-medium">
-                      {formatAccountDate(user?.createdAt)}
-                    </p>
-                  </div>
-                </div>
-              </MediaCard>
-
-              <MediaCard title="حساب کاربری" subtitle="وضعیت و خروج" className="space-y-4 p-4 sm:p-6">
-                <div className="space-y-1">
-                  <p className="text-caption">حساب کاربری</p>
-                  <h2 className="text-heading text-lg">وضعیت و خروج</h2>
-                </div>
-                <div className="space-y-3">
-                  <div className="rounded-2xl border border-border bg-surface-secondary/70 p-3">
-                    <p className="text-caption">وضعیت احراز هویت</p>
-                    <p className="text-body m-0 font-medium">
-                      {isAuthenticated ? 'Authenticated' : 'Not authenticated'}
-                    </p>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={handleLogout}
-                    className="w-full"
-                    disabled={!isAuthenticated}
-                  >
-                    خروج
-                  </Button>
-                </div>
-              </MediaCard>
             </div>
           </div>
         </section>

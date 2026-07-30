@@ -16,6 +16,7 @@ export * from './media/media-carousel';
 export * from './social/reaction';
 export * from './social/comment-preview';
 export * from './social/discussion-card';
+export * from '@/features/social';
 export * from './player/mini-player';
 export * from './player/timeline-marker';
 export * from './player/progress-indicator';

@@ -10,11 +10,16 @@
 
 ## فاز جاری
 
+- Phase COMMUNITY.2 — Community Ecosystem Experience
+- Phase CREATE.2 — Creator Studio & Content Creation Ecosystem
 - Phase UI.CONSOLIDATION.1 — Full Product UI Consolidation
 - Phase UI.CONSOLIDATION.2 — Player & Community Experience Integration
 - Phase UI.CONSOLIDATION.3 — Final Design System Extraction
 - Phase UI.SYSTEM.1 — Complete Design System Expansion & Type Stabilization
 - Phase PLAYER.6 — Advanced Immersive Player Experience
+- Phase PLAYER.7 — Player Data Integration & Social Memory Layer
+- Phase SOCIAL.1 — Shared Social Interaction Infrastructure
+- Phase PROFILE.2 — Social Identity & Personal Knowledge Hub
 
 ## پیشرفت کلی
 
@@ -85,9 +90,11 @@
 
 ## تغییر اخیر — 2026-07-30
 
+- Phase COMMUNITY.2 — Community Ecosystem Experience تکمیل شد. تجربه‌ی Community از یک نمایش ساده‌ی اجتماعی به یک تجربه‌ی Premium، چندحالته و feature-owned برای کشف، بحث، مشارکت، topic discovery، creator interaction و اتصال به لحظه‌ی فعلی Player ارتقا یافت. این تغییر بدون تغییر route، auth، یا runtime Player انجام شد و از زیرساخت‌های موجود Social/Design System/Identity استفاده کرد.
 - Phase UI.CONSOLIDATION.1 — Full Product UI Consolidation تکمیل شد. تجربه‌ی Home، Library، Search، Profile و Create در یک زبان بصری مشترک و یکپارچه گردآوری شدند؛ App Shell، Header، Bottom Navigation، کارت‌های رسانه‌ای و rhythm صفحه‌ها با استفاده از توکن‌های موجود Castaminofen بازطراحی شدند و بدون تغییر route، API، store یا مالکیت featureها در برنامه ادغام شدند.
 - Phase UI.SYSTEM.2 — Design System Adoption Migration تکمیل شد. سطوح اصلی Home/Discovery، Library، Search، Profile، Create، Player و Community به لایه‌ی رسمی Design System مهاجرت شدند و presentation آنها از primitives مشترک استفاده می‌کند بدون تغییر در منطق کسب‌وکار، API‌ها یا مالکیت featureها.
 - Phase PLAYER.6 — Advanced Immersive Player Experience تکمیل شد. تجربه‌ی Player با پنل تعاملی Immersive، تب‌های discussion/memory/queue، timeline markers، controls پیشرفته و stateهای richer UI به سمت تجربه‌ی Premium ارتقا یافت و در عین حال runtime، queue، persistence و API contracts بدون تغییر باقی ماندند.
+- Phase PLAYER.7 — Player Data Integration & Social Memory Layer تکمیل شد. تجربه‌ی Player حالا از داده‌های mock-backed برای نشانک‌ها، هایلایت‌ها، یادداشت‌های شخصی، بحث‌های لحظه‌ای، رونویس، creator context و پیشنهادهای مرتبط استفاده می‌کند و در عین حال مرزهای runtime و design-system بدون تغییر باقی مانده‌اند.
 
 ## تغییر اخیر — 2026-07-29
 

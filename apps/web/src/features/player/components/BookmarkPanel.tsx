@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Bookmark as BookmarkIcon, PencilLine, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { formatTime } from '../utils/playerPresentation';
+import { getPlayerExperienceViewModel } from '../data/mockPlayerExperience';
 
 type BookmarkEntry = {
   id: string;
@@ -10,9 +11,8 @@ type BookmarkEntry = {
 };
 
 export function BookmarkPanel() {
-  const [entries, setEntries] = useState<BookmarkEntry[]>([
-    { id: 'bm-1', timestamp: 320, note: 'نکته‌ی مهم برای بازگشت' },
-  ]);
+  const initialEntries = useMemo(() => getPlayerExperienceViewModel(320).bookmarks.map((bookmark) => ({ id: bookmark.id, timestamp: bookmark.timestamp, note: bookmark.note })), []);
+  const [entries, setEntries] = useState<BookmarkEntry[]>(initialEntries);
   const [note, setNote] = useState('');
   const [activeTimestamp, setActiveTimestamp] = useState(320);
 

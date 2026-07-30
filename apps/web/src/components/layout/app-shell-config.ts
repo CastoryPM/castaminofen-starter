@@ -23,7 +23,7 @@ export type AppShellHeaderConfig = {
 const navigationDefinitions = [
   { id: 'home', label: 'خانه', href: '/', icon: Home },
   { id: 'library', label: 'کتابخانه', href: '/library', icon: Layers },
-  { id: 'create', label: 'ایجاد', href: '/podcasts/new', icon: Plus, isPrimary: true },
+  { id: 'create', label: 'ایجاد', href: '/create', icon: Plus, isPrimary: true },
   { id: 'search', label: 'جستجو', href: '/search', icon: Search },
   { id: 'community', label: 'اجتماع', href: '/community', icon: Users },
   { id: 'profile', label: 'پروفایل', href: '/profile', icon: User },
@@ -78,7 +78,7 @@ export function getMobileHeaderConfig(pathname: string): AppShellHeaderConfig {
     };
   }
 
-  if (pathname.startsWith('/podcasts/new') || pathname.startsWith('/episodes/new')) {
+  if (pathname.startsWith('/create') || pathname.startsWith('/podcasts/new') || pathname.startsWith('/episodes/new')) {
     return {
       title: 'ایجاد',
       tagline: 'پادکست و اپیزودهای جدید را در یک جریان یکپارچه منتشر کن',
