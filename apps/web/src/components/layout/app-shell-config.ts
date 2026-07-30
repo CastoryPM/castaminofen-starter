@@ -62,6 +62,15 @@ export function getMobileHeaderConfig(pathname: string): AppShellHeaderConfig {
     };
   }
 
+  if (pathname.startsWith('/community')) {
+    return {
+      title: 'اجتماع',
+      tagline: 'بحث و تعامل با سایر شنوندگان',
+      showSearchAction: true,
+      showProfileAction: true,
+    };
+  }
+
   return {
     title: 'کستامینوفن',
     tagline: 'فضای صوتی شخصی',
