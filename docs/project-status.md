@@ -12,6 +12,7 @@
 
 - Phase COMMUNITY.2 — Community Ecosystem Experience
 - Phase CREATE.2 — Creator Studio & Content Creation Ecosystem
+- Phase CREATOR.1 — Public Creator Identity & Channel Experience
 - Phase UI.CONSOLIDATION.1 — Full Product UI Consolidation
 - Phase UI.CONSOLIDATION.2 — Player & Community Experience Integration
 - Phase UI.CONSOLIDATION.3 — Final Design System Extraction
