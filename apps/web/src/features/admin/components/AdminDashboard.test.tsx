@@ -126,6 +126,25 @@ describe('AdminDashboard', () => {
     expect(container.textContent).toContain('High');
   });
 
+  it('renders the intelligence analytics workspace with growth, content, creator and community sections', () => {
+    act(() => {
+      root.render(<AdminDashboard />);
+    });
+
+    const analyticsButton = Array.from(container.querySelectorAll('button')).find((button) => button.textContent?.includes('Analytics'));
+    expect(analyticsButton).not.toBeNull();
+
+    act(() => {
+      analyticsButton?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+
+    expect(container.textContent).toContain('Platform intelligence');
+    expect(container.textContent).toContain('Growth pulse');
+    expect(container.textContent).toContain('Top performing content');
+    expect(container.textContent).toContain('Creator health');
+    expect(container.textContent).toContain('Community health');
+  });
+
   it('shows empty and loading states for operational data', () => {
     act(() => {
       root.render(<AdminDashboard />);

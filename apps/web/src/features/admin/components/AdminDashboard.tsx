@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { PageState } from '@/components/ui/page-state';
 import { adminContent, adminCreators, adminDiscussions, adminOverviewMetrics, adminReports, adminSectionConfig, adminUsers } from '../data/mockAdminData';
 import { AdminGovernanceDashboard } from './AdminGovernanceDashboard';
+import { AdminIntelligenceDashboard } from './AdminIntelligenceDashboard';
 import { AdminRolesPreview } from './AdminRolesPreview';
 import { AuditActivityTimeline } from './AuditActivityTimeline';
 import { ContentReviewPanel } from './ContentReviewPanel';
@@ -39,7 +40,7 @@ const sectionComponents: Record<AdminSectionKey, { title: string; description: s
   content: { title: 'مدیریت محتوا', description: 'کنترل انتشار، بررسی و محدودسازی' },
   community: { title: 'مدیریت جامعه', description: 'نظارت روی بحث‌ها و سلامت تعامل' },
   reports: { title: 'مرکز گزارش‌ها', description: 'گردش کار بررسی و تصمیم گیری' },
-  analytics: { title: 'مرکز تحلیلی', description: 'درک رشد، محبوبیت و رفتار مخاطب' },
+  analytics: { title: 'مرکز هوش پلتفرم', description: 'درک رشد، محبوبیت و رفتار مخاطب' },
   settings: { title: 'تنظیمات پلتفرم', description: 'پیکربندی تجربه و قابلیت‌های آینده' },
   system: { title: 'وضعیت سیستم', description: 'مرکز کنترل راه‌اندازی و پشتیبانی' },
 };
@@ -196,22 +197,7 @@ export function AdminDashboard() {
           </div>
         );
       case 'analytics':
-        return (
-          <div className="grid gap-4 lg:grid-cols-2">
-            <MediaCard title="رشد کاربران" subtitle="افزایش ثبت‌نام و بازگشت" meta="+18%" className="space-y-3">
-              <div className="h-24 rounded-2xl bg-gradient-to-r from-accent/20 to-accent/5" />
-            </MediaCard>
-            <MediaCard title="زمان گوش دادن" subtitle="میانگین تماشای روزانه" meta="۱۱۷ دقیقه" className="space-y-3">
-              <div className="h-24 rounded-2xl bg-gradient-to-r from-primary/20 to-primary/5" />
-            </MediaCard>
-            <MediaCard title="سازندگان برتر" subtitle="پرفروش‌ترین مسیرهای رشد" meta="Top 5" className="space-y-3">
-              <p className="text-sm text-text-secondary">نیلوفر جاهد، پارسا قلی‌پور و شکیبا احمدی</p>
-            </MediaCard>
-            <MediaCard title="محتوای داغ" subtitle="موضوعات در حال افزایش" meta="Trending" className="space-y-3">
-              <p className="text-sm text-text-secondary">پادکست‌های آموزشی، کتاب‌های صوتی و شورت‌های کوتاه</p>
-            </MediaCard>
-          </div>
-        );
+        return <AdminIntelligenceDashboard />;
       case 'settings':
         return (
           <div className="grid gap-4 lg:grid-cols-2">
