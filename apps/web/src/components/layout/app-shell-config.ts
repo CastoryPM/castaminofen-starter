@@ -16,6 +16,8 @@ export type AppShellHeaderConfig = {
   showSearchAction?: boolean;
   showProfileAction?: boolean;
   showNotificationAction?: boolean;
+  showCreateAction?: boolean;
+  titleTone?: 'default' | 'feature';
 };
 
 const navigationDefinitions = [
@@ -41,6 +43,8 @@ export function getMobileHeaderConfig(pathname: string): AppShellHeaderConfig {
       tagline: 'مرکز گوش دادن و ادامه‌ی سفر',
       showSearchAction: true,
       showProfileAction: true,
+      showCreateAction: true,
+      titleTone: 'feature',
     };
   }
 
@@ -50,6 +54,7 @@ export function getMobileHeaderConfig(pathname: string): AppShellHeaderConfig {
       tagline: 'پادکست‌ها و اپیزودها',
       showSearchAction: true,
       showProfileAction: true,
+      titleTone: 'feature',
     };
   }
 
@@ -59,6 +64,7 @@ export function getMobileHeaderConfig(pathname: string): AppShellHeaderConfig {
       tagline: 'تنظیمات و حساب کاربری',
       showSearchAction: false,
       showProfileAction: true,
+      titleTone: 'feature',
     };
   }
 
@@ -68,6 +74,18 @@ export function getMobileHeaderConfig(pathname: string): AppShellHeaderConfig {
       tagline: 'بحث و تعامل با سایر شنوندگان',
       showSearchAction: true,
       showProfileAction: true,
+      titleTone: 'feature',
+    };
+  }
+
+  if (pathname.startsWith('/podcasts/new') || pathname.startsWith('/episodes/new')) {
+    return {
+      title: 'ایجاد',
+      tagline: 'پادکست و اپیزودهای جدید را در یک جریان یکپارچه منتشر کن',
+      showSearchAction: false,
+      showProfileAction: true,
+      showCreateAction: false,
+      titleTone: 'feature',
     };
   }
 
@@ -77,5 +95,6 @@ export function getMobileHeaderConfig(pathname: string): AppShellHeaderConfig {
     showSearchAction: true,
     showNotificationAction: true,
     showProfileAction: true,
+    titleTone: 'default',
   };
 }

@@ -160,7 +160,7 @@ export function ProfilePage() {
     <main className="page-container">
       <PageContainer>
         <section className="space-y-6">
-          <div className="rounded-2xl border border-border/80 bg-surface-secondary/70 p-4 shadow-soft sm:p-6">
+          <div className="rounded-[2rem] border border-border/80 bg-gradient-to-br from-accent/10 via-surface-secondary to-surface-card/90 p-4 shadow-soft sm:p-6">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
               <div className="flex items-center gap-4">
                 <Avatar alt={displayName} fallback={initials} size="lg" />

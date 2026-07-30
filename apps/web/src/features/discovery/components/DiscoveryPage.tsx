@@ -93,7 +93,7 @@ export function DiscoveryPage() {
           </div>
 
           <div className="mt-6 grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
-            <div className="rounded-[2rem] border border-border/80 bg-gradient-to-br from-surface-primary via-surface-secondary to-surface-card/90 p-5 shadow-soft sm:p-6">
+            <div className="rounded-[2rem] border border-border/80 bg-gradient-to-br from-accent/12 via-surface-secondary to-surface-card/90 p-5 shadow-soft sm:p-6">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div className="space-y-3">
                   <p className="m-0 text-[11px] font-semibold uppercase tracking-[0.24em] text-accent">Featured Hero</p>

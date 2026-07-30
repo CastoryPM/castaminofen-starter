@@ -10,7 +10,7 @@
 
 ## فاز جاری
 
-- Phase MOBILE.SHELL.1 — Mobile App Shell Consolidation
+- Phase UI.CONSOLIDATION.1 — Full Product UI Consolidation
 
 ## پیشرفت کلی
 
@@ -81,7 +81,7 @@
 
 ## تغییر اخیر — 2026-07-30
 
-- Phase MOBILE.SHELL.1 — Mobile App Shell Consolidation تکمیل شد. Header موبایل، Bottom Navigation و تجربه‌ی کلی شل اپلیکیشن بر اساس الگوی Home یکپارچه شدند و صفحه Library با همان شل مشترک در کل اپ اجرا شد. این تغییر بدون تغییر route، API، store یا منطق کسب‌وکار انجام شد.
+- Phase UI.CONSOLIDATION.1 — Full Product UI Consolidation تکمیل شد. تجربه‌ی Home، Library، Search، Profile و Create در یک زبان بصری مشترک و یکپارچه گردآوری شدند؛ App Shell، Header، Bottom Navigation، کارت‌های رسانه‌ای و rhythm صفحه‌ها با استفاده از توکن‌های موجود Castaminofen بازطراحی شدند و بدون تغییر route، API، store یا مالکیت featureها در برنامه ادغام شدند.
 
 ## تغییر اخیر — 2026-07-29
 

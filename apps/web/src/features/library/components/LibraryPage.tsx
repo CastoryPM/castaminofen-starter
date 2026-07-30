@@ -55,7 +55,7 @@ export function LibraryPage() {
   if (!hasAnyContent) {
     return (
       <PageContainer>
-        <section className="rounded-[1.75rem] border border-border/80 bg-surface-secondary/70 p-4 shadow-soft sm:p-6">
+        <section className="rounded-[1.75rem] border border-border/80 bg-gradient-to-br from-accent/10 via-surface-secondary to-surface-card/90 p-4 shadow-soft sm:p-6">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div className="space-y-3">
               <p className="m-0 text-sm font-medium text-accent">کتابخانه‌ی شما</p>

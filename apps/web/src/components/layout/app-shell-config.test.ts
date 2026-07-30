@@ -22,4 +22,11 @@ describe('app shell config', () => {
     expect(config.title).toBe('اجتماع');
     expect(config.tagline).toBe('بحث و تعامل با سایر شنوندگان');
   });
+
+  it('maps the create experience to the shared premium header pattern', () => {
+    const config = getMobileHeaderConfig('/podcasts/new');
+
+    expect(config.title).toBe('ایجاد');
+    expect(config.tagline).toBe('پادکست و اپیزودهای جدید را در یک جریان یکپارچه منتشر کن');
+  });
 });

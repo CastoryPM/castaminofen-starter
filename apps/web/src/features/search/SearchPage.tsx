@@ -60,7 +60,7 @@ export default function SearchPage() {
   return (
     <main className="page-container">
       <PageContainer>
-        <section className="card space-y-6">
+        <section className="rounded-[2rem] border border-border/80 bg-surface-secondary/70 p-4 shadow-soft sm:p-6 lg:p-8 space-y-6">
           <SectionHeader
             eyebrow="جستجو"
             title="پادکست‌ها و اپیزودهای موجود"
