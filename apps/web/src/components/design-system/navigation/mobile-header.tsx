@@ -15,7 +15,7 @@ export function MobileHeader({
   className?: string;
 }) {
   return (
-    <header className={clsx('sticky top-0 z-30 border-b border-border/70 bg-surface-secondary/80 backdrop-blur-2xl', className)}>
+    <header className={clsx('sticky top-0 z-30 border-b border-border/70 bg-surface-secondary/85 backdrop-blur-2xl shadow-[0_1px_0_rgba(0,0,0,0.03)]', className)}>
       <div className="mx-auto flex w-full max-w-app items-center justify-between gap-3 px-3 py-3 sm:px-6 lg:px-8">
         <div className="flex min-w-0 items-center gap-2.5">
           {leading ? <div className="shrink-0">{leading}</div> : null}

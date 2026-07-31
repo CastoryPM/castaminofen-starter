@@ -18,9 +18,16 @@ export function EmptyState({
   icon?: LucideIcon;
 }) {
   return (
-    <div className={clsx('flex flex-col items-start gap-4 rounded-2xl border border-dashed border-border/80 bg-surface-secondary/80 p-6 text-start shadow-soft sm:p-8', className)} role="status" aria-live="polite">
+    <div
+      className={clsx(
+        'flex flex-col items-start gap-4 rounded-[1.5rem] border border-dashed border-border/80 bg-surface-secondary/80 p-6 text-start shadow-soft sm:p-8',
+        className,
+      )}
+      role="status"
+      aria-live="polite"
+    >
       <div className="flex items-start gap-3">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-accent/10 text-accent">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-accent/10 text-accent shadow-[0_8px_24px_rgba(119,108,254,0.16)]">
           <Icon className="h-5 w-5" aria-hidden="true" />
         </div>
         <div className="space-y-2">

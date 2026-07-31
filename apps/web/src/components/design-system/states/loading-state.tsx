@@ -11,9 +11,9 @@ export function LoadingState({
   title?: string;
 }) {
   return (
-    <div className={clsx('loading-state', className)} role="status" aria-live="polite">
+    <div className={clsx('rounded-[1.25rem] border border-border/70 bg-surface-secondary/70 px-4 py-3 shadow-soft', className)} role="status" aria-live="polite">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-accent/10 text-accent">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-accent/10 text-accent shadow-[0_8px_20px_rgba(119,108,254,0.16)]">
           <LoaderCircle className="h-5 w-5 animate-spin" aria-hidden="true" />
         </div>
         <div className="space-y-1">
