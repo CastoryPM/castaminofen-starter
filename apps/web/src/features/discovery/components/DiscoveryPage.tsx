@@ -103,19 +103,19 @@ export function DiscoveryPage() {
               <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div className="space-y-3">
                   <p className="m-0 text-[11px] font-semibold uppercase tracking-[0.24em] text-accent">Continue Journey</p>
-                  <h2 className="text-xl font-semibold text-text-primary">یک مسیر شخصی برای ادامه‌ی شنیدن و برگرداندن لحظه‌ها بساز.</h2>
-                  <p className="m-0 max-w-xl text-sm text-text-secondary">از ادامه‌ی گوش دادن و پیشنهادهای هم‌راستا تا کشف دسته‌بندی‌ها، همه چیز برای اینکه کاربر به‌سرعت به مسیر بعدی برگردد طراحی شده است.</p>
+                  <h2 className="text-xl font-semibold text-text-primary">Castaminofen برای بازگشت بعدی شما، مسیر بعدی را آماده می‌کند.</h2>
+                  <p className="m-0 max-w-xl text-sm text-text-secondary">از ادامه‌ی پخش و لحظه‌های نیمه‌کامل گرفته تا موضوعات جذاب و مسیرهای بازگشتی، این صفحه به شما کمک می‌کند «جایی که متوقف شدی» را دوباره از سر بگیری.</p>
                 </div>
                 <Tag className="w-fit border-border bg-surface-secondary/80 text-text-secondary">
                   <Sparkles className="h-4 w-4 text-accent" aria-hidden="true" />
-                  Retention-first discovery
+                  Personalized Discovery
                 </Tag>
               </div>
             </div>
 
             <div className="flex flex-col gap-3">
-              <MediaCard title="مسیرهای پیشنهادی" subtitle="هر بخش به‌صورت یک مسیر قابل ادامه طراحی شده است؛ نه یک شبکه‌ی ساده از کارت‌ها." />
-              <MediaCard title="ادامه‌ی گوش دادن" subtitle="همان تجربه‌ی Library در Discovery هم دیده می‌شود تا بازگشت کاربران روان و قابل پیش‌بینی باشد." />
+              <MediaCard title="مسیرهای پیشنهادی" subtitle="هر بلوک یک «ادامه‌ی قابل فهم» به شما می‌دهد؛ نه صرفاً یک لیست پراکنده." meta="Journey" />
+              <MediaCard title="ادامه‌ی گوش دادن" subtitle="بازگشت به همان تجربه‌ای که در Library شروع شده، برای حفظ حس تداوم و هویت شخصی." meta="Resume" />
             </div>
           </div>
 

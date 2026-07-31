@@ -15,7 +15,7 @@ export function ProfileActivityTimeline({ activities }: ProfileActivityTimelineP
   }));
 
   return (
-    <MediaCard title="خط زمانی فعالیت" subtitle="روایت شخصی از حضور در پلتفرم" meta="Activity" className="space-y-3">
+    <MediaCard title="Recent Return Story" subtitle="روایت شخصی از حضور، بازگشت و مشارکت در پلتفرم" meta="Activity" className="space-y-3">
       <UserActivityCard contributions={contributions} />
     </MediaCard>
   );

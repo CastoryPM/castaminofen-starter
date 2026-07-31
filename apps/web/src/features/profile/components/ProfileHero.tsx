@@ -75,14 +75,14 @@ export function ProfileHero({ profile, mode = 'owner' }: ProfileHeroProps) {
       </div>
 
       <div className="mt-6 grid gap-3 md:grid-cols-3">
-        <MediaCard title="درس‌های شخصی" subtitle="از تجربه‌ی گوش دادن" meta="Knowledge" className="min-h-full">
-          <p className="text-sm text-text-secondary">مجموعه‌ای از لحظه‌ها، هایلایت‌ها و یادداشت‌هایی که هویت شنیداری تو را شکل می‌دهند.</p>
+        <MediaCard title="My Knowledge" subtitle="دانش و مسیر رشد شما" meta="Knowledge" className="min-h-full">
+          <p className="text-sm text-text-secondary">مجموعه‌ای از لحظه‌ها، هایلایت‌ها و یادداشت‌هایی که هویت شنیداری شما را شکل می‌دهند.</p>
         </MediaCard>
-        <MediaCard title="مشارکت اجتماعی" subtitle="در جوامع فعال" meta="Social" className="min-h-full">
-          <p className="text-sm text-text-secondary">تجربه‌ی تو در بحث‌ها، نظرات و تعاملات، بخش مهمی از هویتت است.</p>
+        <MediaCard title="Community Presence" subtitle="حضور فعال در بحث‌ها و موضوعات" meta="Social" className="min-h-full">
+          <p className="text-sm text-text-secondary">تجربه‌ی شما در بحث‌ها، نظرات و تعاملات، بخش مهمی از هویت و مشارکت شما در Castaminofen است.</p>
         </MediaCard>
-        <MediaCard title="حافظه‌ی پخش" subtitle="بازگشت به لحظه‌ها" meta="Player" className="min-h-full">
-          <p className="text-sm text-text-secondary">از لحظه‌ها و زمان‌بندی‌های ذخیره‌شده برای بازگشت سریع استفاده کن.</p>
+        <MediaCard title="Replay Memory" subtitle="بازگشت به لحظه‌های مهم" meta="Player" className="min-h-full">
+          <p className="text-sm text-text-secondary">از لحظه‌ها و زمان‌بندی‌های ذخیره‌شده برای بازگشت سریع و حفظ حس تداوم استفاده کن.</p>
         </MediaCard>
       </div>
     </div>

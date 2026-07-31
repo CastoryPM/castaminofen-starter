@@ -10,6 +10,7 @@
 
 ## فاز جاری
 
+- Phase RETENTION.1 — Retention UX Narrative Foundation
 - Phase PRODUCT.POLISH.1 — Full Experience Refinement & Premium UX Optimization
 - Phase PRODUCT.POLISH.2 — Feature Experience Refinement & Retention UX Layer
 - Phase COMMUNITY.2 — Community Ecosystem Experience

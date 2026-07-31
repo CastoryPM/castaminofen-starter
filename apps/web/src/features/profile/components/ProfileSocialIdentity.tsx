@@ -7,7 +7,7 @@ type ProfileSocialIdentityProps = {
 
 export function ProfileSocialIdentity({ groups }: ProfileSocialIdentityProps) {
   return (
-    <MediaCard title="هویت اجتماعی" subtitle="افراد، سازندگان و موضوعات مورد علاقه" meta="Social" className="space-y-3">
+    <MediaCard title="Community Identity" subtitle="افراد، سازندگان و موضوعاتی که هویت شما را شکل می‌دهند" meta="Social" className="space-y-3">
       <div className="grid gap-3 md:grid-cols-3">
         {groups.map((group) => (
           <div key={group.id} className="rounded-[1rem] border border-border/70 bg-surface-secondary/70 p-3">

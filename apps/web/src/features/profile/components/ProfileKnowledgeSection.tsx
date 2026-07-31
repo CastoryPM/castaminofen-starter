@@ -10,7 +10,7 @@ type ProfileKnowledgeSectionProps = {
 export function ProfileKnowledgeSection({ memories, collections }: ProfileKnowledgeSectionProps) {
   return (
     <section className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
-      <MediaCard title="لحظه‌های ذخیره‌شده" subtitle="حافظه‌ی پخش و دانش شخصی" meta="Memory" className="space-y-3">
+      <MediaCard title="حافظه‌ی شخصی" subtitle="لحظه‌های ذخیره‌شده، یادداشت‌ها و بازگشت‌های مهم" meta="Memory" className="space-y-3">
         {memories.length > 0 ? (
           <div className="space-y-2">
             {memories.map((memory) => (
@@ -28,7 +28,7 @@ export function ProfileKnowledgeSection({ memories, collections }: ProfileKnowle
         )}
       </MediaCard>
 
-      <MediaCard title="مجموعه‌های شخصی" subtitle="گروه‌های متنی و موضوعی" meta="Collections" className="space-y-3">
+      <MediaCard title="My Collections" subtitle="گروه‌های متنی، موضوعی و مسیرهای شخصی" meta="Collections" className="space-y-3">
         {collections.length > 0 ? (
           <div className="space-y-2">
             {collections.map((collection) => (

@@ -42,6 +42,8 @@ describe('creator studio experience', () => {
     expect(rendered.container.textContent).toContain('استودیو سازنده');
     expect(rendered.container.textContent).toContain('ایجاد محتوا');
     expect(rendered.container.textContent).toContain('پیش‌نمایش مخاطب');
+    expect(rendered.container.textContent).toContain('بازخورد مخاطب');
+    expect(rendered.container.textContent).toContain('مسیر رشد سازنده');
   });
 
   it('supports selecting a content type and showing its description', () => {

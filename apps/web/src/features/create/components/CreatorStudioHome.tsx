@@ -53,7 +53,7 @@ export function CreatorStudioHome() {
                 </div>
               </MediaCard>
 
-              <MediaCard title="پیش‌نمایش مخاطب" subtitle="Player، Community و Profile" meta="Preview">
+              <MediaCard title="بازخورد مخاطب" subtitle="دیدگاه‌ها، واکنش‌ها و مسیر رشد در یک نگاه" meta="Audience Feedback">
                 <div className="space-y-2">
                   {mockPreviews.map((preview) => (
                     <div key={preview.id} className="rounded-[1rem] border border-border/70 bg-surface-secondary/70 p-3">
@@ -66,6 +66,13 @@ export function CreatorStudioHome() {
                       </div>
                     </div>
                   ))}
+                </div>
+              </MediaCard>
+
+              <MediaCard title="مسیر رشد سازنده" subtitle="از اولین ایده تا تاثیر بر جامعه و بازگشت مخاطب" meta="Creator Growth">
+                <div className="space-y-3 rounded-[1rem] border border-border/70 bg-surface-secondary/70 p-3">
+                  <p className="text-sm font-semibold text-text-primary">هر انتشار، یک نقطه‌ی بازگشت برای جامعه و یک نشانه‌ی رشد برای شما ایجاد می‌کند.</p>
+                  <p className="text-sm text-text-secondary">پیش‌نمایش مخاطب، بازخورد و حضور در Profile همگی به شما نشان می‌دهند که کار شما در Castaminofen معنی‌دار است.</p>
                 </div>
               </MediaCard>
 

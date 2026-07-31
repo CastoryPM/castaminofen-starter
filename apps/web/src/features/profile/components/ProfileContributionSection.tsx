@@ -7,7 +7,7 @@ type ProfileContributionSectionProps = {
 
 export function ProfileContributionSection({ contributions }: ProfileContributionSectionProps) {
   return (
-    <MediaCard title="هویت مشارکتی" subtitle="چگونه در Castaminofen ارزش ایجاد می‌کنی" meta="Contribution" className="space-y-3">
+    <MediaCard title="Contribution Identity" subtitle="چطور در Castaminofen ارزش و حضور خود را می‌سازی" meta="Contribution" className="space-y-3">
       <div className="space-y-2">
         {contributions.map((item) => (
           <div key={item.id} className="rounded-[1rem] border border-border/70 bg-surface-secondary/70 p-3">
