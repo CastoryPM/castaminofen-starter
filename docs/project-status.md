@@ -26,6 +26,7 @@
 - Phase ADMIN.1 — Platform Control Center & Admin Experience
 - Phase ADMIN.2 — Platform Governance, Moderation & Operations System
 - Phase ADMIN.4 — Platform Configuration, Feature Management & System Control Center
+- Phase ADMIN.5 — AI Platform Assistant & Autonomous Operations Layer
 
 ## پیشرفت کلی
 
@@ -105,6 +106,7 @@
 - Phase PLAYER.7 — Player Data Integration & Social Memory Layer تکمیل شد. تجربه‌ی Player حالا از داده‌های mock-backed برای نشانک‌ها، هایلایت‌ها، یادداشت‌های شخصی، بحث‌های لحظه‌ای، رونویس، creator context و پیشنهادهای مرتبط استفاده می‌کند و در عین حال مرزهای runtime و design-system بدون تغییر باقی مانده‌اند.
 - Phase ADMIN.2 — Platform Governance, Moderation & Operations System تکمیل شد. داشبورد Admin از یک نمای کلی ساده به یک فضای عملیاتی حرفه‌ای برای governance، moderation queue، content review، creator review، user trust، audit timeline، platform alerts، trust/safety overview، roles preview و operations dashboard تبدیل شد. همه‌ی بخش‌ها با داده‌های mock-backed و بدون تغییر در auth، API، DB، permission engine یا runtime Player پیاده‌سازی شدند.
 - Phase ADMIN.4 — Platform Configuration, Feature Management & System Control Center تکمیل شد. داشبورد Admin اکنون یک فضای mock-backed برای کنترل پلتفرم، مدیریت قابلیت‌ها، تنظیمات محتوا، دسته‌بندی و موضوع، پیکربندی ناوبری، تنظیمات سازنده، جامعه، پخش، اعلان‌ها، هویت برند، و ترجیحات سیستم فراهم می‌کند. این تغییر بدون ایجاد backend، API واقعی، permission engine، یا تغییر در مالکیت runtime/feature انجام شد.
+- Phase ADMIN.5 — AI Platform Assistant & Autonomous Operations Layer تکمیل شد. داشبورد Admin اکنون یک لایه‌ی تصمیم‌هوشمند mock-backed برای خلاصه‌ی روزانه، هوش سلامت پلتفرم، تشخیص ریسک، پیشنهاد فرصت رشد، راهنمای محتوا، هوش سازنده و جامعه، گفتگو با دستیار، پیشنهاد اقدام و تاریخچه‌ی تصمیم‌ها دارد. این تغییر در مرز feature Admin باقی مانده و بدون ورود به backend، AI API، database، permission model یا runtime Player انجام شده است.
 
 ## تغییر اخیر — 2026-07-29
 

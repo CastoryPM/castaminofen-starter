@@ -1,4 +1,4 @@
-export type AdminSectionKey = 'overview' | 'governance' | 'moderation' | 'content-review' | 'creator-review' | 'trust' | 'audit' | 'alerts' | 'safety' | 'roles' | 'operations' | 'users' | 'creators' | 'content' | 'community' | 'reports' | 'analytics' | 'settings' | 'system';
+export type AdminSectionKey = 'overview' | 'governance' | 'moderation' | 'content-review' | 'creator-review' | 'trust' | 'audit' | 'alerts' | 'safety' | 'roles' | 'operations' | 'users' | 'creators' | 'content' | 'community' | 'reports' | 'analytics' | 'assistant' | 'settings' | 'system';
 
 export type AdminMetric = {
   label: string;

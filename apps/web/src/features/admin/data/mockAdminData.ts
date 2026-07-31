@@ -18,6 +18,7 @@ export const adminSectionConfig = [
   { key: 'community', title: 'جامعه', description: 'رصد رشد گفتگو و نشانه‌های مخاطب', shortLabel: 'Community' },
   { key: 'reports', title: 'گزارش‌ها', description: 'گردش کار بررسی و پاسخ به گزارش‌ها', shortLabel: 'Reports' },
   { key: 'analytics', title: 'هوش پلتفرم', description: 'بینش رشد، تعامل و عملکرد', shortLabel: 'Analytics' },
+  { key: 'assistant', title: 'AI Assistant', description: 'دستاورد تصمیم‌گیری و بینش اجرایی', shortLabel: 'Assistant' },
   { key: 'settings', title: 'تنظیمات', description: 'پیکربندی تجربه و کنترل قابلیت‌ها', shortLabel: 'Settings' },
   { key: 'system', title: 'سیستم', description: 'وضعیت عملکرد و راه‌اندازی‌های آینده', shortLabel: 'System' },
 ] as const;
