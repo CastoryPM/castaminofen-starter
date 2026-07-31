@@ -56,6 +56,16 @@ describe('SearchResultsPanel', () => {
     container.remove();
   });
 
+  it('promotes discovery guidance when the search query is still empty', () => {
+    act(() => {
+      root.render(<SearchResultsPanel query="" />);
+    });
+
+    expect(container.textContent).toContain('پیشنهادهای کشف سریع');
+    expect(container.textContent).toContain('پادکست');
+    expect(container.textContent).toContain('اپیزود');
+  });
+
   it('queues the selected episode from search results', () => {
     act(() => {
       root.render(<SearchResultsPanel query="search" />);

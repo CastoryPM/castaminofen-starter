@@ -226,6 +226,13 @@ export function CommunityHome() {
                 </div>
               </DiscussionCard>
 
+              <DiscussionCard title="چرا مشارکت کنیم؟" body="با دیدن ارزش مشارکت، مسیرهای کوتاه و قابل فهم برای مشارکت در بحث‌ها و موضوعات داغ مشخص می‌شود." actions={<Tag className="border-border bg-surface-secondary/80 text-text-secondary">Retention</Tag>}>
+                <div className="space-y-3 rounded-[1rem] border border-border/70 bg-surface-secondary/70 p-3">
+                  <p className="text-sm font-semibold text-text-primary">مشارکت در جامعه، در واقع بازگشت به مسیرهای الهام‌بخش و دانشی است.</p>
+                  <p className="text-sm text-text-secondary">در هر بار ورود، یک سؤال تازه، یک موضوع داغ یا یک نگاه حرفه‌ای برای رشد شما در دسترس است.</p>
+                </div>
+              </DiscussionCard>
+
               <DiscussionCard title="سهم شما در جامعه" body="نشان‌دهنده‌ی مشارکت و رشد شما" actions={<Tag className="border-border bg-surface-secondary/80 text-text-secondary">مشارکت</Tag>}>
                 <UserActivityCard contributions={mockCommunityContributions} />
               </DiscussionCard>

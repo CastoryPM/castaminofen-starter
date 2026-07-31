@@ -78,10 +78,34 @@ export function SearchResultsPanel({ query, page }: SearchResultsPanelProps) {
 
   if (!debouncedQuery) {
     return (
-      <EmptyState
-        title="جستجو را شروع کنید"
-        description="برای یافتن پادکست‌ها و اپیزودهای موجود، عبارتی را در کادر جستجو وارد کنید."
-      />
+      <div className="space-y-4">
+        <div className="rounded-[1.6rem] border border-border/80 bg-gradient-to-br from-accent/10 via-surface-secondary to-surface-card/90 p-4 shadow-soft sm:p-5">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-accent">پیشنهادهای کشف سریع</p>
+              <h2 className="text-subheading">شناخت مسیر بعدی در یک نگاه</h2>
+              <p className="text-sm text-text-secondary">جستجو در پادکست، اپیزود، سازنده و موضوعات مورد علاقه‌تان را از همین صفحه شروع کنید.</p>
+            </div>
+            <Tag className="border-accent/20 bg-accent/10 text-accent">Discovery Ready</Tag>
+          </div>
+          <div className="mt-4 grid gap-3 md:grid-cols-3">
+            {[
+              { title: 'پادکست', description: 'کشف مسیرهای مورد علاقه و مجموعه‌های شخصی' },
+              { title: 'اپیزود', description: 'بازگشت به لحظه‌های نیمه‌تمام و ادامه پخش' },
+              { title: 'سازنده', description: 'شناخت هویت‌های فعال و جامعه‌ی مرتبط' },
+            ].map((item) => (
+              <div key={item.title} className="rounded-[1.2rem] border border-border/70 bg-surface-card/80 p-3">
+                <p className="text-sm font-semibold text-text-primary">{item.title}</p>
+                <p className="mt-1 text-sm text-text-secondary">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <EmptyState
+          title="جستجو را شروع کنید"
+          description="برای یافتن پادکست‌ها و اپیزودهای موجود، عبارتی را در کادر جستجو وارد کنید."
+        />
+      </div>
     );
   }
 

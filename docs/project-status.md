@@ -11,6 +11,7 @@
 ## فاز جاری
 
 - Phase PRODUCT.POLISH.1 — Full Experience Refinement & Premium UX Optimization
+- Phase PRODUCT.POLISH.2 — Feature Experience Refinement & Retention UX Layer
 - Phase COMMUNITY.2 — Community Ecosystem Experience
 - Phase CREATE.2 — Creator Studio & Content Creation Ecosystem
 - Phase CREATOR.1 — Public Creator Identity & Channel Experience
@@ -58,6 +59,7 @@
 - Frontend با Next.js و feature-based structure در حال حاضر برای MVP آماده است.
 - App shell، routing، provider، feature folders و UI state structure در حالت سازگار و قابل‌استفاده هستند.
 - Build، lint و تست وب با موفقیت اجرا شده‌اند.
+- Validation gates برای phase PRODUCT.POLISH.2 با `tsc --noEmit` ، `next build`، `vitest run` و `next lint` تأیید شدند؛ خطاهای موجود تنها در سطح warnings غیرمسدود هستند.
 - لایه‌ی shared UI در Design System اکنون با polish سطح premium برای mobile navigation، cards، container rhythm و state surfaces تقویت شده است.
 - Integrating RSS-backed podcast and episode content into the frontend now preserves the public podcast/episode domain experience without exposing internal RSS metadata.
 

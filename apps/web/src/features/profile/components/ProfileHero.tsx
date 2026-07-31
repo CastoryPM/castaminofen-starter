@@ -56,7 +56,7 @@ export function ProfileHero({ profile, mode = 'owner' }: ProfileHeroProps) {
             <>
               <Button type="button" variant="primary">ویرایش پروفایل</Button>
               <Button type="button" variant="secondary">مدیریت تنظیمات</Button>
-              <Button type="button" variant="ghost">اشتراک‌گذاری</Button>
+              <Button type="button" variant="ghost">تقویت هویت</Button>
             </>
           ) : (
             <>

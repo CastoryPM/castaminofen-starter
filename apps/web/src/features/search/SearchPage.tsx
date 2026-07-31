@@ -63,8 +63,8 @@ export default function SearchPage() {
         <section className="rounded-[2rem] border border-border/80 bg-surface-secondary/70 p-4 shadow-soft sm:p-6 lg:p-8 space-y-6">
           <SectionHeader
             eyebrow="جستجو"
-            title="پادکست‌ها و اپیزودهای موجود"
-            description="به‌سرعت محتوای مورد نظر را در پلتفرم پیدا کنید."
+            title="موتور کشف Castaminofen"
+            description="جستجو فقط برای پیدا کردن یک نتیجه نیست؛ برای بازگشت به مسیرهای شنیداری، فرهنگی و حرفه‌ای که به آن‌ها علاقه دارید."
           />
 
           <SearchInput

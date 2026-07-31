@@ -80,8 +80,8 @@ export function DiscoveryPage() {
                 <Compass className="h-4 w-4" aria-hidden="true" />
                 Discovery
               </Tag>
-              <h1 id="discovery-heading" className="text-heading">Discover your next favorite show</h1>
-              <p className="m-0 text-body">A calm, editorial-first entrance into the podcast catalog that stays lightweight and presentation-focused.</p>
+              <h1 id="discovery-heading" className="text-heading">برای بازگشت بعدی، مسیر بعدی را کشف کن</h1>
+              <p className="m-0 text-body">صفحه‌ی اصلیِ Castaminofen به‌جای یک شبکه‌ی خام، یک مسیر آرام برای ادامه، کشف و بازگشت به تجربه‌ی شنیداری است.</p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <Link href="/podcasts" className="inline-flex">
@@ -102,20 +102,20 @@ export function DiscoveryPage() {
             <div className="rounded-[2rem] border border-border/80 bg-gradient-to-br from-accent/12 via-surface-secondary to-surface-card/90 p-5 shadow-soft sm:p-6">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div className="space-y-3">
-                  <p className="m-0 text-[11px] font-semibold uppercase tracking-[0.24em] text-accent">Featured Hero</p>
-                  <h2 className="text-xl font-semibold text-text-primary">Build a listening ritual around the stories already in the catalog.</h2>
-                  <p className="m-0 max-w-xl text-sm text-text-secondary">This hero stays graceful when featured metadata is missing and uses editorial messaging instead of fabricated content.</p>
+                  <p className="m-0 text-[11px] font-semibold uppercase tracking-[0.24em] text-accent">Continue Journey</p>
+                  <h2 className="text-xl font-semibold text-text-primary">یک مسیر شخصی برای ادامه‌ی شنیدن و برگرداندن لحظه‌ها بساز.</h2>
+                  <p className="m-0 max-w-xl text-sm text-text-secondary">از ادامه‌ی گوش دادن و پیشنهادهای هم‌راستا تا کشف دسته‌بندی‌ها، همه چیز برای اینکه کاربر به‌سرعت به مسیر بعدی برگردد طراحی شده است.</p>
                 </div>
                 <Tag className="w-fit border-border bg-surface-secondary/80 text-text-secondary">
                   <Sparkles className="h-4 w-4 text-accent" aria-hidden="true" />
-                  Premium editorial layout
+                  Retention-first discovery
                 </Tag>
               </div>
             </div>
 
             <div className="flex flex-col gap-3">
-              <MediaCard title="Editorial Sections" subtitle="Discover podcasts and episodes through clear, streaming-style sections without adding new recommendation logic." />
-              <MediaCard title="Continue Listening" subtitle="The discovery page surfaces the same continue-listening experience from Library to keep the flow cohesive." />
+              <MediaCard title="مسیرهای پیشنهادی" subtitle="هر بخش به‌صورت یک مسیر قابل ادامه طراحی شده است؛ نه یک شبکه‌ی ساده از کارت‌ها." />
+              <MediaCard title="ادامه‌ی گوش دادن" subtitle="همان تجربه‌ی Library در Discovery هم دیده می‌شود تا بازگشت کاربران روان و قابل پیش‌بینی باشد." />
             </div>
           </div>
 

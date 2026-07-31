@@ -84,7 +84,7 @@ export function LibraryPage() {
           <div className="space-y-3">
             <p className="m-0 text-sm font-medium text-accent">کتابخانه‌ی شما</p>
             <h1 className="text-heading">{greeting}</h1>
-            <p className="text-body m-0 max-w-2xl">{greetingSubtitle}</p>
+            <p className="text-body m-0 max-w-2xl">این فضا برای بازگشت به آموخته‌ها، مسیرهای نیمه‌کامل و انتخاب‌های شخصی شما طراحی شده است.</p>
           </div>
           <div className="flex flex-col gap-3 sm:items-end">
             <div className="flex flex-wrap items-center gap-2 text-sm text-text-secondary" role="list" aria-label="خلاصه‌ی کتابخانه">
@@ -118,7 +118,7 @@ export function LibraryPage() {
       ) : null}
 
       <div className="space-y-4 sm:space-y-6">
-        <SectionHeader eyebrow="پلتفرم" title="مرکز شخصی شما" description="این بخش‌ها در یک ساختار مشترک و قابل تشخیص قرار گرفته‌اند." />
+        <SectionHeader eyebrow="پلتفرم" title="مرکز شخصی شما" description="حافظه، ادامه‌ی گوش دادن، علاقه‌مندی‌ها و مسیرهای شخصی در یک فضای یکپارچه کنار هم قرار گرفته‌اند." />
         <MediaCarousel className="gap-3">
           <MediaCard title="اشتراک‌ها" subtitle="پادکست‌های دنبال‌شده" meta={`${subscriptions.length}`} className="min-w-[11rem]" />
           <MediaCard title="ادامه پخش" subtitle="در حال گوش دادن" meta={`${continueListening.length}`} className="min-w-[11rem]" />
