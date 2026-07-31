@@ -46,3 +46,9 @@
 - تصمیم: تجربه‌ی UI Player می‌تواند با افزودن surface‌های تعاملی و presentation-rich در مرز Player، به یک تجربه‌ی Immersive تبدیل شود اما مالکیت runtime، queue، persistence و API‌ها در همان feature Player باقی بماند.
 - دلیل: نیاز تجربه‌ی کاربری جدید باید در لایه‌ی presentation انجام شود و نباید منطق پخش یا state ownership را به کامپوننت‌ها یا featureهای دیگر منتقل کند.
 - پیامد: PlayerBar اکنون یک تجربه‌ی compact + expanded دارد و پنل Immersive Player از همین state و runtime فعلی استفاده می‌کند بدون ایجاد تغییر در engine، persistence یا API.
+
+## ADR-024 — Admin configuration views stay mock-backed and feature-owned
+
+- تصمیم: سطح Configuration Admin به‌صورت UI-only، typed mock-backed و کاملاً در مرز feature Admin نگهداری می‌شود؛ هیچ API واقعی، فیلتر feature flag واقعی، موتور permission، و یا mutation runtime برای تنظیمات دستگاه اجرا نمی‌شود.
+- دلیل: در این فاز هدف کنترل و نمایش سیاست‌ها و تنظیمات پلتفرم به‌صورت preview و workspace است؛ این نمایش باید بدون ایجاد drift در معماری محصول، auth، routeها، یا runtime Player به‌صورت قابل‌اتکا در دسترس باشد.
+- پیامد: مدل‌های typed configuration، داده‌های mock، و کامپوننت‌های preview به‌صورت یک لایه‌ی نمایشی در Admin حفظ می‌شوند و مسیرهای ورود، auth flow، owner feature boundaries، و runtime Player بدون تغییر باقی می‌مانند.

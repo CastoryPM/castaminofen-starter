@@ -25,6 +25,7 @@
 - Phase PROFILE.2 — Social Identity & Personal Knowledge Hub
 - Phase ADMIN.1 — Platform Control Center & Admin Experience
 - Phase ADMIN.2 — Platform Governance, Moderation & Operations System
+- Phase ADMIN.4 — Platform Configuration, Feature Management & System Control Center
 
 ## پیشرفت کلی
 
@@ -103,6 +104,7 @@
 - Phase PLAYER.6 — Advanced Immersive Player Experience تکمیل شد. تجربه‌ی Player با پنل تعاملی Immersive، تب‌های discussion/memory/queue، timeline markers، controls پیشرفته و stateهای richer UI به سمت تجربه‌ی Premium ارتقا یافت و در عین حال runtime، queue، persistence و API contracts بدون تغییر باقی ماندند.
 - Phase PLAYER.7 — Player Data Integration & Social Memory Layer تکمیل شد. تجربه‌ی Player حالا از داده‌های mock-backed برای نشانک‌ها، هایلایت‌ها، یادداشت‌های شخصی، بحث‌های لحظه‌ای، رونویس، creator context و پیشنهادهای مرتبط استفاده می‌کند و در عین حال مرزهای runtime و design-system بدون تغییر باقی مانده‌اند.
 - Phase ADMIN.2 — Platform Governance, Moderation & Operations System تکمیل شد. داشبورد Admin از یک نمای کلی ساده به یک فضای عملیاتی حرفه‌ای برای governance، moderation queue، content review، creator review، user trust، audit timeline، platform alerts، trust/safety overview، roles preview و operations dashboard تبدیل شد. همه‌ی بخش‌ها با داده‌های mock-backed و بدون تغییر در auth، API، DB، permission engine یا runtime Player پیاده‌سازی شدند.
+- Phase ADMIN.4 — Platform Configuration, Feature Management & System Control Center تکمیل شد. داشبورد Admin اکنون یک فضای mock-backed برای کنترل پلتفرم، مدیریت قابلیت‌ها، تنظیمات محتوا، دسته‌بندی و موضوع، پیکربندی ناوبری، تنظیمات سازنده، جامعه، پخش، اعلان‌ها، هویت برند، و ترجیحات سیستم فراهم می‌کند. این تغییر بدون ایجاد backend، API واقعی، permission engine، یا تغییر در مالکیت runtime/feature انجام شد.
 
 ## تغییر اخیر — 2026-07-29
 

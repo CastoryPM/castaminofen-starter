@@ -7,4 +7,5 @@
 - **Prisma validate**: `apps/api` — `pnpm --filter @castaminofen/api exec prisma validate`
 - **Web PWA build validation**: `apps/web` — `pnpm --filter @castaminofen/web build`
 - **Web admin intelligence tests**: `apps/web` — `pnpm --filter @castaminofen/web test`
+- **Web admin configuration regression tests**: `apps/web` — `pnpm --filter @castaminofen/web exec vitest run src/features/admin/components/AdminConfigurationCenter.test.tsx`
 - **Web type-check**: `apps/web` — `pnpm exec tsc -p apps/web/tsconfig.json --noEmit`
